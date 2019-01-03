@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.xdclass.product_service.mapper.CompanyMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, company_name, industry_id, company_type, count_base, count_top, contact_name, contact_phone, province, city, area, address, image, info, sort, is_deleted, create_time, update_time
+    </sql>
+
+    <select id="selectListEntity" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+            *
+        FROM
+            store_company where 1 = 1
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            order by id desc LIMIT 1
+    </select>
+
+</mapper>

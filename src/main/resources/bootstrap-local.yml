@@ -1,0 +1,64 @@
+server:
+  port: 8772
+
+#指定注册中心地址
+eureka:
+  client:
+    serviceUrl:
+      # 172.19.186.233 47.101.63.222
+      defaultZone: http://47.101.63.222:8761/eureka/
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    prefer-ip-address: true
+
+#服务的名称
+spring:
+  application:
+    name: product-service
+  #指定从哪个配置中心读取
+#  cloud:
+#    config:
+#      discovery:
+#        service-id: CONFIG-SERVER
+#        enabled: true
+#      profile: test
+    profiles:
+      active: dev
+  #消息队列
+  rabbitmq:
+    host: 47.101.63.222
+    port: 5672
+    username: guest
+    password: guest
+  datasource:
+    #username: root
+    #password: kakacldb2018u
+    #url: jdbc:mysql://192.168.4.131:23336/guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8
+    username: root
+    password: wcuu123456
+    url: jdbc:mysql://47.101.63.222:3306/guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 5
+    minIdle: 5
+    maxActive: 10
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+mybatis:
+  config-location: classpath:sqlMapConfig.xml
+  mapper-locations: classpath:mappers/*.xml
+  type-aliases-package: com.kakacl.springboot.model
+
+env: test
+branch: master

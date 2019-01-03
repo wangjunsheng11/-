@@ -1,0 +1,24 @@
+
+#指定注册中心地址
+eureka:
+  client:
+    serviceUrl:
+      # 172.19.186.233 47.101.63.222
+      defaultZone: http://47.101.63.222:8761/eureka/
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    prefer-ip-address: true
+
+#服务的名称
+spring:
+  application:
+    name: product-service
+  #指定从哪个配置中心读取
+  cloud:
+    config:
+      discovery:
+        service-id: CONFIG-SERVER
+        enabled: true
+      profile: test
+      #分支
+      label: test
