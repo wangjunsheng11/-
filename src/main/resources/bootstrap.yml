@@ -5,8 +5,8 @@ server:
 eureka:
   client:
     serviceUrl:
-      # 172.19.186.233 47.101.63.222
-      defaultZone: http://47.101.63.222:8761/eureka/
+      # 172.19.186.233 47.101.63.222 192.168.4.172 127.0.0.1
+      defaultZone: http://192.168.4.172:8762/eureka/
   instance:
     instance-id: ${spring.cloud.client.ip-address}:${server.port}
     prefer-ip-address: true
@@ -16,24 +16,22 @@ spring:
   application:
     name: product-service
     #指定从哪个配置中心读取
-    #  cloud:
-    #    config:
-    #      discovery:
-    #        service-id: CONFIG-SERVER
-    #        enabled: true
-    #      profile: test
-    profiles:
-      active: dev
+  #      cloud:
+  #        config:
+  #          discovery:
+  #            service-id: CONFIG-SERVER
+  #            enabled: true
+  #          profile: test
   #消息队列
   rabbitmq:
-    host: 47.101.63.222
+    host: 192.168.4.172
     port: 5672
-    username: guest
-    password: guest
+    username: admin
+    password: admin
   datasource:
     username: root
-    password: wcuu123456
-    url: jdbc:mysql://47.101.63.222:3306/guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8
+    password: kakacldb2018u
+    url: jdbc:mysql://192.168.4.131:23336/springcloud_guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     initialSize: 5

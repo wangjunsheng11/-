@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>product_service</name>
-    <description>Demo project for Spring Boot</description>
+    <description>周周发平台提供者</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -142,6 +142,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>

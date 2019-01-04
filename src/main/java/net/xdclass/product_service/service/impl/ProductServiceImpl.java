@@ -17,8 +17,8 @@ public class ProductServiceImpl implements ProductService {
     private static final Map<Integer,Product> daoMap = new HashMap<>();
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-//    @Autowired
-//    private CompanyMapper mapper;
+    @Autowired
+    private CompanyMapper mapper;
 
     static {
 
@@ -59,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public int selectCountTotal() {
-//        return mapper.selectCountTotal();
-        return 0;
+        return mapper.selectCountTotal();
+//        return 0;
     }
 }
