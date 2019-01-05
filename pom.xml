@@ -3,12 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>net.xdclass</groupId>
-    <artifactId>product_service</artifactId>
+    <groupId>com.kakacl</groupId>
+    <artifactId>provider_zzf_service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>product_service</name>
+    <name>provider_zzf_service</name>
     <description>周周发平台提供者</description>
 
     <parent>
@@ -24,7 +24,7 @@
         <java.version>1.8</java.version>
         <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
 
-        <docker.image.prefix>xdclass</docker.image.prefix>
+        <docker.image.prefix>kakacl</docker.image.prefix>
     </properties>
 
     <dependencies>
@@ -122,7 +122,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>product-service</finalName>
+        <finalName>provider_zzf_service</finalName>
 
         <plugins>
             <plugin>

@@ -1,4 +1,4 @@
-package net.xdclass.product_service.domain;
+package com.kakacl.product_service.domain;
 
 import java.io.Serializable;
 

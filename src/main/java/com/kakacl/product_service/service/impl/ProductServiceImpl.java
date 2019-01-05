@@ -1,14 +1,13 @@
-package net.xdclass.product_service.service.impl;
+package com.kakacl.product_service.service.impl;
 
-import net.xdclass.product_service.domain.Product;
-import net.xdclass.product_service.mapper.CompanyMapper;
-import net.xdclass.product_service.service.ProductService;
+import com.kakacl.product_service.domain.Product;
+import com.kakacl.product_service.mapper.CompanyMapper;
+import com.kakacl.product_service.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.*;
 
 @Service

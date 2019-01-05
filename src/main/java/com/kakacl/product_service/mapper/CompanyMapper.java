@@ -1,4 +1,4 @@
-package net.xdclass.product_service.mapper;
+package com.kakacl.product_service.mapper;
 
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
