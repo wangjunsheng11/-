@@ -23,4 +23,9 @@ public class AccountController {
         params.put("id", id);
         return Resp.success(accountService.selectById(params));
     }
+
+    @RequestMapping("list")
+    public Object list(){
+        return Resp.success(accountService.selectByPageAndSelections(1,5));
+    }
 }

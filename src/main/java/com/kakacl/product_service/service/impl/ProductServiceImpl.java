@@ -46,7 +46,6 @@ public class ProductServiceImpl implements ProductService {
 
         Collection<Product> collection = daoMap.values();
         List<Product> list = new ArrayList<>(collection);
-
         return list;
     }
 

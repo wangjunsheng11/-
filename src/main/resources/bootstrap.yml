@@ -50,6 +50,9 @@ spring:
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
+  jpa:
+    show-sql: true
+
 mybatis:
   config-location: classpath:sqlMapConfig.xml
   mapper-locations: classpath:mappers/*.xml
