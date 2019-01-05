@@ -1,5 +1,6 @@
 package com.kakacl.product_service.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.kakacl.product_service.domain.Product;
 import com.kakacl.product_service.service.ProductService;
 import org.springframework.beans.BeanUtils;

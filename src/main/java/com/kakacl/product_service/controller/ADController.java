@@ -2,6 +2,7 @@ package com.kakacl.product_service.controller;
 
 import com.kakacl.product_service.service.ADService;
 import com.kakacl.product_service.service.ProductService;
+import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -21,6 +22,6 @@ public class ADController {
 
     @RequestMapping("list")
     public Object list(){
-        return adService.selectAD(null);
+        return Resp.success(adService.selectAD(null));
     }
 }
