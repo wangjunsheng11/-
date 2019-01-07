@@ -14,7 +14,7 @@ eureka:
 #服务的名称
 spring:
   application:
-    name: product-service
+    name: provider-service
     #指定从哪个配置中心读取
   #      cloud:
   #        config:
@@ -49,9 +49,6 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
-
-  jpa:
-    show-sql: true
 
 mybatis:
   config-location: classpath:sqlMapConfig.xml

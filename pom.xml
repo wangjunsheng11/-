@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.kakacl</groupId>
-    <artifactId>provider_zzf_service</artifactId>
+    <artifactId>provider_service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>provider_zzf_service</name>
+    <name>provider_service</name>
     <description>周周发平台提供者</description>
 
     <parent>
@@ -128,7 +128,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>provider_zzf_service</finalName>
+        <finalName>provider_service</finalName>
 
         <plugins>
             <plugin>
