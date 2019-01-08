@@ -4,6 +4,15 @@ public class Account {
 
     private String id;
     private String user_name;
+    private String roleid;
+
+    public String getRoleid() {
+        return roleid;
+    }
+
+    public void setRoleid(String roleid) {
+        this.roleid = roleid;
+    }
 
     public String getId() {
         return id;

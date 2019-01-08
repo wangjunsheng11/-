@@ -20,8 +20,16 @@ public class ADController {
     @Autowired
     private ADService adService;
 
+    /*
+     *
+     * 查询所有没有删除的广告
+     * @author wangwei
+     * @date 2019/1/7
+      * @param
+     * @return com.kakacl.product_service.utils.Resp
+     */
     @RequestMapping("list")
-    public Object list(){
+    public Resp list(){
         return Resp.success(adService.selectAD(null));
     }
 }
