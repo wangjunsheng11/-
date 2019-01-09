@@ -1,10 +1,13 @@
 package com.kakacl.product_service.service.impl;
 
+import com.kakacl.product_service.mapper.AccountMapper;
 import com.kakacl.product_service.mapper.CasAccountMapper;
 import com.kakacl.product_service.service.CasAccountService;
+import com.kakacl.product_service.service.GradeService;
+import com.kakacl.product_service.utils.IDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.Map;
 
 /**
@@ -19,9 +22,23 @@ public class CasAccountServiceImpl implements CasAccountService {
     @Autowired
     private CasAccountMapper casAccountMapper;
 
+    @Autowired
+    private AccountMapper accountMapper;
+
+    @Autowired
+    private GradeService gradeService;
+
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean insert(Map<String, Object> params) {
-        return casAccountMapper.insert(params);
+        boolean flag = false;
+        casAccountMapper.insert(params);
+        accountMapper.insert(params);
+        params.put("user_id", params.get("id"));
+        params.put("id", IDUtils.genHadId());
+        flag = gradeService.insert(params);
+        // TODO 能力，天赋
+        return flag;
     }
 
     @Override
@@ -37,5 +54,10 @@ public class CasAccountServiceImpl implements CasAccountService {
     @Override
     public Map selectOneByKakanum(Map<String, Object> params) {
         return casAccountMapper.selectOneByKakanum(params);
+    }
+
+    @Override
+    public int updateOnePassById(Map<String, Object> params) {
+        return casAccountMapper.updateOnePassById(params);
     }
 }

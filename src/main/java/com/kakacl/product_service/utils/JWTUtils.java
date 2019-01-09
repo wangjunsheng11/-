@@ -1,9 +1,6 @@
 package com.kakacl.product_service.utils;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -18,7 +15,7 @@ import java.util.*;
  */
 public class JWTUtils {
 
-    static String  key="fsdfwqrwefsfs";
+    static String  key="fyYEeStTvniV-8Utwk8-TSMpxsPgSlpIhawBunr3MUk";
 
     public static String createJWT(String id, String issuer, String subject, long ttlMillis) {
 
@@ -49,15 +46,11 @@ public class JWTUtils {
         //构建JWT并将其序列化为一个紧凑的、url安全的字符串
         return builder.compact();
     }
-    public static void parseJWT(String jwt) {
+    public static Claims parseJWT(String jwt) throws Exception {
         Claims claims = Jwts.parser()
                 .setSigningKey(DatatypeConverter.parseBase64Binary(key))
                 .parseClaimsJws(jwt).getBody();
-
-        System.out.println("ID: " + claims.getId());
-        System.out.println("Subject: " + claims.getSubject());
-        System.out.println("Issuer: " + claims.getIssuer());
-        System.out.println("Expiration: " + claims.getExpiration());
+        return claims;
     }
 
 }

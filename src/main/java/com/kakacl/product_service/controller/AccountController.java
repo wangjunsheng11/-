@@ -2,10 +2,9 @@ package com.kakacl.product_service.controller;
 
 import com.kakacl.product_service.service.AccountService;
 import com.kakacl.product_service.service.CasAccountService;
-import com.kakacl.product_service.utils.ErrorCode;
-import com.kakacl.product_service.utils.JWTUtils;
-import com.kakacl.product_service.utils.Resp;
-import com.kakacl.product_service.utils.SymmetricEncoder;
+import com.kakacl.product_service.utils.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -79,7 +78,7 @@ public class AccountController {
         if(result!= null) {
             return Resp.fail(ErrorCode.CODE_6001);
         }
-        params.put("id", UUID.randomUUID().toString().replaceAll("-","") + System.nanoTime());
+        params.put("id", IDUtils.genHadId());
         params.put("sys_type", sysName);
         params.put("kaka_num", num);
         params.put("phone_num", phoneNum);
@@ -89,6 +88,7 @@ public class AccountController {
         params.put("del_flag", "0");
         params.put("create_time", System.currentTimeMillis()/1000);
         params.put("create_by", sysName);
+        params.put("id_card", idCode);
         boolean flag = casAccountService.insert(params);
         if(flag) {
             return Resp.success(num);
@@ -98,17 +98,83 @@ public class AccountController {
     }
 
     @RequestMapping("login")
-    public Resp login(@RequestParam(name="account", required=true)String account, @RequestParam(name="pass", required=true)String pass){
-        java.util.Map params = new HashMap();
+    public Resp login(
+            @RequestParam(name="account", required=true)String account,
+            @RequestParam(name="pass", required=true)String pass,
+            String time){
+            java.util.Map params = new HashMap();
         params.put("kaka_num", account);
         params.put("phone_num", account);
+        params.put("pass_word", SymmetricEncoder.AESEncode(sysName, pass));
         Map result = casAccountService.selectOne(params);
         if(result != null) {
-            String jwt = JWTUtils.createJWT(result.get("id").toString(), "a","ds", 5000L);
+            result.put("pass_word", "");
+            String jwt = JWTUtils.createJWT(result.get("id").toString(), result.get("phone_num").toString(),result.toString(), 1000 * 60 * 30);
             result.put("token", jwt);
             return Resp.success(result);
         } else {
             return Resp.fail(ErrorCode.CODE_450);
+        }
+    }
+
+    /*
+     *
+     * 获取用户信息
+     * @author wangwei
+     * @date 2019/1/9
+      * @param account
+     * @param pass
+     * @param time
+     * @return com.kakacl.product_service.utils.Resp
+     */
+    @RequestMapping("findInfo")
+    public Resp findInfo(
+            @RequestParam(name="token", required=true)String token,
+            String time){
+        java.util.Map result = new HashMap();
+        try {
+            Claims claims = JWTUtils.parseJWT(token);
+            String id = claims.getId();
+            String subject = claims.getSubject();
+            String claimsIssuerr = claims.getIssuer();
+            result.put("id", id);
+            result.put("subject", subject);
+            result.put("issuser", claimsIssuerr);
+            return Resp.success(result);
+        } catch (Exception e) {
+            return Resp.fail(ErrorCode.UNLOGIN_ERROR);
+        }
+    }
+
+    /*
+     *
+     * 用户自己修改密码
+     * @author wangwei
+     * @date 2019/1/9
+      * @param token
+     * @param new_pass
+     * @return com.kakacl.product_service.utils.Resp
+     */
+    @RequestMapping("rePass")
+    public Resp rePass(
+            @RequestParam(name="token", required=true)String token,
+            @RequestParam(name="new_pass", required=true)String new_pass,
+            String time){
+        java.util.Map params = new HashMap();
+        try {
+            Claims claims = JWTUtils.parseJWT(token);
+            String id = claims.getId();
+            params.put("id", id);
+            params.put("pass_word",  SymmetricEncoder.AESEncode(sysName, new_pass));
+            int flag = casAccountService.updateOnePassById(params);
+            if(flag == 1) {
+                params.put("pass_word",  "");
+                return Resp.success(params);
+            } else {
+                return Resp.fail(ErrorCode.CODE_6800);
+            }
+        } catch (Exception e) {
+            return Resp.fail(ErrorCode.UNLOGIN_ERROR);
         }
     }
 
@@ -142,3 +208,33 @@ public class AccountController {
         return Resp.success(accountService.selectByPageAndSelections(currentPage, pageSize));
     }
 }
+
+/*class CallableThread implements Callable<Integer> {
+
+    @Override
+    public Integer call() throws Exception {
+        int i = 0;
+        for(;i<100;i++){
+            System.out.println(Thread.currentThread().getName()+" "+i);
+        }
+        return i;
+    }
+
+    public static void main(String[] args) {
+        CallableThread ctt = new CallableThread();
+        FutureTask<Integer> ft = new FutureTask<>(ctt);
+        for (int i = 0; i < 100; i++) {
+            System.out.println(Thread.currentThread().getName() + " 的循环变量i的值" + i);
+            if (i == 20) {
+                new Thread(ft, "有返回值的线程").start();
+            }
+        }
+        try {
+            System.out.println("子线程的返回值：" + ft.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+}*/

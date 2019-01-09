@@ -17,6 +17,7 @@ public enum ErrorCode {
     CODE_6000(6000, "数据繁忙，请再试一次吧"),
     CODE_6001(6001, "手机号码已经注册，如果您忘记密码，请找回密码"),
 
+    CODE_6800(6800, "数据处理失败"),
     ;
 
     private final Integer value;

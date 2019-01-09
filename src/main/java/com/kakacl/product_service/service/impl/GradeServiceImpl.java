@@ -17,4 +17,9 @@ public class GradeServiceImpl implements GradeService {
     public Map selectById(Map params) {
         return gradeMapper.selectById(params);
     }
+
+    @Override
+    public boolean insert(Map params) {
+        return gradeMapper.insert(params);
+    }
 }

@@ -17,10 +17,9 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private AccountMapper accountMapper;
 
-
     @Override
     public Map selectById(Map params) {
-        return accountMapper.selectById(params);
+        return accountMapper.selectByUserid(params);
     }
 
     @Override

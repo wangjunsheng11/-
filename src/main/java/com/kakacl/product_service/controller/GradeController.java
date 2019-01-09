@@ -8,6 +8,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 
+/*
+ *
+ * 等级控制器
+ * @author wangwei
+ * @date 2019/1/9
+  * @param null
+ * @return
+ */
 @RestController
 @RequestMapping("/api/{version}/grade")
 public class GradeController {

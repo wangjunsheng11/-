@@ -2,6 +2,8 @@ package com.kakacl.product_service.mapper;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
 import  java.util.*;
 
 /**
@@ -25,7 +27,7 @@ public interface CasAccountMapper {
       * @param params
      * @return java.util.Map
      */
-    @Select("SELECT * FROM cas_account WHERE (kaka_num = #{kaka_num} OR phone_num = #{phone_num}) AND pass_word = #{password} AND del_flag = 0 LIMIT 0, 1")
+    @Select("SELECT * FROM cas_account WHERE (kaka_num = #{kaka_num} OR phone_num = #{phone_num}) AND pass_word = #{pass_word} AND del_flag = 0 LIMIT 0, 1")
     java.util.Map selectOne(Map<String, Object> params);
 
     @Select("SELECT * FROM cas_account WHERE phone_num = #{phone_num} LIMIT 0, 1")
@@ -33,5 +35,8 @@ public interface CasAccountMapper {
 
     @Select("SELECT * FROM cas_account WHERE kaka_num = #{kaka_num} LIMIT 0, 1")
     java.util.Map selectOneByKakanum(Map<String, Object> params);
+
+    @Update("UPDATE cas_account SET pass_word=#{pass_word} WHERE id=#{id}")
+    int updateOnePassById(Map<String, Object> params);
 
 }

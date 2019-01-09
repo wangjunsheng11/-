@@ -9,6 +9,14 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/*
+ *
+ * 广告
+ * @author wangwei
+ * @date 2019/1/9
+  * @param null
+ * @return
+ */
 @RestController
 @RequestMapping("/api/{version}/ad")
 @RefreshScope

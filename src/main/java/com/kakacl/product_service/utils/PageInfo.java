@@ -2,10 +2,13 @@ package com.kakacl.product_service.utils;
 
 import java.io.Serializable;
 
-/**
- * @Author: XiongFeng
- * @Description: 分页信息
- * @Date: Created in 9:39 2018/4/10
+/*
+ *
+ * PageInfo
+ * @author wangwei
+ * @date 2019/1/9
+  * @param null
+ * @return
  */
 public class PageInfo implements Serializable{
 
