@@ -1,23 +1,27 @@
 package com.kakacl.product_service.controller;
 
+import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.service.AccountService;
 import com.kakacl.product_service.service.CasAccountService;
 import com.kakacl.product_service.utils.*;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.*;
 
 @RestController
 @RequestMapping("/api/{version}/account")
+@RefreshScope
 public class AccountController {
 
     @Value("${sys-name}")
     private String sysName;
+
+    @Value("${version}")
+    private String version;
 
     @Autowired
     private AccountService accountService;
@@ -25,31 +29,47 @@ public class AccountController {
     @Autowired
     private CasAccountService casAccountService;
 
-    /*
-     *
-     * 根据手机号码发送验证码
-     * @author wangwei
-     * @date 2019/1/8
-      * @param phoneNum
-     * @return com.kakacl.product_service.utils.Resp
+    /**
+     * showdoc
+     * @catalog v1.0.1/用户相关
+     * @title 根据手机号码发送验证码
+     * @description 手机号码发送验证码的接口
+     * @method get
+     * @url /api/v1.0.1/account/sendPhoneCode
+     * @param phoneNum 必选 string 手机号码
+     * @return {"status":"200","message":"请求成功","data":171330,"page":null,"ext":null}
+     * @return_param code int 验证码
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
      */
     @RequestMapping("sendPhoneCode")
     public Resp sendPhoneCode(@RequestParam(name="phoneNum", required=true) String phoneNum){
         java.util.Map params = new HashMap();
         accountService.selectById(params);
-        String code = "666666";
+        String code = new Random().nextInt(90000) + 110000 + "";
         return Resp.success(code);
     }
 
-    /*
-     *
-     * 用户注册
+    /**
+     * showdoc
      * @author wangwei
      * @date 2019/1/8
-      * @param phoneNum
-     * @param idCode
-     * @param phoneCode
-     * @return com.kakacl.product_service.utils.Resp
+     *
+     * @catalog v1.0.1/用户相关
+     * @title 用户注册
+     * @description 用户注册
+     * @method get
+     * @url /api/v1.0.1/account/register
+     * @param phoneNum 必选 string 手机号码
+     * @param idCode 必选 string 身份证号码
+     * @param phoneCode 必选 string 手机验证码
+     * @param password 必选 string 密码
+     * @return {"status":"200","message":"请求成功","data":171330,"page":null,"ext":null}
+     * @return_param data int 内容
+     * @return_param status string 状态
+     * @remark 用户注册data中仅返回用户的咔咔号。
+     * @number 99
      */
     @RequestMapping("register")
     public Resp register(
@@ -97,6 +117,24 @@ public class AccountController {
         }
     }
 
+    /**
+     * showdoc
+     * @author wangwei
+     * @date 2019/1/8
+     *
+     * @catalog v1.0.1/用户相关
+     * @title 用户注册
+     * @description 用户注册
+     * @method get
+     * @url /api/v1.0.1/account/login
+     * @param account 必选 string 手机号码或者咔咔号
+     * @param pass 必选 string 密码
+     * @return {"status":"200","message":"请求成功","data":{"create_by":"kakacl_zzf","del_flag":"0","create_time":1547006424,"pass_word":"","kaka_num":"128643","phone_num":"13800138000","id":"1547006424247526","sys_type":"kakacl_zzf","email":"","status":"1","token":"eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxNTQ3MDA2NDI0MjQ3NTI2IiwiaWF0IjoxNTQ3MDI2ODc0LCJzdWIiOiJ7Y3JlYXRlX2J5PWtha2FjbF96emYsIGRlbF9mbGFnPTAsIGNyZWF0ZV90aW1lPTE1NDcwMDY0MjQsIHBhc3Nfd29yZD0sIGtha2FfbnVtPTEyODY0MywgcGhvbmVfbnVtPTEzODAwMTM4MDAwLCBpZD0xNTQ3MDA2NDI0MjQ3NTI2LCBzeXNfdHlwZT1rYWthY2xfenpmLCBlbWFpbD0sIHN0YXR1cz0xfSIsImlzcyI6IjEzODAwMTM4MDAwIiwiZXhwIjoxNTQ3MDI4Njc0fQ.vEIPr6gzRgQ6nrwL3U8qunHhxapEtvIb7ZJ1fMfuOFY"},"page":null,"ext":null}
+     * @return_param token string token
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
+     */
     @RequestMapping("login")
     public Resp login(
             @RequestParam(name="account", required=true)String account,
@@ -117,15 +155,29 @@ public class AccountController {
         }
     }
 
-    /*
-     *
-     * 获取用户信息
+    /**
+     * showdoc
      * @author wangwei
-     * @date 2019/1/9
-      * @param account
-     * @param pass
-     * @param time
-     * @return com.kakacl.product_service.utils.Resp
+     * @date 2019/1/8
+     *
+     * @catalog v1.0.1/用户相关
+     * @title 获取用户信息
+     * @description 用户注册
+     * @method get
+     * @url /api/v1.0.1/account/findInfo
+     * @param token 必选 string token
+     * @param time 必选 string 时间
+     * @return {
+     *     "status": "200",
+     *     "message": "请求成功",
+     *     "data": {"status":"200","message":"请求成功","data":{"subject":"{create_by=kakacl_zzf, del_flag=0, create_time=1547006424, pass_word=, kaka_num=128643, phone_num=13800138000, id=1547006424247526, sys_type=kakacl_zzf, email=, status=1}","sys_account_info":{"create_by":"1","hear_path":"","del_flag":0,"create_time":1547006424,"user_name":"anonymous","roleid":"0","kaka_num":"128643","id_card":"2222","phone_num":"13800138000","id":"1547006424247526","account_status":1,"introduction":"没有简介"},"grade":{"create_by":"1","del_flag":0,"create_time":1547008191,"user_id":"1547006424247526","grade":1,"id":"2","fraction":0},"ability":[{"create_by":"1","del_flag":0,"user_id":"1547006424247526","img_path":"http://www.baidu.com./1.png","name":"1","remark":"2","id":"1","create_date":1547008191,"order":2},{"create_by":"1","del_flag":0,"user_id":"1547006424247526","img_path":"http://www.baidu.com./1.png","name":"嗯厉害1","remark":"很厉害 很厉害1","id":"2","create_date":1547008191,"order":1}]},"page":null,"ext":null}
+     * @return_param ability object 能力
+     * @return_param grade object 等级
+     * @return_param sys_account_info object 用户信息
+     * @return_param subject object 单点系统中的用户信息
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
      */
     @RequestMapping("findInfo")
     public Resp findInfo(
@@ -146,19 +198,66 @@ public class AccountController {
         }
     }
 
-    /*
-     *
-     * 用户自己修改密码
+    /**
+     * showdoc
      * @author wangwei
-     * @date 2019/1/9
-      * @param token
-     * @param new_pass
-     * @return com.kakacl.product_service.utils.Resp
+     * @date 2019/1/8
+     *
+     * @catalog v1.0.1/用户相关
+     * @title 根据手机号修改密码
+     * @description 根据手机号修改密码
+     * @method get
+     * @url /api/v1.0.1/account/rePassByPhonenum
+     * @param phone_num 必选 string 指定用户的手机号码
+     * @param new_pass 必选 string 用户新设置的密码
+     *  @param phoneCode 必选 string 用户输入的手机验证码
+     * @return {"status":"200","message":"请求成功","data":null,"page":null,"ext":null}
+     * @return_param data string data
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
      */
-    @RequestMapping("rePass")
+    @PostMapping("rePassByPhonenum")
+    public Resp rePassByPhonenum(
+            @RequestParam(name="phone_num", required=true)String phone_num,
+            @RequestParam(name="new_pass", required=true)String new_pass,
+            @RequestParam(name="phoneCode", required=true)String phoneCode){
+        java.util.Map params = new HashMap();
+        params.put("phone_num", phone_num);
+        params.put("pass_word", SymmetricEncoder.AESEncode(sysName, new_pass));
+        int result = casAccountService.updateOnePassByPhonenum(params);
+        if(result == Constants.CONSTANT_1) {
+            return Resp.success();
+        } else {
+            return Resp.success();
+        }
+    }
+
+    /**
+     * showdoc
+     * @author wangwei
+     * @date 2019/1/8
+     *
+     * @catalog v1.0.1/用户相关
+     * @title 用户修改自己的密码
+     * @description 用户修改自己的密码
+     * @method get
+     * @url /api/v1.0.1/account/rePass
+     * @param token 必选 string token
+     * @param new_pass 必选 string 新密码
+     * @param pass 必选 string 旧密码
+     * @param time 必选 string 当前请求时间
+     * @return {"status":"200","message":"请求成功","data":{"pass_word":"","id":"1547006424247526"},"page":null,"ext":null}
+     * @return_param data string data
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @PostMapping("rePass")
     public Resp rePass(
             @RequestParam(name="token", required=true)String token,
             @RequestParam(name="new_pass", required=true)String new_pass,
+            @RequestParam(name="pass", required=true)String pass,
             String time){
         java.util.Map params = new HashMap();
         try {
@@ -167,7 +266,7 @@ public class AccountController {
             params.put("id", id);
             params.put("pass_word",  SymmetricEncoder.AESEncode(sysName, new_pass));
             int flag = casAccountService.updateOnePassById(params);
-            if(flag == 1) {
+            if(flag == Constants.CONSTANT_1) {
                 params.put("pass_word",  "");
                 return Resp.success(params);
             } else {
@@ -178,18 +277,27 @@ public class AccountController {
         }
     }
 
-    /*
-     *
-     * 根据主键查询账户基本信息
+    /**
+     * showdoc
      * @author wangwei
-     * @date 2019/1/7
-      * @param id
-     * @return com.kakacl.product_service.utils.Resp
+     * @date 2019/1/8
+     *
+     * @catalog v1.0.1/用户相关
+     * @title 根据主键查询账户基本信息
+     * @description 根据主键查询账户基本信息
+     * @method get
+     * @url /api/v1.0.1/account/selectById
+     * @param id 必选 string id
+     * @return {"status":"200","message":"请求成功","data":{"create_by":"1","hear_path":"","del_flag":0,"create_time":1547008191,"user_name":"anonymous","roleid":"0","kaka_num":"149386","id_card":"2222","phone_num":"13800138001","id":"1547008191643825","account_status":1,"introduction":"没有简介"},"page":null,"ext":null}
+     * @return_param data string data
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
      */
-    @RequestMapping("selectById")
-    public Resp selectById(@RequestParam(name="phoneNum", required=true)String id){
+    @GetMapping("selectById")
+    public Resp selectById(@RequestParam(name="id", required=true)String id){
         java.util.Map params = new HashMap();
-        params.put("id", id);
+        params.put("user_id", id);
         return Resp.success(accountService.selectById(params));
     }
 

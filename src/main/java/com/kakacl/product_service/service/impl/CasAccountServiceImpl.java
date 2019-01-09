@@ -60,4 +60,9 @@ public class CasAccountServiceImpl implements CasAccountService {
     public int updateOnePassById(Map<String, Object> params) {
         return casAccountMapper.updateOnePassById(params);
     }
+
+    @Override
+    public int updateOnePassByPhonenum(Map<String, Object> params) {
+        return casAccountMapper.updateOnePassByPhonenum(params);
+    }
 }

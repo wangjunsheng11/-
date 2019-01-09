@@ -39,4 +39,7 @@ public interface CasAccountMapper {
     @Update("UPDATE cas_account SET pass_word=#{pass_word} WHERE id=#{id}")
     int updateOnePassById(Map<String, Object> params);
 
+    @Update("UPDATE cas_account SET pass_word=#{pass_word} WHERE phone_num=#{phone_num}")
+    int updateOnePassByPhonenum(Map<String, Object> params);
+
 }

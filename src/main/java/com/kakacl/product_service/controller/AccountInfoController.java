@@ -1,8 +1,6 @@
 package com.kakacl.product_service.controller;
 
-import com.kakacl.product_service.service.AbilityService;
-import com.kakacl.product_service.service.AccountService;
-import com.kakacl.product_service.service.GradeService;
+import com.kakacl.product_service.service.*;
 import com.kakacl.product_service.utils.JWTUtils;
 import com.kakacl.product_service.utils.Resp;
 import io.jsonwebtoken.Claims;
@@ -10,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
@@ -20,16 +20,26 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/api/{version}/accountinfo")
-public class AccountInfoController {
+public class AccountInfoController extends BaseController {
 
     @Autowired
     private GradeService gradeService;
+
+    @Autowired
+    private GradeRuleService gradeRuleService;
 
     @Autowired
     private AbilityService abilityService;
 
     @Autowired
     private AccountService accountService;
+
+    // 积分
+    @Autowired
+    private TntegralService tntegralService;
+
+    @Autowired
+    private TntegralRuleService tntegralRuleService;
 
     /*
      *
@@ -65,5 +75,44 @@ public class AccountInfoController {
         } catch (Exception e) {
             return Resp.fail();
         }
+    }
+
+    /*
+     *
+     * 我的等级
+     * @author wangwei
+     * @date 2019/1/9
+      * @param request
+     * @return com.kakacl.product_service.utils.Resp
+     */
+    @RequestMapping("findgrade")
+    public Resp findgrade (HttpServletRequest request) {
+        Map<String, Object> params = new HashMap();
+        Map<String, Object> result = new HashMap();
+        String user_id = getUserid(request);
+        params.put("user_id", user_id);
+        Map grade = gradeService.selectById(params);
+        result.put("grade", grade);
+        List<Map> gradeRule = gradeRuleService.selectList(null);
+        result.put("gradeRule", gradeRule);
+        return Resp.success(result);
+    }
+
+    /*
+     *
+     * 获取当前用户积分
+     * @author wangwei
+     * @date 2019/1/9
+     * @param request
+     * @return com.kakacl.product_service.utils.Resp
+     */
+    @RequestMapping("findUsTertntegral")
+    public Resp findUsTertntegral(HttpServletRequest request) {
+        Map result = new HashMap();
+        Map params = new HashMap();
+        params.put("user_id", getUserid(request));
+        result.put("tntegral", tntegralService.selectOneByUserid(params));
+        result.put("tntegralList", tntegralRuleService.selectList(null));
+        return Resp.success(result);
     }
 }

@@ -19,4 +19,6 @@ public interface CasAccountService {
     java.util.Map selectOneByKakanum(Map<String, Object> params);
 
     int updateOnePassById(Map<String, Object> params);
+
+    int updateOnePassByPhonenum(Map<String, Object> params);
 }

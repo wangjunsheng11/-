@@ -36,8 +36,8 @@ public class TntegralController  extends  BaseController {
       * @param request
      * @return com.kakacl.product_service.utils.Resp
      */
-    @RequestMapping("findList")
-    public Resp findList(HttpServletRequest request) {
+    @RequestMapping("findUsTertntegral")
+    public Resp findUsTertntegral(HttpServletRequest request) {
         Map params = new HashMap();
         params.put("user_id", getUserid(request));
         Map result = tntegralService.selectOneByUserid(params);
