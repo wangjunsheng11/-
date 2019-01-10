@@ -3,11 +3,17 @@ package com.kakacl.product_service.service.impl;
 import com.kakacl.product_service.mapper.AccountMapper;
 import com.kakacl.product_service.mapper.CasAccountMapper;
 import com.kakacl.product_service.service.CasAccountService;
+import com.kakacl.product_service.service.CasMenuService;
 import com.kakacl.product_service.service.GradeService;
 import com.kakacl.product_service.utils.IDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,6 +23,7 @@ import java.util.Map;
  * @date 2018-01-09
  */
 @Service
+@RefreshScope
 public class CasAccountServiceImpl implements CasAccountService {
 
     @Autowired
@@ -26,7 +33,13 @@ public class CasAccountServiceImpl implements CasAccountService {
     private AccountMapper accountMapper;
 
     @Autowired
+    private CasMenuService casMenuService;
+
+    @Autowired
     private GradeService gradeService;
+
+    @Value("${sys-name}")
+    private String sys_name;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -43,7 +56,14 @@ public class CasAccountServiceImpl implements CasAccountService {
 
     @Override
     public Map selectOne(Map<String, Object> params) {
-        return casAccountMapper.selectOne(params);
+        Map result = new HashMap();
+        Map cas_base = casAccountMapper.selectOne(params);
+        params.put("user_id", cas_base.get("id"));
+        params.put("sys_type", sys_name);
+        List<Map> menu_base = casMenuService.selectListByUserid(params);
+        result.put("cas_base", cas_base);
+        result.put("menu_base", menu_base);
+        return result;
     }
 
     @Override

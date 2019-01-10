@@ -1,9 +1,15 @@
 package com.kakacl.product_service.domain;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
+
 public class Account {
 
     private String id;
+    @NotNull
     private String user_name;
+    @NotBlank
     private String roleid;
 
     public String getRoleid() {

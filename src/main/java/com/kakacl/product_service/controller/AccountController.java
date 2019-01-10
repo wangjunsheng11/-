@@ -1,5 +1,6 @@
 package com.kakacl.product_service.controller;
 
+import com.kakacl.product_service.config.ConstantSMSMessage;
 import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.service.AccountService;
 import com.kakacl.product_service.service.CasAccountService;
@@ -8,8 +9,8 @@ import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.*;
 
 @RestController
@@ -23,6 +24,12 @@ public class AccountController {
     @Value("${version}")
     private String version;
 
+    @Value("${sms-account}")
+    private String account;
+
+    @Value("${sms-pwd}")
+    private String pswd;
+
     @Autowired
     private AccountService accountService;
 
@@ -34,20 +41,35 @@ public class AccountController {
      * @catalog v1.0.1/用户相关
      * @title 根据手机号码发送验证码
      * @description 手机号码发送验证码的接口
-     * @method get
+     * @method post
      * @url /api/v1.0.1/account/sendPhoneCode
      * @param phoneNum 必选 string 手机号码
+     * @param type 必选 string 类型  register 默认为注册;  其他为找回密码 例如refindpass
      * @return {"status":"200","message":"请求成功","data":171330,"page":null,"ext":null}
      * @return_param code int 验证码
      * @return_param status string 状态
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping("sendPhoneCode")
-    public Resp sendPhoneCode(@RequestParam(name="phoneNum", required=true) String phoneNum){
+    @RequestMapping(value = "sendPhoneCode", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp sendPhoneCode(
+            @RequestParam(name="phoneNum", required=true) String phoneNum,
+            @RequestParam(name="type", required=false, defaultValue = "register") String type){
+        String msg_model = "";
+        if(type.equals("register")) {
+            msg_model = ConstantSMSMessage.CONSTANT_REGIATER;
+        } else {
+            msg_model = ConstantSMSMessage.CONSTANT_REPASSWORD;
+        }
         java.util.Map params = new HashMap();
         accountService.selectById(params);
-        String code = new Random().nextInt(90000) + 110000 + "";
+        String code = NumberUtils.getRandomNumber(Constants.CONSTANT_100000, Constants.CONSTANT_999999) + "";
+        List sms_params = new ArrayList();
+        sms_params.add(phoneNum);
+        sms_params.add(phoneNum);
+        sms_params.add(code);
+        sms_params.add(Constants.CONSTANT_10);
+        new HttpSendSMSUtils().SendVariable(ConstantSMSMessage.SEND_URL, msg_model, sms_params, account, pswd);
         return Resp.success(code);
     }
 
@@ -59,7 +81,7 @@ public class AccountController {
      * @catalog v1.0.1/用户相关
      * @title 用户注册
      * @description 用户注册
-     * @method get
+     * @method post
      * @url /api/v1.0.1/account/register
      * @param phoneNum 必选 string 手机号码
      * @param idCode 必选 string 身份证号码
@@ -71,21 +93,20 @@ public class AccountController {
      * @remark 用户注册data中仅返回用户的咔咔号。
      * @number 99
      */
-    @RequestMapping("register")
+    @RequestMapping(value = "register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp register(
             @RequestParam(name="phoneNum", required=true)String phoneNum,
             @RequestParam(name="idCode", required=true)String idCode,
             @RequestParam(name="phoneCode", required=true)String phoneCode,
             @RequestParam(name="password", required=true)String password){
         Map<String, Object> params = new HashMap<>();
-        Random randdata=new Random();
-        int num = randdata.nextInt(90000) + 110000;
+        int num = NumberUtils.getRandomNumber(Constants.CONSTANT_110000, Constants.CONSTANT_200000);
         // 如果咔咔号和手机号都没有注册过，则允许注册; 如果咔咔号存在，则再一次获取一个咔咔号
         params.clear();
         params.put("kaka_num", num);
         Map result = casAccountService.selectOne(params);
         if(result != null) {
-            num = randdata.nextInt(90000) + 110000;
+            num = NumberUtils.getRandomNumber(Constants.CONSTANT_110000, Constants.CONSTANT_200000);
             params.clear();
             params.put("kaka_num", num);
             if(casAccountService.selectOneByKakanum(params) != null) {
@@ -104,9 +125,9 @@ public class AccountController {
         params.put("phone_num", phoneNum);
         params.put("email", "");
         params.put("pass_word", SymmetricEncoder.AESEncode(sysName, password));
-        params.put("status", "1");
-        params.put("del_flag", "0");
-        params.put("create_time", System.currentTimeMillis()/1000);
+        params.put("status", Constants.CONSTANT_1);
+        params.put("del_flag", Constants.CONSTANT_0);
+        params.put("create_time", NumberUtils.getCurrentTimes());
         params.put("create_by", sysName);
         params.put("id_card", idCode);
         boolean flag = casAccountService.insert(params);
@@ -125,7 +146,7 @@ public class AccountController {
      * @catalog v1.0.1/用户相关
      * @title 用户注册
      * @description 用户注册
-     * @method get
+     * @method post
      * @url /api/v1.0.1/account/login
      * @param account 必选 string 手机号码或者咔咔号
      * @param pass 必选 string 密码
@@ -135,7 +156,7 @@ public class AccountController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping("login")
+    @RequestMapping(value = "login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp login(
             @RequestParam(name="account", required=true)String account,
             @RequestParam(name="pass", required=true)String pass,
@@ -146,8 +167,9 @@ public class AccountController {
         params.put("pass_word", SymmetricEncoder.AESEncode(sysName, pass));
         Map result = casAccountService.selectOne(params);
         if(result != null) {
-            result.put("pass_word", "");
-            String jwt = JWTUtils.createJWT(result.get("id").toString(), result.get("phone_num").toString(),result.toString(), 1000 * 60 * 30);
+            Map cas_base = (Map)result.get("cas_base");
+            cas_base.put("pass_word", "");
+            String jwt = JWTUtils.createJWT(cas_base.get("id").toString(), cas_base.get("phone_num").toString(), result.toString(), 1000 * 60 * 30);
             result.put("token", jwt);
             return Resp.success(result);
         } else {
@@ -179,7 +201,7 @@ public class AccountController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping("findInfo")
+    @RequestMapping(value = "findInfo", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findInfo(
             @RequestParam(name="token", required=true)String token,
             String time){
@@ -206,7 +228,7 @@ public class AccountController {
      * @catalog v1.0.1/用户相关
      * @title 根据手机号修改密码
      * @description 根据手机号修改密码
-     * @method get
+     * @method post
      * @url /api/v1.0.1/account/rePassByPhonenum
      * @param phone_num 必选 string 指定用户的手机号码
      * @param new_pass 必选 string 用户新设置的密码
@@ -217,7 +239,7 @@ public class AccountController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @PostMapping("rePassByPhonenum")
+    @PostMapping(value = "rePassByPhonenum", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp rePassByPhonenum(
             @RequestParam(name="phone_num", required=true)String phone_num,
             @RequestParam(name="new_pass", required=true)String new_pass,
@@ -241,7 +263,7 @@ public class AccountController {
      * @catalog v1.0.1/用户相关
      * @title 用户修改自己的密码
      * @description 用户修改自己的密码
-     * @method get
+     * @method post
      * @url /api/v1.0.1/account/rePass
      * @param token 必选 string token
      * @param new_pass 必选 string 新密码
@@ -253,7 +275,7 @@ public class AccountController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @PostMapping("rePass")
+    @PostMapping(value = "rePass", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp rePass(
             @RequestParam(name="token", required=true)String token,
             @RequestParam(name="new_pass", required=true)String new_pass,
@@ -294,7 +316,7 @@ public class AccountController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @GetMapping("selectById")
+    @GetMapping(value = "selectById", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp selectById(@RequestParam(name="id", required=true)String id){
         java.util.Map params = new HashMap();
         params.put("user_id", id);
@@ -316,33 +338,3 @@ public class AccountController {
         return Resp.success(accountService.selectByPageAndSelections(currentPage, pageSize));
     }
 }
-
-/*class CallableThread implements Callable<Integer> {
-
-    @Override
-    public Integer call() throws Exception {
-        int i = 0;
-        for(;i<100;i++){
-            System.out.println(Thread.currentThread().getName()+" "+i);
-        }
-        return i;
-    }
-
-    public static void main(String[] args) {
-        CallableThread ctt = new CallableThread();
-        FutureTask<Integer> ft = new FutureTask<>(ctt);
-        for (int i = 0; i < 100; i++) {
-            System.out.println(Thread.currentThread().getName() + " 的循环变量i的值" + i);
-            if (i == 20) {
-                new Thread(ft, "有返回值的线程").start();
-            }
-        }
-        try {
-            System.out.println("子线程的返回值：" + ft.get());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-    }
-}*/
