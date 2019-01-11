@@ -1,5 +1,6 @@
 package com.kakacl.product_service.filter;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.kakacl.product_service.utils.ErrorCode;
 import com.kakacl.product_service.utils.JWTUtils;
 import com.kakacl.product_service.utils.Resp;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 
 /**
  * @author wangwei
@@ -62,6 +64,11 @@ public class LoginValidateFilter implements Filter {
             return;
         }
 
+        if(path.indexOf("/api/open/")> -1 ){
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
         if(StringUtils.isNotBlank(token)) {
             // 判断是否过期 没有过期在header更新token
             try{
@@ -69,20 +76,32 @@ public class LoginValidateFilter implements Filter {
                 ((HttpServletResponse) servletResponse).setHeader("token", JWTUtils.createJWT(claims.getId(), claims.getIssuer(), claims.getSubject(), 1000 * 60 * 30));
                 filterChain.doFilter(servletRequest, servletResponse);
             } catch (Exception e) {
-                servletResponse.setContentType("application/json; charset=utf-8");
+                PrintWriter writer = null;
                 servletResponse.setCharacterEncoding("UTF-8");
-                String userJson = Resp.fail(ErrorCode.UNLOGIN_ERROR).toString();
-                OutputStream out = servletResponse.getOutputStream();
-                out.write(userJson.getBytes("UTF-8"));
-                out.flush();
+                servletResponse.setContentType("text/html; charset=utf-8");
+                try {
+                    writer = servletResponse.getWriter();
+                    String userJson = "{\"code\":\" "+ ErrorCode.UNLOGIN_ERROR.getCode() +"\", \"message\": \""+ ErrorCode.UNLOGIN_ERROR.getMessage() +"\"}";
+                    writer.print(userJson);
+                } catch (IOException e1) {
+                } finally {
+                    if (writer != null)
+                        writer.close();
+                }
             }
         } else {
-            servletResponse.setContentType("application/json; charset=utf-8");
+            PrintWriter writer = null;
             servletResponse.setCharacterEncoding("UTF-8");
-            String userJson = Resp.fail(ErrorCode.UNLOGIN_ERROR).toString();
-            OutputStream out = servletResponse.getOutputStream();
-            out.write(userJson.getBytes("UTF-8"));
-            out.flush();
+            servletResponse.setContentType("text/html; charset=utf-8");
+            try {
+                writer = servletResponse.getWriter();
+                String userJson = "{\"code\":\" "+ ErrorCode.PARAMETER_CHECK_ERROR.getCode() +"\", \"message\": \""+ ErrorCode.PARAMETER_CHECK_ERROR.getMessage() +"\"}";
+                writer.print(userJson);
+            } catch (IOException e1) {
+            } finally {
+                if (writer != null)
+                    writer.close();
+            }
         }
     }
 

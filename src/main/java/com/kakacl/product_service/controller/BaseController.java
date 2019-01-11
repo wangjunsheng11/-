@@ -57,7 +57,11 @@ public class BaseController extends ApplicationObjectSupport {
     public String getUserid(HttpServletRequest request) {
         String userid = "";
         try {
-            userid = JWTUtils.parseJWT(request.getParameter("token").toString()).getId();
+            String token = request.getHeader("token");
+            if(token == null) {
+                token = request.getParameter("token").toString();
+            }
+            userid = JWTUtils.parseJWT(token).getId();
         } catch (Exception e) {
             userid = "";
         }

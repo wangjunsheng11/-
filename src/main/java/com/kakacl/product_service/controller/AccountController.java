@@ -44,7 +44,7 @@ public class AccountController {
      * @method post
      * @url /api/v1.0.1/account/sendPhoneCode
      * @param phoneNum 必选 string 手机号码
-     * @param type 必选 string 类型  register 默认为注册;  其他为找回密码 例如refindpass
+     * @param type 必选 string 发送类型register默认为注册其他为找回密码 例如refindpass
      * @return {"status":"200","message":"请求成功","data":171330,"page":null,"ext":null}
      * @return_param code int 验证码
      * @return_param status string 状态
@@ -144,8 +144,8 @@ public class AccountController {
      * @date 2019/1/8
      *
      * @catalog v1.0.1/用户相关
-     * @title 用户注册
-     * @description 用户注册
+     * @title 用户登录
+     * @description 用户登录，用户登录成功后，或返回一个token，token在之后请求时，请传递次token在header中或者httpservletrquest中， *** 其他请求接口时，权限验证会更新token存在header中，每次请求请使用最新token，避免token中途失效。
      * @method post
      * @url /api/v1.0.1/account/login
      * @param account 必选 string 手机号码或者咔咔号
