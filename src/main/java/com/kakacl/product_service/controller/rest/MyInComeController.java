@@ -162,8 +162,11 @@ public class MyInComeController extends BaseController {
         Map params = new HashMap();
         Map result = new HashMap();
         params.put("user_id", getUserid(request));
+        // 获取银行卡信息，如果有
+
         List<Map> data = backCardService.selectIncomeByUserid(params);
         result.put("data", data);
+
         return Resp.success(result);
     }
 
