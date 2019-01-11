@@ -147,13 +147,21 @@ public class MyInComeController extends BaseController {
      * @catalog v1.0.1/我的收入
      * @title 我的收入-获取我的收入列表
      * @description 根据token获取我的收入列表
-     * @method post
+     * @method get
      * @url /api/rest/v1.0.1/myincome/findInfo
      * @param time 必选 string 请求时间戳
      * @param token 必选 string token
-     * @return {"status":"200","message":"请求成功","data":{"data":[{"del_flag":0,"amount":5001.0,"user_id":"1547006424247526","income_type":1,"id":"1","detail_id":"1","speed":"10%","status":1}]},"page":null,"ext":null}
+     * @return {"status":"200","message":"请求成功","data":{"back_data":[{"card_num":612541,"create_by":"1547006424247526","del_flag":0,"create_time":1547184695,"user_id":"1547006424247526","back_type":"2","id_card":"2222","phone_num":"135","id":"1547184663241923"},{"card_num":612541222,"create_by":"1547006424247526","del_flag":0,"create_time":1547184770,"user_id":"1547006424247526","back_type":"2","id_card":"2222","phone_num":"135","id":"1547184770627902"}],"income_data":[{"del_flag":0,"amount":5001.0,"user_id":"1547006424247526","income_type":1,"id":"1","detail_id":"1","speed":"10%","status":1}]},"page":null,"ext":null}
      * @return_param status string 状态
      * @return_param message string 消息
+     * @return_param back_data Object 银行卡对象数据集合
+     * @return_param income_data string 收入数据集合
+     * @return_param card_num string 银行卡卡号
+     * @return_param back_type string 银行标志
+     * @return_param amount string 收入
+     * @return_param income_type string 收入类型
+     * @return_param speed string 进度
+     * @return_param status string 状态
      * @remark 这里是备注信息
      * @number 99
      */
@@ -164,11 +172,74 @@ public class MyInComeController extends BaseController {
         params.put("user_id", getUserid(request));
         // 获取银行卡信息，如果有
 
-        List<Map> data = backCardService.selectIncomeByUserid(params);
-        result.put("data", data);
+        List<Map> back_data = backCardService.selectList(params);
+        result.put("back_data", back_data);
+        List<Map> income_data = backCardService.selectIncomeByUserid(params);
+        result.put("income_data", income_data);
 
         return Resp.success(result);
     }
 
+    /**
+     * showdoc
+     * @catalog v1.0.1/我的收入
+     * @title 我的收入-根据卡号删除银行卡
+     * @description 根据token和卡号删除银行卡
+     * @method get
+     * @url /api/rest/v1.0.1/myincome/delBackcard
+     * @param time 必选 string 请求时间戳
+     * @param token 必选 string token
+     * @param  backCardardNum 必选 string 银行卡卡号
+     * @return {"status":"200","message":"请求成功","data":null,"page":null,"ext":null}
+     * @return_param status string 状态
+     * @return_param message string 消息
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @RequestMapping(value = "delBackcard", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp delBackcard(HttpServletRequest request, String token, String time,
+                            @RequestParam(name = "backCardardNum", required = true) String backCardardNum) {
+        Map params = new HashMap();
+        params.put("user_id", getUserid(request));
+        params.put("card_num", backCardardNum);
+        params.put("del_flag", "1");
+        boolean flag = backCardService.updateByUserIdAndBackcardNum(params);
+        if(flag) {
+            return Resp.success();
+        } else {
+            return Resp.fail(ErrorCode.CODE_6800);
+        }
+    }
+
+    /**
+     * showdoc
+     * @catalog v1.0.1/我的收入
+     * @title 我的收入-根据收入详情主键获取详情
+     * @description 根据收入详情主键获取详情
+     * @method get
+     * @url /api/rest/v1.0.1/myincome/findDetail
+     * @param time 必选 string 请求时间戳
+     * @param token 必选 string token
+     * @param  id 必选 string 主键
+     * @return {"status":"200","message":"请求成功","data":{"start_time":151515,"del_flag":"0","amount":5001.0,"condition":"打卡50天","reference_ent_time":165656,"id":"1","type":"1","status":53003},"page":null,"ext":null}
+     * @return_param status string 状态
+     * @return_param message string 消息
+     * @return_param start_time string 开始时间-秒
+     * @return_param amount string 金额
+     * @return_param condition string 条件
+     * @return_param reference_ent_time string 参考结束时间
+     * @return_param status string 当前补贴状态
+     * @return_param type string 当前补贴类型
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @RequestMapping(value = "findDetail", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp findDetail(HttpServletRequest request, String token, String time,
+                           @RequestParam(name = "id", required = true) String id) {
+        Map params = new HashMap();
+        params.put("id", id);
+        Map data = backCardService.selectIncomeDetail(params);
+        return Resp.success(data);
+    }
 
 }

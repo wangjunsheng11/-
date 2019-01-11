@@ -58,6 +58,9 @@ public class CasAccountServiceImpl implements CasAccountService {
     public Map selectOne(Map<String, Object> params) {
         Map result = new HashMap();
         Map cas_base = casAccountMapper.selectOne(params);
+        if(cas_base == null) {
+            return  cas_base;
+        }
         params.put("user_id", cas_base.get("id"));
         params.put("sys_type", sys_name);
         List<Map> menu_base = casMenuService.selectListByUserid(params);

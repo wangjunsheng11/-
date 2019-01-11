@@ -13,15 +13,11 @@ public interface BackCardService {
 
     boolean updateById(Map params);
 
-    /*
-     *
-     * 根据身份证号码查询用户信息
-     * @author wangwei
-     * @date 2019/1/11
-     * @param params
-     * @return java.util.List<java.util.Map>
-     */
+    boolean updateByUserIdAndBackcardNum(Map params);
+
     List<Map> selectUSerByIdcard(Map params);
 
     List<Map> selectIncomeByUserid(Map params);
+
+    Map selectIncomeDetail(Map params);
 }

@@ -41,6 +41,11 @@ public class BackCardServiceImpl implements BackCardService {
     }
 
     @Override
+    public boolean updateByUserIdAndBackcardNum(Map params) {
+        return backCardMapper.updateByUserIdAndBackcardNum(params);
+    }
+
+    @Override
     public List<Map> selectUSerByIdcard(Map params) {
         return backCardMapper.selectUSerByIdcard(params);
     }
@@ -48,5 +53,10 @@ public class BackCardServiceImpl implements BackCardService {
     @Override
     public List<Map> selectIncomeByUserid(Map params) {
         return backCardMapper.selectIncomeByUserid(params);
+    }
+
+    @Override
+    public Map selectIncomeDetail(Map params) {
+        return backCardMapper.selectIncomeDetail(params);
     }
 }

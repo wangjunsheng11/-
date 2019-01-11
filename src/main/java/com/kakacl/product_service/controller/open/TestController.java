@@ -1,5 +1,6 @@
 package com.kakacl.product_service.controller.open;
 
+import com.kakacl.product_service.controller.BaseController;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
