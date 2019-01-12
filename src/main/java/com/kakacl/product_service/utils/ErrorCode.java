@@ -12,6 +12,9 @@ public enum ErrorCode {
     AUTH_VALID_ERROR(701, "用户权限不足"),
     UNLOGIN_ERROR(401, "用户未登录或登录状态超时失效"),
 
+    CODE_430(430, "数据被篡改"),
+    CODE_431(431, "秘钥不正确"),
+
     CODE_450(450, "账户或者密码不正确"),
     CODE_451(451, "身份证号码验证失败"),
 

@@ -33,7 +33,7 @@ public class LoginValidateFilter implements Filter {
     private String version;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(javax.servlet.FilterConfig filterConfig) throws ServletException {
 
     }
 
@@ -49,20 +49,6 @@ public class LoginValidateFilter implements Filter {
         response.setCharacterEncoding("UTF-8");
 
         String path = request.getRequestURI();
-        if(path.indexOf("/api/"+ version +"/account/sendPhoneCode")> -1 ){
-            filterChain.doFilter(servletRequest, servletResponse);
-            return;
-        }
-
-        if(path.indexOf("/api/"+ version +"/account/register")> -1 ){
-            filterChain.doFilter(servletRequest, servletResponse);
-            return;
-        }
-
-        if(path.indexOf("/api/"+ version +"/account/login")> -1 ){
-            filterChain.doFilter(servletRequest, servletResponse);
-            return;
-        }
 
         if(path.indexOf("/api/open/")> -1 ){
             filterChain.doFilter(servletRequest, servletResponse);

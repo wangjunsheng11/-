@@ -42,8 +42,8 @@ public class AccountController {
      * @date 2019/1/8
      *
      * @catalog v1.0.1/用户相关
-     * @title 获取用户信息
-     * @description 用户注册
+     * @title 获取用户信息根据token
+     * @description 获取用户信息根据token
      * @method get
      * @url /api/v1.0.1/account/findInfo
      * @param token 必选 string token
@@ -169,6 +169,7 @@ public class AccountController {
      * @method get
      * @url /api/v1.0.1/account/selectById
      * @param id 必选 string id
+     * @param token 必选 string token
      * @return {"status":"200","message":"请求成功","data":{"create_by":"1","hear_path":"","del_flag":0,"create_time":1547008191,"user_name":"anonymous","roleid":"0","kaka_num":"149386","id_card":"2222","phone_num":"13800138001","id":"1547008191643825","account_status":1,"introduction":"没有简介"},"page":null,"ext":null}
      * @return_param data string data
      * @return_param status string 状态
@@ -176,10 +177,13 @@ public class AccountController {
      * @number 99
      */
     @GetMapping(value = "selectById", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Resp selectById(@RequestParam(name="id", required=true)String id){
+    public Resp selectById(@RequestParam(name="id", required=true)String id, String token){
         java.util.Map params = new HashMap();
+        java.util.Map result = new HashMap();
         params.put("user_id", id);
-        return Resp.success(accountService.selectById(params));
+        Map userinfo = accountService.selectById(params);
+        result.put("userinfo", userinfo);
+        return Resp.success(result);
     }
 
     /*
