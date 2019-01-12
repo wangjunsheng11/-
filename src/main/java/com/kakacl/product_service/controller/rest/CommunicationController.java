@@ -24,7 +24,7 @@ public class CommunicationController extends BaseController {
      * showdoc
      * @catalog v1.0.1/用户和客服聊天
      * @title 用户申诉
-     * @description 手机号码发送验证码的接口
+     * @description 类似于用户和客服聊天，发送消息
      * @method post
      * @url /api/open/rest/v1.0.1/do/sendPhoneCode
      * @param time 必选 string 请求时间戳
