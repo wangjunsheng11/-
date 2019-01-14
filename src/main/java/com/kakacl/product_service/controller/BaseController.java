@@ -13,6 +13,7 @@ import java.util.*;
  * @version v1.0.0
  * @description 控制器基类
  * @date 2019-01-09
+ * consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
  */
 public class BaseController extends ApplicationObjectSupport {
 

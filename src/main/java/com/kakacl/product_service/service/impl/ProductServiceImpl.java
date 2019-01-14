@@ -21,12 +21,12 @@ public class ProductServiceImpl implements ProductService {
 
     static {
 
-        Product p1 = new Product(1,"iphonex",9999, 10);
-        Product p2 = new Product(2,"冰箱",5342, 19);
-        Product p3 = new Product(3,"洗衣机",523, 90);
-        Product p4 = new Product(4,"电话",64345, 150);
-        Product p5 = new Product(5,"汽车",2345, 140);
-        Product p6 = new Product(6,"椅子",253, 20);
+        Product p1 = new Product(1,"name1",12, 10);
+        Product p2 = new Product(2,"name2",22, 19);
+        Product p3 = new Product(3,"name3",33, 90);
+        Product p4 = new Product(4,"name4",44, 150);
+        Product p5 = new Product(5,"name5",55, 140);
+        Product p6 = new Product(6,"name6",66, 20);
         Product p7 = new Product(7,"java编程思想",2341, 10);
 
         daoMap.put(p1.getId(),p1);
@@ -58,6 +58,5 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public int selectCountTotal() {
         return mapper.selectCountTotal();
-//        return 0;
     }
 }

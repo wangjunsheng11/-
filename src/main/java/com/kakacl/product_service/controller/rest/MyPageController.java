@@ -48,7 +48,7 @@ public class MyPageController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(value = "findEmployeeHistory", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "findEmployeeHistory", method = RequestMethod.GET)
     public Resp findEmployeeHistory(HttpServletRequest request, String token, String time) {
         Map params = new HashMap<>();
         params.put("user_id", getUserid(request));
@@ -84,7 +84,7 @@ public class MyPageController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(value = "findPys", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "findPys", method = RequestMethod.GET)
     public Resp findPys(HttpServletRequest request,
                         @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
                         @RequestParam(value = "pageSize", defaultValue = "3")int pageSize,
@@ -118,7 +118,7 @@ public class MyPageController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(value = "findPayDetail", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "findPayDetail", method = RequestMethod.GET)
     public Resp findPayDetail(HttpServletRequest request, String token, String time,
                               @RequestParam(value = "pay_id", required = true)String pay_id) {
         Map params = new HashMap<>();

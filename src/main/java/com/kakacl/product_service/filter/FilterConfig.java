@@ -4,9 +4,6 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author wangwei
  * @version v1.0.0
@@ -17,11 +14,11 @@ import java.util.List;
 public class FilterConfig {
 
     @Bean
-    public FilterRegistrationBean buildBFilter() {
+    public FilterRegistrationBean buildLogFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         filterRegistrationBean.setOrder(2);
-        filterRegistrationBean.setFilter(new SignFilter());
-        filterRegistrationBean.setName("SignFilter");
+        filterRegistrationBean.setFilter(new LogFilter());
+        filterRegistrationBean.setName("LogFilter");
         filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;
     }
@@ -30,10 +27,22 @@ public class FilterConfig {
     public FilterRegistrationBean buildCFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         filterRegistrationBean.setOrder(3);
+        filterRegistrationBean.setFilter(new SignFilter());
+        filterRegistrationBean.setName("SignFilter");
+        filterRegistrationBean.addUrlPatterns("/*");
+        return filterRegistrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean buildDFilter() {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
+        filterRegistrationBean.setOrder(4);
         filterRegistrationBean.setFilter(new LoginValidateFilter());
         filterRegistrationBean.setName("LoginValidateFilter");
         filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;
     }
+
+
 
 }

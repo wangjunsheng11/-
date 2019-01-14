@@ -20,7 +20,7 @@ import sun.misc.BASE64Encoder;
  * @author wangwei
  * @version v1.0.0
  * @description 加密 AES对称加密和解密
- * @date 2019-01-09
+ * @date 2019-01-09 过时
  */
 public class SymmetricEncoder {
     /*

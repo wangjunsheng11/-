@@ -60,7 +60,7 @@ public class AccountController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(value = "findInfo", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "findInfo", method = RequestMethod.GET)
     public Resp findInfo(
             @RequestParam(name="token", required=true)String token,
             String time){
@@ -98,7 +98,7 @@ public class AccountController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @PostMapping(value = "rePassByPhonenum", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "rePassByPhonenum")
     public Resp rePassByPhonenum(
             @RequestParam(name="phone_num", required=true)String phone_num,
             @RequestParam(name="new_pass", required=true)String new_pass,
@@ -134,7 +134,7 @@ public class AccountController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @PostMapping(value = "rePass", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "rePass")
     public Resp rePass(
             @RequestParam(name="token", required=true)String token,
             @RequestParam(name="new_pass", required=true)String new_pass,
@@ -176,7 +176,7 @@ public class AccountController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @GetMapping(value = "selectById", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "selectById")
     public Resp selectById(@RequestParam(name="id", required=true)String id, String token){
         java.util.Map params = new HashMap();
         java.util.Map result = new HashMap();

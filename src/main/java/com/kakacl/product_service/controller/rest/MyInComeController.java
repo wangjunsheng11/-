@@ -57,7 +57,7 @@ public class MyInComeController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(value = "addBackCard", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "addBackCard", method = RequestMethod.POST)
     public Resp addBackCard(HttpServletRequest request,
                             @RequestParam(name = "time", required = true)String time,
                             String token,
@@ -165,7 +165,7 @@ public class MyInComeController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(value = "findInfo", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "findInfo", method = RequestMethod.GET)
     public Resp findInfo(HttpServletRequest request, String token, String time) {
         Map params = new HashMap();
         Map result = new HashMap();
@@ -196,7 +196,7 @@ public class MyInComeController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(value = "delBackcard", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "delBackcard", method = RequestMethod.GET)
     public Resp delBackcard(HttpServletRequest request, String token, String time,
                             @RequestParam(name = "backCardardNum", required = true) String backCardardNum) {
         Map params = new HashMap();
@@ -233,7 +233,7 @@ public class MyInComeController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(value = "findDetail", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "findDetail", method = RequestMethod.GET)
     public Resp findDetail(HttpServletRequest request, String token, String time,
                            @RequestParam(name = "id", required = true) String id) {
         Map params = new HashMap();

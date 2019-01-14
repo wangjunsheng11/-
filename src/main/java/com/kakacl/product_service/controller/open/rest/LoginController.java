@@ -41,6 +41,9 @@ public class LoginController extends BaseController {
     @Value("${sms-pwd}")
     private String pswd;
 
+    @Value("${account-paaakey}")
+    private String account_paaakey;
+
     @Autowired
     private AccountService accountService;
 
@@ -62,7 +65,7 @@ public class LoginController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(value = "sendPhoneCode", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "sendPhoneCode", method = RequestMethod.POST)
     public Resp sendPhoneCode(
             @RequestParam(name="phoneNum", required=true) String phoneNum,
             @RequestParam(name="type", required=false, defaultValue = "register") String type){
@@ -104,7 +107,7 @@ public class LoginController extends BaseController {
      * @remark 用户注册data中仅返回用户的咔咔号。
      * @number 99
      */
-    @RequestMapping(value = "register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "register", method = RequestMethod.POST)
     public Resp register(
             @RequestParam(name="phoneNum", required=true)String phoneNum,
             @RequestParam(name="idCode", required=true)String idCode,
@@ -135,7 +138,14 @@ public class LoginController extends BaseController {
         params.put("kaka_num", num);
         params.put("phone_num", phoneNum);
         params.put("email", "");
-        params.put("pass_word", SymmetricEncoder.AESEncode(sysName, password));
+        // linux上无法使用 保持一致
+//        params.put("pass_word", SymmetricEncoder.AESEncode(sysName, password));
+        try {
+            params.put("pass_word", SecurityUtil.encrypt(password, account_paaakey));
+        } catch (Exception e) {
+            log.info("${}", e.getMessage());
+        }
+//        params.put("pass_word", password);
         params.put("status", Constants.CONSTANT_1);
         params.put("del_flag", Constants.CONSTANT_0);
         params.put("create_time", NumberUtils.getCurrentTimes());
@@ -167,7 +177,7 @@ public class LoginController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(value = "login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "login", method = RequestMethod.POST)
     public Resp login(
             @RequestParam(name="account", required=true)String account,
             @RequestParam(name="pass", required=true)String pass,
@@ -175,8 +185,17 @@ public class LoginController extends BaseController {
         java.util.Map params = new HashMap();
         params.put("kaka_num", account);
         params.put("phone_num", account);
-        params.put("pass_word", SymmetricEncoder.AESEncode(sysName, pass));
+        // linux上无法使用 保持一致
+//        params.put("pass_word", SymmetricEncoder.AESEncode(sysName, pass));
+//        params.put("pass_word", pass);
+        try {
+            params.put("pass_word", SecurityUtil.encrypt(pass, account_paaakey));
+        } catch (Exception e) {
+            log.info("${}", e.getMessage());
+        }
+        log.info("params ${}", params);
         Map result = casAccountService.selectOne(params);
+        log.info("result {}", result);
         if(result != null) {
             Map cas_base = (Map)result.get("cas_base");
             cas_base.put("pass_word", "");
@@ -207,7 +226,7 @@ public class LoginController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @PostMapping(value = "rePassByPhonenum", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "rePassByPhonenum")
     public Resp rePassByPhonenum(
             @RequestParam(name="phone_num", required=true)String phone_num,
             @RequestParam(name="new_pass", required=true)String new_pass,
