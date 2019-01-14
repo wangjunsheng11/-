@@ -1,7 +1,7 @@
 package com.kakacl.product_service.service.impl;
 
-import com.kakacl.product_service.mapper.StartUpMapper;
-import com.kakacl.product_service.service.StartUpService;
+import com.kakacl.product_service.mapper.StartImageMapper;
+import com.kakacl.product_service.service.StartImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +15,13 @@ import java.util.Map;
  * @date 2010-01-14
  */
 @Service
-public class StartUpServiceImpl implements StartUpService {
+public class StartImageServiceImpl implements StartImageService {
 
     @Autowired
-    private StartUpMapper startUpMapper;
+    private StartImageMapper startImageMapper;
 
     @Override
     public List<Map> list(Map params) {
-        return startUpMapper.selectList(params);
+        return startImageMapper.selectList(params);
     }
 }

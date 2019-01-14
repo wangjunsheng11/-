@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author wangwei
@@ -21,9 +21,9 @@ import java.util.Map;
  * @description 签名过滤器, 签名不拦截open下的接口
  * @date 2019-01-12
  */
-@Component
-@WebFilter(filterName="SignFilter", urlPatterns="/*")
-@RefreshScope
+//@Component
+//@WebFilter(filterName="SignFilter", urlPatterns="/*")
+//@RefreshScope
 public class SignFilter implements Filter {
 
     @Value("${version}")

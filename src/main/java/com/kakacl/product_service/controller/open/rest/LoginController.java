@@ -177,7 +177,7 @@ public class LoginController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(value = "login", method = RequestMethod.POST)
+    @RequestMapping(value = "login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp login(
             @RequestParam(name="account", required=true)String account,
             @RequestParam(name="pass", required=true)String pass,
@@ -193,9 +193,7 @@ public class LoginController extends BaseController {
         } catch (Exception e) {
             log.info("${}", e.getMessage());
         }
-        log.info("params ${}", params);
         Map result = casAccountService.selectOne(params);
-        log.info("result {}", result);
         if(result != null) {
             Map cas_base = (Map)result.get("cas_base");
             cas_base.put("pass_word", "");

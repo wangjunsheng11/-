@@ -2,12 +2,16 @@ package com.kakacl.product_service.controller.open;
 
 import com.kakacl.product_service.controller.BaseController;
 import com.kakacl.product_service.service.ADService;
+import com.kakacl.product_service.service.StartImageService;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author wangwei
@@ -44,7 +48,7 @@ public class ADController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping("list")
+    @RequestMapping(name = "list", method = RequestMethod.GET)
     public Resp list(String time, String apptype){
         return Resp.success(adService.selectAD(null));
     }

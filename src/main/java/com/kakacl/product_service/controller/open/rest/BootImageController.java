@@ -1,12 +1,8 @@
 package com.kakacl.product_service.controller.open.rest;
 
-
-import com.kakacl.product_service.controller.BaseController;
-import com.kakacl.product_service.service.StartUpService;
+import com.kakacl.product_service.service.StartImageService;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,16 +12,15 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author wangwei
  * @version v1.0.0
- * @description 启动程序控制器
+ * @description 程序启动图片控制器
  * @date 2019-01-14
  */
 @RestController
-@RequestMapping("/api/open/rest/{version}/startup")
-@RefreshScope
-public class StartUPController extends BaseController {
+@RequestMapping("/api/open/rest/{version}/boot")
+public class BootImageController {
 
     @Autowired
-    private StartUpService startUpService;
+    private StartImageService startImageService;
 
     /**
      * showdoc
@@ -45,8 +40,8 @@ public class StartUPController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(name = "list", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(name = "liststartupimages", method = RequestMethod.GET)
     public Resp list(HttpServletRequest request, String time, String apptype){
-        return Resp.success(startUpService.list(null));
+        return Resp.success(startImageService.list(null));
     }
 }

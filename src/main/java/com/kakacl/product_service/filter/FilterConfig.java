@@ -23,7 +23,7 @@ public class FilterConfig {
         return filterRegistrationBean;
     }
 
-    @Bean
+    /*@Bean
     public FilterRegistrationBean buildCFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         filterRegistrationBean.setOrder(3);
@@ -31,7 +31,7 @@ public class FilterConfig {
         filterRegistrationBean.setName("SignFilter");
         filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;
-    }
+    }*/
 
     @Bean
     public FilterRegistrationBean buildDFilter() {
