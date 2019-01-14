@@ -21,6 +21,11 @@ public class ProtocolServiceImpl implements ProtocolService {
     private ProtocolMapper protocolMapper;
 
     @Override
+    public boolean addProtocol(Map params) {
+        return protocolMapper.addProtocol(params);
+    }
+
+    @Override
     public List<Map> findGroup(Map params) {
         return protocolMapper.findGroup(params);
     }

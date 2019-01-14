@@ -4,6 +4,16 @@ import java.util.*;
 
 public interface ProtocolService {
 
+   /*
+    *
+    * 添加协议
+    * @author wangwei
+    * @date 2019/1/14
+     * @param params
+    * @return boolean
+    */
+    boolean  addProtocol(Map params);
+
     /*
      *
      * 获取协议组
