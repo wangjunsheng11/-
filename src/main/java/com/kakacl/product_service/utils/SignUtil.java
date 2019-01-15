@@ -34,16 +34,8 @@ public class SignUtil {
     //@Value("${sign.timeout}")
     public int timeout = 1 * 30 * 1000;
 
-    /** 加密密钥 */
-    // private final static String APP_KEY = "mykey123456";
-
-    // public final static String SECRET_KEY = "mysecret123456";
-
     /** 字符编码 */
     private final static String INPUT_CHARSET = "UTF-8";
-
-//    /** 超时时间 */
-//    private final static int TIME_OUT = 1 * 30 * 1000;
 
     public static SignUtil getInstance() {
         if(signUtil == null) {
@@ -277,11 +269,12 @@ public class SignUtil {
         String preSignStr = createLinkString(sParaNew);
         //获得签名验证结果
         String mysign = DigestUtils.md5Hex(getContentBytes(preSignStr + appkey, INPUT_CHARSET));
+        logger.info("mysign {}", mysign);
         if (mysign.equals(sign)) {
             //是否超时
             long curr = System.currentTimeMillis();
             if ((curr - Long.valueOf(timestamp)) > timeout){
-                logger.info("api is time out" + curr);
+                logger.info("api is time out " + curr);
                 return false;
             }
             return true;
