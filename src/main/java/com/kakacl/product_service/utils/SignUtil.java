@@ -1,5 +1,6 @@
 package com.kakacl.product_service.utils;
 
+import com.kakacl.product_service.config.Constant;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +25,10 @@ public class SignUtil {
     public static SignUtil signUtil;
 
     // 对外的密钥
-//    @Value("${sign-secret-secret}")
-    public String secretkey = "mysecret123456";
+    public String secretkey = Constant.SIGN_SECRETKEY;
 
     /** 加密密钥 */
-    //@Value("${sign.secret.appkey}")
-    public String appkey = "mykey123456";
+    public String appkey = Constant.SIGN_APPKEY;
 
     // 间隔时间
     //@Value("${sign.timeout}")

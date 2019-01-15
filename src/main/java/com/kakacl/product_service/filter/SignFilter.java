@@ -21,9 +21,9 @@ import java.util.*;
  * @description 签名过滤器, 签名不拦截open下的接口
  * @date 2019-01-12
  */
-//@Component
-//@WebFilter(filterName="SignFilter", urlPatterns="/*")
-//@RefreshScope
+@Component
+@WebFilter(filterName="SignFilter", urlPatterns="/*")
+@RefreshScope
 public class SignFilter implements Filter {
 
     @Value("${version}")
