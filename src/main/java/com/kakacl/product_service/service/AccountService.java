@@ -9,5 +9,5 @@ public interface AccountService {
 
     Map selectById(java.util.Map params);
 
-    PageInfo<Account> selectByPageAndSelections(int currentPage, int pageSize);
+    PageInfo<Map> selectByPageAndSelections(int currentPage, int pageSize);
 }

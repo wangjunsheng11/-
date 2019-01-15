@@ -5,7 +5,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      # 172.19.186.233 192.168.4.172 127.0.0.1 http://47.101.63.222:8762/ http://192.168.4.172:8762/eureka/
+      # 172.19.186.233 47.101.63.222 192.168.4.172 127.0.0.1
       defaultZone: http://192.168.4.172:8762/eureka/
   instance:
     instance-id: ${spring.cloud.client.ip-address}:${server.port}
@@ -22,7 +22,6 @@ spring:
   #            service-id: CONFIG-SERVER
   #            enabled: true
   #          profile: test
-
   #消息队列
   rabbitmq:
     host: 192.168.4.172
@@ -35,7 +34,7 @@ spring:
     url: jdbc:mysql://192.168.4.131:23336/springcloud_guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-    initialSize: 5
+    initialSize: 2
     minIdle: 5
     maxActive: 10
     maxWait: 60000
@@ -50,15 +49,6 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
-  redis:
-    #host: 127.0.0.1
-    host: 47.101.63.222
-    port: 56379
-    password: root
-    #host: 47.101.63.222
-    #port: 56379
-    #password: root
-    #timeout: 5000
 
 #redisson.address=redis://127.0.0.1:6379
 redisson:
@@ -69,10 +59,6 @@ mybatis:
   config-location: classpath:sqlMapConfig.xml
   mapper-locations: classpath:mappers/*.xml
   type-aliases-package: com.kakacl.springboot.model
-
-sign-secret-secret: mysecret123456
-sign-secret-appkey: mykey123456
-sign-timeout: 30000
 
 env: devp
 branch: dev
@@ -87,3 +73,5 @@ sys-name: kakacl_zzf
 sms-account: N9960209
 sms-pwd: iFqXn8Etz
 
+#账户生成秘钥的key
+account-paaakey: kakacl_zzfsadasdsadsads

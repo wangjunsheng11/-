@@ -1,6 +1,5 @@
 package com.kakacl.product_service.controller;
 
-import com.kakacl.product_service.config.ConstantSMSMessage;
 import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.service.AccountService;
 import com.kakacl.product_service.service.CasAccountService;
@@ -48,10 +47,7 @@ public class AccountController {
      * @url /api/v1.0.1/account/findInfo
      * @param token 必选 string token
      * @param time 必选 string 时间
-     * @return {
-     *     "status": "200",
-     *     "message": "请求成功",
-     *     "data": {"status":"200","message":"请求成功","data":{"subject":"{create_by=kakacl_zzf, del_flag=0, create_time=1547006424, pass_word=, kaka_num=128643, phone_num=13800138000, id=1547006424247526, sys_type=kakacl_zzf, email=, status=1}","sys_account_info":{"create_by":"1","hear_path":"","del_flag":0,"create_time":1547006424,"user_name":"anonymous","roleid":"0","kaka_num":"128643","id_card":"2222","phone_num":"13800138000","id":"1547006424247526","account_status":1,"introduction":"没有简介"},"grade":{"create_by":"1","del_flag":0,"create_time":1547008191,"user_id":"1547006424247526","grade":1,"id":"2","fraction":0},"ability":[{"create_by":"1","del_flag":0,"user_id":"1547006424247526","img_path":"http://www.baidu.com./1.png","name":"1","remark":"2","id":"1","create_date":1547008191,"order":2},{"create_by":"1","del_flag":0,"user_id":"1547006424247526","img_path":"http://www.baidu.com./1.png","name":"嗯厉害1","remark":"很厉害 很厉害1","id":"2","create_date":1547008191,"order":1}]},"page":null,"ext":null}
+     * @return {"status":"200","message":"请求成功","data":{"subject":"{menu_base=[{isopen=1, code=system, pcode=0, num=1, icon=fa-user, sys_type=kakacl_zzf, url=#, tips=, pcodes=[0],, name=系统管理, id=1, ismenu=1, levels=1, status=1}], cas_base={create_by=kakacl_zzf, del_flag=0, create_time=1547006424, pass_word=, kaka_num=128643, phone_num=13800138000, id=1547006424247526, sys_type=kakacl_zzf, email=, status=52000}}","sys_account_info":{"create_by":"1","hear_path":"","del_flag":0,"create_time":1547006424,"user_name":"anonymous","roleid":"1","kaka_num":"128643","id_card":"2222","phone_num":"13800138000","id":"1547006424247526","account_status":52000,"introduction":"没有简介"},"grade":{"create_by":"1","del_flag":0,"create_time":1547008191,"user_id":"1547006424247526","grade":1,"id":"2","fraction":0},"ability":[{"create_by":"1","del_flag":0,"user_id":"1547006424247526","img_path":"http://www.baidu.com./1.png","name":"1","remark":"2","id":"1","create_date":1547008191,"order":2},{"create_by":"1","del_flag":0,"user_id":"1547006424247526","img_path":"http://www.baidu.com./1.png","name":"嗯厉害1","remark":"很厉害 很厉害1","id":"2","create_date":1547008191,"order":1}]},"page":null,"ext":null}
      * @return_param ability object 能力
      * @return_param grade object 等级
      * @return_param sys_account_info object 用户信息
@@ -60,7 +56,7 @@ public class AccountController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(value = "findInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "findInfo", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findInfo(
             @RequestParam(name="token", required=true)String token,
             String time){
@@ -98,7 +94,7 @@ public class AccountController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @PostMapping(value = "rePassByPhonenum")
+    @PostMapping(value = "rePassByPhonenum", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp rePassByPhonenum(
             @RequestParam(name="phone_num", required=true)String phone_num,
             @RequestParam(name="new_pass", required=true)String new_pass,
@@ -134,7 +130,7 @@ public class AccountController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @PostMapping(value = "rePass")
+    @PostMapping(value = "rePass", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp rePass(
             @RequestParam(name="token", required=true)String token,
             @RequestParam(name="new_pass", required=true)String new_pass,
@@ -168,33 +164,43 @@ public class AccountController {
      * @description 根据主键查询账户基本信息
      * @method get
      * @url /api/v1.0.1/account/selectById
-     * @param id 必选 string id
+     * @param user_id 必选 string 用户主键
      * @param token 必选 string token
-     * @return {"status":"200","message":"请求成功","data":{"create_by":"1","hear_path":"","del_flag":0,"create_time":1547008191,"user_name":"anonymous","roleid":"0","kaka_num":"149386","id_card":"2222","phone_num":"13800138001","id":"1547008191643825","account_status":1,"introduction":"没有简介"},"page":null,"ext":null}
+     * @return {"status":"200","message":"请求成功","data":{"userinfo":{"create_by":"1","hear_path":"","del_flag":0,"create_time":1547028105,"user_name":"anonymous","roleid":"2","kaka_num":"171330","id_card":"222223","phone_num":"13800138002","id":"1547028105160700","account_status":52000,"introduction":"没有简介"}},"page":null,"ext":null}
      * @return_param data string data
      * @return_param status string 状态
      * @remark 这里是备注信息
      * @number 99
      */
-    @GetMapping(value = "selectById")
-    public Resp selectById(@RequestParam(name="id", required=true)String id, String token){
+    @GetMapping(value = "selectById", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp selectById(@RequestParam(name="user_id", required=true)String user_id, String token){
         java.util.Map params = new HashMap();
         java.util.Map result = new HashMap();
-        params.put("user_id", id);
+        params.put("user_id", user_id);
         Map userinfo = accountService.selectById(params);
         result.put("userinfo", userinfo);
         return Resp.success(result);
     }
 
-    /*
-     *
-     * 查询账户分页数据
+    /**
+     * showdoc
      * @author wangwei
-     * @date 2019/1/7
-      * @param
-     * @return com.kakacl.product_service.utils.Resp
+     * @date 2019/1/8
+     *
+     * @catalog v1.0.1/用户相关
+     * @title 查询账户分页数据
+     * @description 查询账户分页数据
+     * @method get
+     * @url /api/v1.0.1/account/list
+     * @param currentPage 可选 int 当前页-默认1
+     * @param pageSize 可选 int 每页条数-默认5
+     * @return {"status":"200","message":"请求成功","data":{"pageNum":1,"pageSize":5,"size":3,"startRow":1,"endRow":3,"total":3,"pages":1,"list":[{"create_by":"1","hear_path":"","del_flag":0,"create_time":1547028105,"user_name":"anonymous","roleid":"2","kaka_num":"171330","id_card":"222223","phone_num":"13800138002","id":"1547028105160700","account_status":52000,"introduction":"没有简介"},{"create_by":"1","hear_path":"","del_flag":0,"create_time":1547008191,"user_name":"anonymous","roleid":"2","kaka_num":"149386","id_card":"22221","phone_num":"13800138001","id":"1547008191643825","account_status":52000,"introduction":"没有简介"},{"create_by":"1","hear_path":"","del_flag":0,"create_time":1547006424,"user_name":"anonymous","roleid":"1","kaka_num":"128643","id_card":"2222","phone_num":"13800138000","id":"1547006424247526","account_status":52000,"introduction":"没有简介"}],"prePage":0,"nextPage":0,"isFirstPage":true,"isLastPage":true,"hasPreviousPage":false,"hasNextPage":false,"navigatePages":8,"navigatepageNums":[1],"navigateFirstPage":1,"navigateLastPage":1,"firstPage":1,"lastPage":1},"page":null,"ext":null}
+     * @return_param data string data
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
      */
-    @RequestMapping("list")
+    @RequestMapping(value = "list", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp list(
             @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
             @RequestParam(value = "pageSize", defaultValue = "5")int pageSize){

@@ -1,6 +1,5 @@
 package com.kakacl.product_service.mapper;
 
-import com.kakacl.product_service.domain.Account;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import java.util.*;
@@ -14,6 +13,6 @@ public interface AccountMapper {
             "VALUES (#{id}, 'anonymous', '', #{phone_num}, #{kaka_num}, '0', #{id_card}, #{create_time}, '1', '1', '没有简介', '0')")
     boolean insert(Map<String, Object> params);
 
-    @Select("SELECT id,user_name FROM zzf_user_info")
-    List<Account> selectByPageAndSelections(java.util.Map params);
+    @Select("SELECT * FROM zzf_user_info WHERE del_flag = 0 ORDER BY create_time DESC")
+    List<Map> selectByPageAndSelections(java.util.Map params);
 }

@@ -1,5 +1,5 @@
 server:
-  port: 8772
+  port: 8773
 
 #指定注册中心地址
 eureka:
@@ -50,6 +50,11 @@ spring:
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
+#redisson.address=redis://127.0.0.1:6379
+redisson:
+  #address: redis://127.0.0.1:6379
+  address: redis://47.101.63.222:56379
+
 mybatis:
   config-location: classpath:sqlMapConfig.xml
   mapper-locations: classpath:mappers/*.xml
@@ -57,3 +62,16 @@ mybatis:
 
 env: devp
 branch: dev
+
+#版本号
+version: v1.0.1
+
+#系统类型
+sys-name: kakacl_zzf
+
+# 短信配置
+sms-account: N9960209
+sms-pwd: iFqXn8Etz
+
+#账户生成秘钥的key
+account-paaakey: kakacl_zzfsadasdsadsads

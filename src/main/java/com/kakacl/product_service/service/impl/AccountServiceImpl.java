@@ -23,10 +23,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public PageInfo<Account> selectByPageAndSelections(int currentPage, int pageSize) {
+    public PageInfo<Map> selectByPageAndSelections(int currentPage, int pageSize) {
         PageHelper.startPage(currentPage, pageSize);
-        List<Account> docs = accountMapper.selectByPageAndSelections(null);
-        PageInfo<Account> pageInfo = new PageInfo<Account>(docs);
+        List<Map> docs = accountMapper.selectByPageAndSelections(null);
+        PageInfo<Map> pageInfo = new PageInfo<Map>(docs);
         return pageInfo;
     }
 }
