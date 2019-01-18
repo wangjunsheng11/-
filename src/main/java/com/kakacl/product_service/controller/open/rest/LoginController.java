@@ -171,7 +171,7 @@ public class LoginController extends BaseController {
      * @url /api/open/rest/v1.0.1/do/login
      * @param account 必选 string 手机号码或者咔咔号
      * @param pass 必选 string 密码
-     * @return {"status":"200","message":"请求成功","data":{"create_by":"kakacl_zzf","del_flag":"0","create_time":1547006424,"pass_word":"","kaka_num":"128643","phone_num":"13800138000","id":"1547006424247526","sys_type":"kakacl_zzf","email":"","status":"1","token":"eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxNTQ3MDA2NDI0MjQ3NTI2IiwiaWF0IjoxNTQ3MDI2ODc0LCJzdWIiOiJ7Y3JlYXRlX2J5PWtha2FjbF96emYsIGRlbF9mbGFnPTAsIGNyZWF0ZV90aW1lPTE1NDcwMDY0MjQsIHBhc3Nfd29yZD0sIGtha2FfbnVtPTEyODY0MywgcGhvbmVfbnVtPTEzODAwMTM4MDAwLCBpZD0xNTQ3MDA2NDI0MjQ3NTI2LCBzeXNfdHlwZT1rYWthY2xfenpmLCBlbWFpbD0sIHN0YXR1cz0xfSIsImlzcyI6IjEzODAwMTM4MDAwIiwiZXhwIjoxNTQ3MDI4Njc0fQ.vEIPr6gzRgQ6nrwL3U8qunHhxapEtvIb7ZJ1fMfuOFY"},"page":null,"ext":null}
+     * @return {"status":"200","message":"请求成功","data":{"menu_base":[{"isopen":1,"code":"system","pcode":"0","num":1,"icon":"fa-user","sys_type":"kakacl_zzf","url":"#","tips":"","pcodes":"[0],","name":"系统管理","id":"1","ismenu":1,"levels":1,"status":1}],"integral":{"message":"恭喜你，今日首次登陆，获取1积分。","fraction":1},"cas_base":{"create_by":"kakacl_zzf","del_flag":"0","create_time":1547006424,"pass_word":"","kaka_num":"128643","phone_num":"13800138000","id":"1547006424247526","sys_type":"kakacl_zzf","email":"","status":"52000"},"token":"eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxNTQ3MDA2NDI0MjQ3NTI2IiwiaWF0IjoxNTQ3NzkwMjE4LCJzdWIiOiJ7bWVudV9iYXNlPVt7aXNvcGVuPTEsIGNvZGU9c3lzdGVtLCBwY29kZT0wLCBudW09MSwgaWNvbj1mYS11c2VyLCBzeXNfdHlwZT1rYWthY2xfenpmLCB1cmw9IywgdGlwcz0sIHBjb2Rlcz1bMF0sLCBuYW1lPeezu-e7n-euoeeQhiwgaWQ9MSwgaXNtZW51PTEsIGxldmVscz0xLCBzdGF0dXM9MX1dLCBjYXNfYmFzZT17Y3JlYXRlX2J5PWtha2FjbF96emYsIGRlbF9mbGFnPTAsIGNyZWF0ZV90aW1lPTE1NDcwMDY0MjQsIHBhc3Nfd29yZD0sIGtha2FfbnVtPTEyODY0MywgcGhvbmVfbnVtPTEzODAwMTM4MDAwLCBpZD0xNTQ3MDA2NDI0MjQ3NTI2LCBzeXNfdHlwZT1rYWthY2xfenpmLCBlbWFpbD0sIHN0YXR1cz01MjAwMH19IiwiaXNzIjoiMTM4MDAxMzgwMDAiLCJleHAiOjE1NDc3OTIwMTh9.L7NSguXJqMUIUpfdut7ilIwP930oW2xm9m8IbCafD0c"},"page":null,"ext":null}
      * @return_param token string token
      * @return_param status string 状态
      * @remark 这里是备注信息
@@ -191,7 +191,7 @@ public class LoginController extends BaseController {
         try {
             params.put("pass_word", SecurityUtil.encrypt(pass, account_paaakey));
         } catch (Exception e) {
-            log.info("${}", e.getMessage());
+            log.error("${}", e.getMessage());
         }
         Map result = casAccountService.selectOne(params);
         if(result != null) {
@@ -199,11 +199,14 @@ public class LoginController extends BaseController {
             cas_base.put("pass_word", "");
             String jwt = JWTUtils.createJWT(cas_base.get("id").toString(), cas_base.get("phone_num").toString(), result.toString(), 1000 * 60 * 30);
             result.put("token", jwt);
-            Map integral = new HashMap();
-            int fraction = 1;
-            integral.put("fraction", fraction);
-            integral.put("message", String.format("恭喜你，今日首次登陆，获取%s积分。", fraction));
-            result.put("integral", integral);
+            // 首次登陆
+            if(1 == 1) {
+                Map integral = new HashMap();
+                int fraction = 1;
+                integral.put("fraction", fraction);
+                integral.put("message", String.format("恭喜你，今日首次登陆，获取%s积分。", fraction));
+                result.put("integral", integral);
+            }
             return Resp.success(result);
         } else {
             return Resp.fail(ErrorCode.CODE_450);

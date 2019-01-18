@@ -3,10 +3,7 @@ package com.kakacl.product_service.controller.rest;
 import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,7 +36,7 @@ public class CommunicationController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(value = "addInfo", method = RequestMethod.POST, consumes = )
+    @PostMapping(value = "addInfo", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp addBackCard(HttpServletRequest request,
                             @RequestParam(name = "time", required = true)String time,
                             @RequestParam(name = "token", required = true) String token,

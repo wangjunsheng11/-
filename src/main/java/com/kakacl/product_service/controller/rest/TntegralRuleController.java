@@ -5,6 +5,8 @@ import com.kakacl.product_service.service.TntegralRuleService;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,7 +43,7 @@ public class TntegralRuleController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping("findList")
+    @GetMapping(value = "findList", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findList(@RequestParam(name = "token", required = true) String token, String time) {
         List<Map> result = tntegralRuleService.selectList(null);
         return Resp.success(result);
