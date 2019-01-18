@@ -39,7 +39,7 @@ public class CommunicationController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(value = "addInfo", method = RequestMethod.POST)
+    @RequestMapping(value = "addInfo", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp addBackCard(HttpServletRequest request,
                             @RequestParam(name = "time", required = true)String time,
                             @RequestParam(name = "token", required = true) String token,

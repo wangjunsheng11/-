@@ -128,7 +128,7 @@ public class SignUtil {
      * @return
      * @throws UnsupportedEncodingException
      */
-    private static byte[] getContentBytes(String content, String charset) {
+    public static byte[] getContentBytes(String content, String charset) {
         if (charset == null || "".equals(charset)) {
             return content.getBytes();
         }

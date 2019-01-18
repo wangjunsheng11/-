@@ -61,7 +61,7 @@ public class ProtocolController extends BaseController {
      * @description 协议获取相关
      * @method get
      * @url /api/open/rest/v1.0.1/protocol/findGroup
-     * @param type 必选 string 获取协议的属性，这里默认传递all
+     * @param type 可选 string 获取协议的属性，这里默认all
      * @param time 必选 string 当前时间戳
      * @return {"status":"200","message":"请求成功","data":[{"del_flag":0,"group_name":"注册","id":"1","title":"注册协议","content":"1,。注册协议xxxx","status":"1"}],"page":null,"ext":null}
      * @return_param message String 消息

@@ -199,6 +199,11 @@ public class LoginController extends BaseController {
             cas_base.put("pass_word", "");
             String jwt = JWTUtils.createJWT(cas_base.get("id").toString(), cas_base.get("phone_num").toString(), result.toString(), 1000 * 60 * 30);
             result.put("token", jwt);
+            Map integral = new HashMap();
+            int fraction = 1;
+            integral.put("fraction", fraction);
+            integral.put("message", String.format("恭喜你，今日首次登陆，获取%s积分。", fraction));
+            result.put("integral", integral);
             return Resp.success(result);
         } else {
             return Resp.fail(ErrorCode.CODE_450);
