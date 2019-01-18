@@ -83,6 +83,7 @@ public class AbilityController extends BaseController {
      */
     @GetMapping(value = "edit", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp edit(HttpServletRequest request,
+                     String token,
                      @RequestParam(name = "id", required = true) String id,
                      @RequestParam(name = "name", required = true) String name,
                      @RequestParam(name = "remark", required = true) String remark,
