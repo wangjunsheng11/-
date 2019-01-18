@@ -1,6 +1,6 @@
 package com.kakacl.product_service.controller.rest;
 
-import com.kakacl.product_service.controller.BaseController;
+import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +26,7 @@ public class CommunicationController extends BaseController {
      * @title 用户申诉
      * @description 类似于用户和客服聊天，发送消息
      * @method post
-     * @url /api/open/rest/v1.0.1/do/sendPhoneCode
+     * @url /api/rest/v1.0.1/communication/addInfo
      * @param time 必选 string 请求时间戳
      * @param token 必选 string token
      * @param title 必选 string 标题-按模块分，可以默认，例如-关于薪资的的咨询
@@ -39,7 +39,7 @@ public class CommunicationController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(value = "addInfo", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "addInfo", method = RequestMethod.POST, consumes = )
     public Resp addBackCard(HttpServletRequest request,
                             @RequestParam(name = "time", required = true)String time,
                             @RequestParam(name = "token", required = true) String token,
@@ -47,7 +47,6 @@ public class CommunicationController extends BaseController {
                             @RequestParam(name = "content", required = true) String content,
                             @RequestParam(name = "receiveid") String receiveid,
                             @RequestParam(name = "type") String type){
-
         return Resp.success();
     }
 

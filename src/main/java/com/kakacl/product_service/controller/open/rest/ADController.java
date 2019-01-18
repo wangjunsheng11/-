@@ -1,6 +1,6 @@
 package com.kakacl.product_service.controller.open.rest;
 
-import com.kakacl.product_service.controller.BaseController;
+import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.service.ADService;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;

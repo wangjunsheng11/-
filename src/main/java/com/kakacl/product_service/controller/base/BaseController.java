@@ -1,4 +1,4 @@
-package com.kakacl.product_service.controller;
+package com.kakacl.product_service.controller.base;
 
 import com.kakacl.product_service.utils.JWTUtils;
 import org.slf4j.Logger;
@@ -6,7 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ApplicationObjectSupport;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author wangwei
@@ -24,7 +25,7 @@ public class BaseController extends ApplicationObjectSupport {
      * 请求方式判断
      * @author wangwei
      * @date 2019/1/9
-      * @param request
+     * @param request
      * @return boolean
      */
     public boolean isAjaxRequest(HttpServletRequest request) {
@@ -42,7 +43,7 @@ public class BaseController extends ApplicationObjectSupport {
      * 获取请求属性封装为Map类型
      * @author wangwei
      * @date 2019/1/9
-      * @param request
+     * @param request
      * @return java.util.HashMap<java.lang.String,java.lang.Object>
      */
     public HashMap<String, Object> getRequestMapSingle(HttpServletRequest request) {
@@ -70,3 +71,4 @@ public class BaseController extends ApplicationObjectSupport {
     }
 
 }
+

@@ -1,7 +1,7 @@
 package com.kakacl.product_service.controller.open.rest;
 
 import com.kakacl.product_service.config.Constant;
-import com.kakacl.product_service.controller.BaseController;
+import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.utils.ErrorCode;
 import com.kakacl.product_service.utils.HttpClient;
 import com.kakacl.product_service.utils.Resp;

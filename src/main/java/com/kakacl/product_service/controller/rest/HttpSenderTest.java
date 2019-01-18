@@ -1,4 +1,4 @@
-package com.kakacl.product_service.controller;
+package com.kakacl.product_service.controller.rest;
 
 /**
  * @author wangwei

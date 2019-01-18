@@ -1,6 +1,6 @@
 package com.kakacl.product_service.controller.rest;
 
-import com.kakacl.product_service.controller.BaseController;
+import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.service.UserDataService;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class MyPageController extends BaseController {
      * @description 根据token获取我的职业轨迹
      * 我入职的企业列表 企业名称 企业图片 当前状态 入职日期 离职日期
      * @method get
-     * @url /api/v1.0.1/mypage/findEmployeeHistory
+     * @url /api/rest/v1.0.1/mypage/findEmployeeHistory
      * @param token 必选 string token
      * @param time 必选 int 请求时间戳
      * @return {"status":"200","message":"请求成功","data":[{"image":"http://192.168.4.170:8081/1545188000331-762166088940527181.png","orbit_id":"8","entry_time":1547006424,"company_name":"苏州富通精密机械有限公司","resignation_time":1547006424,"work_status":"52110"},{"image":"http://192.168.4.170:8081/1545188000331-762166088940527181.png","orbit_id":"9","entry_time":1547006424,"company_name":"航天信息","resignation_time":1547006424,"work_status":"52100"}],"page":null,"ext":null}
@@ -48,7 +48,7 @@ public class MyPageController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(value = "findEmployeeHistory", method = RequestMethod.GET)
+    @RequestMapping(value = "findEmployeeHistory", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findEmployeeHistory(HttpServletRequest request, String token, String time) {
         Map params = new HashMap<>();
         params.put("user_id", getUserid(request));
@@ -63,7 +63,7 @@ public class MyPageController extends BaseController {
      * @description 根据token我的薪资列表
      * 企业图片  入职日期 当前状态 工作天数 嘉奖次数 违纪次数 个人所得税 社保 总收入  企业地图坐标
      * @method get
-     * @url /api/v1.0.1/mypage/findPys
+     * @url /api/rest/v1.0.1/mypage/findPys
      * @param token 必选 string token
      * @param currentPage 可选 int 当前页-默认1
      * @param pageSize 可选 int 每页数量-默认3
@@ -84,7 +84,7 @@ public class MyPageController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(value = "findPys", method = RequestMethod.GET)
+    @RequestMapping(value = "findPys", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findPys(HttpServletRequest request,
                         @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
                         @RequestParam(value = "pageSize", defaultValue = "3")int pageSize,
@@ -105,7 +105,7 @@ public class MyPageController extends BaseController {
      * @description 根据token我的薪资详情
      * 工号 线号 组别 排班天数 实际出勤 基本工资 平时加班数 平时加班费 周末加班数 周末加班费 旷工罚款 迟到罚款 餐费 预支工资 其他
      * @method get
-     * @url /api/v1.0.1/mypage/findPayDetail
+     * @url /api/rest/v1.0.1/mypage/findPayDetail
      * @param token 必选 string token
      * @param time 必选 int 请求时间戳
      * @param pay_id 必选 String 薪资主键
@@ -118,7 +118,7 @@ public class MyPageController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping(value = "findPayDetail", method = RequestMethod.GET)
+    @RequestMapping(value = "findPayDetail", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findPayDetail(HttpServletRequest request, String token, String time,
                               @RequestParam(value = "pay_id", required = true)String pay_id) {
         Map params = new HashMap<>();

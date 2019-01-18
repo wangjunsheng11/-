@@ -1,6 +1,6 @@
 package com.kakacl.product_service.controller.rest;
 
-import com.kakacl.product_service.controller.BaseController;
+import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +29,7 @@ public class MyChatController extends BaseController {
      * @title 查询好友
      * @description 查询好友
      * @method get
-     * @url /api/rest/v1.0.1/mychat/findFriends
+     * @url /api/rest/rest/v1.0.1/mychat/findFriends
      * @param time 必选 string 请求时间戳
      * @param token 必选 string token
      * @return {"status":"200","message":"请求成功","data":,"page":null,"ext":null}

@@ -1,11 +1,15 @@
-package com.kakacl.product_service.controller;
+package com.kakacl.product_service.controller.rest;
 
+import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.service.GradeService;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.HashMap;
 
 /*
@@ -17,8 +21,8 @@ import java.util.HashMap;
  * @return
  */
 @RestController
-@RequestMapping("/api/{version}/grade")
-public class GradeController {
+@RequestMapping("/api/rest/{version}/grade")
+public class GradeController extends BaseController {
     @Autowired
     private GradeService gradeService;
 
@@ -36,17 +40,20 @@ public class GradeController {
      * @title 根据主键查询用户等级
      * @description 根据主键查询用户等级
      * @method get
-     * @url /api/v1.0.1/grade/selectById
-     * @param user_id 必选 string 用户主键
+     * @url /api/rest/v1.0.1/grade/selectById
+     * @param userId 必选 string 用户主键
      * @param token 必选 string token
+     * @param time 必选 string 请求时间戳
      * @return {"status":"200","message":"请求成功","data":{"create_by":"1","hear_path":"","del_flag":0,"create_time":1547008191,"user_name":"anonymous","roleid":"0","kaka_num":"149386","id_card":"2222","phone_num":"13800138001","id":"1547008191643825","account_status":1,"introduction":"没有简介"},"page":null,"ext":null}
      * @return_param data string data
      * @return_param status string 状态
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping("selectById")
-    public Object selectById(@RequestParam String user_id, String time){
+    @GetMapping(value = "selectById", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Object selectById(
+            @RequestParam(name="userId",required=true) String user_id,
+            String time){
         java.util.Map params = new HashMap();
         params.put("user_id", user_id);
         return Resp.success(gradeService.selectById(params));

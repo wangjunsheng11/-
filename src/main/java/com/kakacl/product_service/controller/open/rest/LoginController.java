@@ -2,7 +2,7 @@ package com.kakacl.product_service.controller.open.rest;
 
 import com.kakacl.product_service.config.ConstantSMSMessage;
 import com.kakacl.product_service.config.Constants;
-import com.kakacl.product_service.controller.BaseController;
+import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.service.AccountService;
 import com.kakacl.product_service.service.CasAccountService;
 import com.kakacl.product_service.utils.*;
