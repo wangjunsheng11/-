@@ -19,6 +19,14 @@ public class ProductServiceApplication {
     @Autowired
     private Environment env;
 
+    /*@Bean
+    public RedissonClient redissonClient(){
+        Config config = new Config();
+        config.useSingleServer().setAddress(env.getProperty("redisson.address"));
+        RedissonClient client = Redisson.create(config);
+        return client;
+    }*/
+
     @Bean
     public RedissonClient redissonClient(){
         Config config=new Config();

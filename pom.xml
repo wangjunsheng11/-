@@ -5,7 +5,7 @@
 
     <groupId>com.kakacl</groupId>
     <artifactId>provider_service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>provider_service</name>
@@ -108,6 +108,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+        <!-- redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-redis</artifactId>
+            <version>1.3.3.RELEASE</version>
         </dependency>
 
         <!-- redis -->

@@ -1,11 +1,16 @@
 package com.kakacl.product_service.controller.open.rest;
 
 import com.kakacl.product_service.controller.base.BaseController;
+import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.ADService;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * @author wangwei
@@ -19,6 +24,12 @@ public class ADController extends BaseController {
 
     @Autowired
     private ADService adService;
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Resource
+    private RedisTemplate<String, Integer> redisTemplate;
 
     /**
      * showdoc
@@ -39,6 +50,7 @@ public class ADController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = 1,sec = 10)
     @GetMapping(value = "list", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp list(String time,
                      @RequestParam(name = "apptype", required = true)String apptype,

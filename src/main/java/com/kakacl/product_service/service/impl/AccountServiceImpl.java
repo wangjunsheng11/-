@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class AccountServiceImpl implements AccountService {
+public class AccountServiceImpl
+        implements AccountService {
 
     @Autowired
     private AccountMapper accountMapper;
@@ -20,6 +21,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Map selectById(Map params) {
         return accountMapper.selectByUserid(params);
+    }
+
+    @Override
+    public Map selectByPhone(Map params) {
+        return accountMapper.selectByPhone(params);
     }
 
     @Override

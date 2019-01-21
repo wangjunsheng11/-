@@ -71,7 +71,7 @@ public class MyInComeController extends BaseController {
         System.out.println(userId);
 
         // 只有当当前key不存在的时候，SETNX 会成功 – 此时相当于获取到可以对这个资源进行操作的同步锁
-        final String key=String.format("redis:add_card_num:id:%s", userId +"");
+        final String key = String.format("redis:add_card_num:id:%s", userId +"");
         Boolean res = true;
         while(res){
             String value = UUID.randomUUID().toString()+System.nanoTime();

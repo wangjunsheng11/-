@@ -3,7 +3,9 @@ package com.kakacl.product_service.controller.base;
 import com.kakacl.product_service.utils.JWTUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ApplicationObjectSupport;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -19,6 +21,9 @@ import java.util.Map;
 public class BaseController extends ApplicationObjectSupport {
 
     public Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    public StringRedisTemplate stringRedisTemplate;
 
     /*
      *

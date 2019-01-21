@@ -16,10 +16,11 @@ import sun.misc.BASE64Encoder;
  * @date 2019-01-14
  */
 public class SecurityUtil {
-    public static String DES = "AES"; // optional value AES/DES/DESede
 
-    public static String CIPHER_ALGORITHM = "AES"; // optional value AES/DES/DESede
-
+    // optional value AES/DES/DESede
+    public static String DES = "AES";
+    // optional value AES/DES/DESede
+    public static String CIPHER_ALGORITHM = "AES";
 
     public static Key getKey(String strKey) {
         try {
@@ -32,7 +33,7 @@ public class SecurityUtil {
             _generator.init(128, secureRandom);
             return _generator.generateKey();
         } catch (Exception e) {
-            throw new RuntimeException(" 初始化密钥出现异常 ");
+            throw new RuntimeException(" 密钥出现异常 ");
         }
     }
 
@@ -59,13 +60,13 @@ public class SecurityUtil {
 
     public static void main(String[] args) throws Exception {
         String message = "123456";
-        String key = "landLeaf";
+        String key = "key_123456";
         String encryptMsg = encrypt(message, key);
-        System.out.println("encrypted message is below :");
+        System.out.println("加密信息");
         System.out.println(encryptMsg);
 
         String decryptedMsg = decrypt(encryptMsg, key);
-        System.out.println("decrypted message is below :");
+        System.out.println("解密信息");
         System.out.println(decryptedMsg);
     }
 

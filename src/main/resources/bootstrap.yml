@@ -5,7 +5,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      # 172.19.186.233 47.101.63.222 192.168.4.172 127.0.0.1
+      # 172.19.186.233  192.168.4.172 127.0.0.1
       defaultZone: http://192.168.4.172:8762/eureka/
   instance:
     instance-id: ${spring.cloud.client.ip-address}:${server.port}
@@ -50,10 +50,18 @@ spring:
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
-#redisson.address=redis://127.0.0.1:6379
+  redis:
+    host: 192.168.4.189
+    port: 6379
+    password:
+
+
+#redisson:
+#  address: redis://211.149.226.29:56379
+
+
 redisson:
-  #address: redis://127.0.0.1:6379
-  address: redis://47.101.63.222:56379
+  address: redis://192.168.4.189:6379
 
 mybatis:
   config-location: classpath:sqlMapConfig.xml

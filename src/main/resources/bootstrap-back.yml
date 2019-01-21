@@ -3,7 +3,7 @@
 eureka:
   client:
     serviceUrl:
-      # 172.19.186.233 47.101.63.222
+      # 172.19.186.233
       defaultZone: http://47.101.63.222:8761/eureka/
   instance:
     instance-id: ${spring.cloud.client.ip-address}:${server.port}

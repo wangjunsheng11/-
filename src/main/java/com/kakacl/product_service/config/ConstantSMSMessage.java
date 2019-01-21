@@ -17,6 +17,6 @@ public interface ConstantSMSMessage {
     String CONSTANT_REPASSWORD = "尊敬的{$var}，您好！您申请找回密码，您的验证码是{$var}，请在{$var}分钟内输入验证码，如果您没有申请，请忽略。";
 
     // 登录账户尝试绑定非法银行卡
-    String CONSTANT_ACCOUNT_BIND_BACK_NUM = "尊敬的{$var}，您好！您的账户尝试绑定非您名下银行卡，您的账户可能被盗，请及时修改密码或联系客服。";
+    String CONSTANT_ACCOUNT_ILLEGAL_BIND_BACK_NUM = "尊敬的{$var}，您好！您的账户尝试绑定非您名下银行卡，您的账户可能被盗，请及时修改密码或联系客服。";
 
 }

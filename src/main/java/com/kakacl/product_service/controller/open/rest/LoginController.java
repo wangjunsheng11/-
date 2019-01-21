@@ -7,16 +7,15 @@ import com.kakacl.product_service.service.AccountService;
 import com.kakacl.product_service.service.CasAccountService;
 import com.kakacl.product_service.utils.*;
 import io.jsonwebtoken.Claims;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author wangwei
@@ -50,6 +49,42 @@ public class LoginController extends BaseController {
     @Autowired
     private CasAccountService casAccountService;
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    private final static String countKey="redis:lock:test";
+
+    @RequestMapping(value = "test", name = "test")
+    public Resp test() {
+        final String key = String.format("redis:test:id:%s", "a" +"");
+        Boolean res = true;
+        while(res){
+            String value = UUID.randomUUID().toString()+System.nanoTime();
+            res = stringRedisTemplate.opsForValue().setIfAbsent(key,value);
+            if (res) {
+                stringRedisTemplate.opsForValue().increment(countKey, 1L);
+                try {
+                    // 执行业务
+                    res = false;
+                } catch (Exception e) {
+
+                } finally {
+                    // 释放锁-释放当时自己获取到的锁-value
+                    String redisValue = stringRedisTemplate.opsForValue().get(key);
+                    if (StringUtils.isNotBlank(redisValue) && redisValue.equals(value)){
+                        stringRedisTemplate.delete(key);
+                    }
+                }
+            } else {
+                res=true;
+                try{
+                    Thread.sleep(500L);
+                } catch (Exception e) {}
+            }
+        }
+        return Resp.success();
+    }
+
     /**
      * showdoc
      * @catalog v1.0.1/用户相关
@@ -58,7 +93,7 @@ public class LoginController extends BaseController {
      * @method post
      * @url /api/open/rest/v1.0.1/do/sendPhoneCode
      * @param phoneNum 必选 string 手机号码
-     * @param type 必选 string 发送类型register默认为注册其他为找回密码 例如refindpass
+     * @param type 必选 string 发送类型register默认为注册(register)-找回密码(refindpass)-绑定非法银行卡(IllegalBindingBackCard)
      * @return {"status":"200","message":"请求成功","data":171330,"page":null,"ext":null}
      * @return_param code int 验证码
      * @return_param status string 状态
@@ -72,11 +107,18 @@ public class LoginController extends BaseController {
         String msg_model = "";
         if(type.equals("register")) {
             msg_model = ConstantSMSMessage.CONSTANT_REGIATER;
-        } else {
+        } else if(type.equals("refindpass")){
             msg_model = ConstantSMSMessage.CONSTANT_REPASSWORD;
+        } else if(type.equals("IllegalBindingBackCard")){
+            msg_model = ConstantSMSMessage.CONSTANT_ACCOUNT_ILLEGAL_BIND_BACK_NUM;
         }
         java.util.Map params = new HashMap();
-        accountService.selectById(params);
+        params.put("phone_num", phoneNum);
+        Map result = accountService.selectByPhone(params);
+        if(result != null) {
+            // exist
+            return Resp.fail(ErrorCode.CODE_6001);
+        }
         String code = NumberUtils.getRandomNumber(Constants.CONSTANT_100000, Constants.CONSTANT_999999) + "";
         List sms_params = new ArrayList();
         sms_params.add(phoneNum);

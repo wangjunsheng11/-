@@ -130,7 +130,7 @@ public class AESUtils {
     public static void main(String[] args) throws Exception {
         String aes = "AES";
         String key = "123456";
-        String content = "{'repairPhone':'18547854787','customPhone':'12365478965','captchav':'58m7'}" + key;
+        String content = "{'scope':'all','num':'569815','time':'IDfGRE'}" + key;
         System.out.println("加密前：" + content);
         System.out.println("加密密钥和解密密钥：" + aes);
         String encrypt = encrypt(content, aes);

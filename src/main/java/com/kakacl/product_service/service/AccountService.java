@@ -9,5 +9,7 @@ public interface AccountService {
 
     Map selectById(java.util.Map params);
 
+    Map selectByPhone(java.util.Map params);
+
     PageInfo<Map> selectByPageAndSelections(int currentPage, int pageSize);
 }
