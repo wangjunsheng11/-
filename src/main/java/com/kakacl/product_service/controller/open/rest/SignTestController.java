@@ -69,7 +69,7 @@ public class SignTestController extends BaseController {
      */
     @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
     @GetMapping(value = "checkSign", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Resp checkSign(HttpServletRequest request){
+    public Resp checkSign(HttpServletRequest request, String time, String sign){
         //从request中获取参数列表，转成map
         Map<String, String> map = SignUtil.toVerifyMap(request.getParameterMap(),false);
         String secretKey =  map.get("secretKey");

@@ -8,6 +8,8 @@ public interface UserDataService {
 
     List<Map> findListByUserid(Map params);
 
+    PageInfo<Map> findListByToken(Map params);
+
     PageInfo<Map> findPaysByUserid(Map params);
 
     List<Map> findPayDetail(Map params);

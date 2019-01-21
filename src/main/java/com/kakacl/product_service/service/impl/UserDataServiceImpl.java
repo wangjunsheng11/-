@@ -28,6 +28,14 @@ public class UserDataServiceImpl implements UserDataService {
     }
 
     @Override
+    public PageInfo<Map> findListByToken(Map params) {
+        PageHelper.startPage((Integer)params.get("currentPage"), (Integer)params.get("pageSize"));
+        List<Map> userPays = userDataMapper.findListByUserid(params);
+        PageInfo<Map> pageInfo = new PageInfo<Map>(userPays);
+        return pageInfo;
+    }
+
+    @Override
     public PageInfo<Map> findPaysByUserid(Map params) {
         PageHelper.startPage((Integer)params.get("currentPage"), (Integer)params.get("pageSize"));
         List<Map> userPays = userDataMapper.findPaysByUserid(params);

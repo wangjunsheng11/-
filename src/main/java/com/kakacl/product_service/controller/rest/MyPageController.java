@@ -1,5 +1,6 @@
 package com.kakacl.product_service.controller.rest;
 
+import com.github.pagehelper.PageInfo;
 import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
@@ -38,6 +39,8 @@ public class MyPageController extends BaseController {
      * @url /api/rest/v1.0.1/mypage/findEmployeeHistory
      * @param token 必选 string token
      * @param time 必选 int 请求时间戳
+     * @param currentPage 可选 int 当前页-默认1
+     * @param pageSize 可选 int 每页数量-默认3
      * @return {"status":"200","message":"请求成功","data":[{"image":"http://192.168.4.170:8081/1545188000331-762166088940527181.png","orbit_id":"8","entry_time":1547006424,"company_name":"苏州富通精密机械有限公司","resignation_time":1547006424,"work_status":"52110"},{"image":"http://192.168.4.170:8081/1545188000331-762166088940527181.png","orbit_id":"9","entry_time":1547006424,"company_name":"航天信息","resignation_time":1547006424,"work_status":"52100"}],"page":null,"ext":null}
      * @return_param data Object 职业轨迹数据
      * @return_param status string 状态
@@ -52,10 +55,15 @@ public class MyPageController extends BaseController {
      */
     @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "findEmployeeHistory", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Resp findEmployeeHistory(HttpServletRequest request, String token, String time) {
+    public Resp findEmployeeHistory(HttpServletRequest request,
+                @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+                @RequestParam(value = "pageSize", defaultValue = "3")int pageSize,
+                String token, String time) {
         Map params = new HashMap<>();
         params.put("user_id", getUserid(request));
-        List<Map> data = userDataService.findListByUserid(params);
+        params.put("currentPage", currentPage);
+        params.put("pageSize", pageSize);
+        PageInfo<Map> data = userDataService.findListByToken(params);
         return Resp.success(data);
     }
 
