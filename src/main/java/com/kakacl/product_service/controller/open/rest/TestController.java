@@ -1,7 +1,9 @@
 package com.kakacl.product_service.controller.open.rest;
 
+import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.domain.Product;
+import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.ProductService;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.BeanUtils;
@@ -57,6 +59,7 @@ public class TestController extends BaseController {
      * http://127.0.0.1:9000/apigateway/product/api/v1/product/list?token=1&user_id=1&product_id=1
      * @return
      */
+    @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
     @RequestMapping("list")
     public Object list(){
         return productService.listProduct();
@@ -68,6 +71,7 @@ public class TestController extends BaseController {
      * @param id
      * @return
      */
+    @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
     @RequestMapping("find")
     public Object findById(int id){
 
@@ -88,8 +92,27 @@ public class TestController extends BaseController {
     @Autowired
     private ProductService mapper;
 
+    @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
     @RequestMapping("test")
     public Object test(){
+        return mapper.selectCountTotal();
+    }
+
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
+    @RequestMapping("test2")
+    public Object test2(){
+        return mapper.selectCountTotal();
+    }
+
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_5)
+    @RequestMapping("test3")
+    public Object test3(){
+        return mapper.selectCountTotal();
+    }
+
+    @AccessLimit(limit = Constants.CONSTANT_5,sec = Constants.CONSTANT_10)
+    @RequestMapping("test4")
+    public Object test4(){
         return mapper.selectCountTotal();
     }
 }

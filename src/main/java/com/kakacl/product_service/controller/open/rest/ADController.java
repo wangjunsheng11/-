@@ -1,9 +1,11 @@
 package com.kakacl.product_service.controller.open.rest;
 
+import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.ADService;
 import com.kakacl.product_service.utils.Resp;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -50,11 +52,13 @@ public class ADController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @AccessLimit(limit = 1,sec = 10)
+    @AccessLimit(limit = Constants.CONSTANT_1, sec = Constants.CONSTANT_1)
     @GetMapping(value = "list", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp list(String time,
                      @RequestParam(name = "apptype", required = true)String apptype,
-                     @RequestParam(name = "ios_version", required = true)String ios_version){
+                     @RequestParam(name = "ios_version", required = true)String ios_version,
+                     HttpServletRequest request){
+        System.out.println(request.getRemoteAddr() + System.currentTimeMillis());
         return Resp.success(adService.selectAD(null));
     }
 

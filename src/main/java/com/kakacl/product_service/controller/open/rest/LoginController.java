@@ -3,6 +3,7 @@ package com.kakacl.product_service.controller.open.rest;
 import com.kakacl.product_service.config.ConstantSMSMessage;
 import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
+import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.AccountService;
 import com.kakacl.product_service.service.CasAccountService;
 import com.kakacl.product_service.utils.*;
@@ -100,6 +101,7 @@ public class LoginController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
     @RequestMapping(value = "sendPhoneCode", method = RequestMethod.POST)
     public Resp sendPhoneCode(
             @RequestParam(name="phoneNum", required=true) String phoneNum,

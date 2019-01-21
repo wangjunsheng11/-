@@ -1,7 +1,9 @@
 package com.kakacl.product_service.controller.open.rest;
 
 import com.kakacl.product_service.config.Constant;
+import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
+import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.utils.ErrorCode;
 import com.kakacl.product_service.utils.HttpClient;
 import com.kakacl.product_service.utils.Resp;
@@ -34,6 +36,7 @@ public class SignTestController extends BaseController {
      * @param request
      * @return
      */
+    @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
     @RequestMapping("send")
     public String send(HttpServletRequest request){
         Map<String,String> param = new HashMap<>();
@@ -66,6 +69,7 @@ public class SignTestController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
     @RequestMapping("checkSign")
     public Resp checkSign(HttpServletRequest request){
         //从request中获取参数列表，转成map

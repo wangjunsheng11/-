@@ -1,6 +1,8 @@
 package com.kakacl.product_service.controller.open.rest;
 
+import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
+import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.ProtocolService;
 import com.kakacl.product_service.utils.IDUtils;
 import com.kakacl.product_service.utils.Resp;
@@ -44,6 +46,7 @@ public class ProtocolController extends BaseController {
      * @remark 备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_1)
     @RequestMapping(value = "findProtocol", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findProtocol(
             @RequestParam(name="group_name", required=true) String group_name,

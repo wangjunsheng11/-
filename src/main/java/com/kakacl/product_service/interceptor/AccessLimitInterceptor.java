@@ -1,10 +1,14 @@
 package com.kakacl.product_service.interceptor;
 
+import com.alibaba.fastjson.JSON;
+import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
+import com.kakacl.product_service.utils.ErrorCode;
+import com.kakacl.product_service.utils.Resp;
+import com.kakacl.product_service.utils.redis.FlowLimit;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
@@ -25,12 +29,17 @@ import java.util.concurrent.TimeUnit;
  * @description 请求限流拦截器
  * @date 2019-01-19
  */
-@Configuration
 public class AccessLimitInterceptor implements HandlerInterceptor {
 
     //使用RedisTemplate操作redis
-    @Resource
-    private RedisTemplate<String, Integer> redisTemplate;
+//    @Resource
+//    public RedisTemplate<String, Integer> redisTemplate;
+
+//    @Autowired
+//    public RedisTemplate<String, Integer> redisTemplate;
+
+//    @Autowired
+//    public StringRedisTemplate stringRedisTemplate;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -51,7 +60,19 @@ public class AccessLimitInterceptor implements HandlerInterceptor {
             int limit = accessLimit.limit();
             int sec = accessLimit.sec();
             String key = getIpAddress(request) + request.getRequestURI();
-            /*Integer maxLimit = redisTemplate.opsForValue().get(key);
+
+            boolean flag = new FlowLimit().invoke(key, sec, limit);
+            if(!flag) {
+                JSON.toJSONString(Resp.fail(ErrorCode.CODE_432));
+                output(response, JSON.toJSONString(Resp.fail(ErrorCode.CODE_432)));
+                return false;
+            } else {
+                return true;
+            }
+
+            /*Object data = redisTemplate.opsForValue().get(key);
+            System.out.println(String.format("data : " + data.toString()));
+            Integer maxLimit = redisTemplate.opsForValue().get(key);
             if (maxLimit == null) {
                 //set时一定要加过期时间
                 redisTemplate.opsForValue().set(key, 1, sec, TimeUnit.SECONDS);

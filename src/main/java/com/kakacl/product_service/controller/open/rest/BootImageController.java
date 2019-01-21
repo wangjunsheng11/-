@@ -1,6 +1,8 @@
 package com.kakacl.product_service.controller.open.rest;
 
+import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
+import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.StartImageService;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,7 @@ public class BootImageController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
     @GetMapping(value = "list", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp list(HttpServletRequest request, String time,
                      @RequestParam(name = "apptype", required = true)String apptype,

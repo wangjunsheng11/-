@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ApplicationObjectSupport;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ public class BaseController extends ApplicationObjectSupport {
 
     @Autowired
     public StringRedisTemplate stringRedisTemplate;
+
 
     /*
      *

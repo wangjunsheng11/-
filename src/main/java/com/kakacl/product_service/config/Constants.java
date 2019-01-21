@@ -4,6 +4,7 @@ public interface Constants {
 
     int CONSTANT_0 = 0;
     int CONSTANT_1 = 1;
+    int CONSTANT_5 = 5;
     int CONSTANT_10 = 10;
     int CONSTANT_1000 = 1000;
     int CONSTANT_100000 = 100000;
