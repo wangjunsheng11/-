@@ -1,6 +1,8 @@
 package com.kakacl.product_service.controller.rest;
 
+import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
+import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.GradeRuleService;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +49,7 @@ public class GradeRuleController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "findList", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findList(@RequestParam(name = "token", required = true) String token,  String time) {
         List<Map> result = gradeRuleService.selectList(null);

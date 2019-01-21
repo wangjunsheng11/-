@@ -2,6 +2,7 @@ package com.kakacl.product_service.controller.rest;
 
 import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
+import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.AccountService;
 import com.kakacl.product_service.service.CasAccountService;
 import com.kakacl.product_service.utils.ErrorCode;
@@ -62,6 +63,7 @@ public class AccountController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "findInfo", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findInfo(
             @RequestParam(name="token", required=true)String token,
@@ -100,6 +102,7 @@ public class AccountController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @PostMapping(value = "rePassByPhonenum", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp rePassByPhonenum(
             @RequestParam(name="phone_num", required=true)String phone_num,
@@ -136,6 +139,7 @@ public class AccountController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @PostMapping(value = "rePass", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp rePass(
             @RequestParam(name="token", required=true)String token,
@@ -178,6 +182,7 @@ public class AccountController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @GetMapping(value = "selectById", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp selectById(@RequestParam(name="user_id", required=true)String user_id, String token){
         Map params = new HashMap();
@@ -206,6 +211,7 @@ public class AccountController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "list", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp list(
             @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,

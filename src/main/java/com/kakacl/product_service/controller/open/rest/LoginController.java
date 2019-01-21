@@ -55,6 +55,7 @@ public class LoginController extends BaseController {
 
     private final static String countKey="redis:lock:test";
 
+    @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
     @RequestMapping(value = "test", name = "test")
     public Resp test() {
         final String key = String.format("redis:test:id:%s", "a" +"");
@@ -151,6 +152,7 @@ public class LoginController extends BaseController {
      * @remark 用户注册data中仅返回用户的咔咔号。
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
     @RequestMapping(value = "register", method = RequestMethod.POST)
     public Resp register(
             @RequestParam(name="phoneNum", required=true)String phoneNum,
@@ -221,6 +223,7 @@ public class LoginController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
     @RequestMapping(value = "login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp login(
             @RequestParam(name="account", required=true)String account,
@@ -276,7 +279,8 @@ public class LoginController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @PostMapping(value = "rePassByPhonenum")
+    @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
+    @PostMapping(value = "rePassByPhonenum", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp rePassByPhonenum(
             @RequestParam(name="phone_num", required=true)String phone_num,
             @RequestParam(name="new_pass", required=true)String new_pass,

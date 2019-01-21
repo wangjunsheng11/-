@@ -1,6 +1,8 @@
 package com.kakacl.product_service.controller.rest;
 
+import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
+import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.UserDataService;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,7 @@ public class MyPageController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "findEmployeeHistory", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findEmployeeHistory(HttpServletRequest request, String token, String time) {
         Map params = new HashMap<>();
@@ -84,6 +87,7 @@ public class MyPageController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "findPys", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findPys(HttpServletRequest request,
                         @RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
@@ -118,6 +122,7 @@ public class MyPageController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "findPayDetail", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findPayDetail(HttpServletRequest request, String token, String time,
                               @RequestParam(value = "pay_id", required = true)String pay_id) {

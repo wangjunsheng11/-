@@ -1,6 +1,8 @@
 package com.kakacl.product_service.controller.rest;
 
+import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
+import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +38,7 @@ public class CommunicationController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @PostMapping(value = "addInfo", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp addBackCard(HttpServletRequest request,
                             @RequestParam(name = "time", required = true)String time,

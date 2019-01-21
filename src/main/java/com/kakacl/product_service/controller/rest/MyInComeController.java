@@ -2,6 +2,7 @@ package com.kakacl.product_service.controller.rest;
 
 import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
+import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.BackCardService;
 import com.kakacl.product_service.utils.ErrorCode;
 import com.kakacl.product_service.utils.IDUtils;
@@ -57,6 +58,7 @@ public class MyInComeController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "addBackCard", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp addBackCard(HttpServletRequest request,
                             @RequestParam(name = "time", required = true)String time,
@@ -165,6 +167,7 @@ public class MyInComeController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "findInfo", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findInfo(HttpServletRequest request, String token, String time) {
         Map params = new HashMap();
@@ -196,6 +199,7 @@ public class MyInComeController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "delBackcard", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp delBackcard(HttpServletRequest request, String token, String time,
                             @RequestParam(name = "backCardardNum", required = true) String backCardardNum) {
@@ -233,6 +237,7 @@ public class MyInComeController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "findDetail", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findDetail(HttpServletRequest request, String token, String time,
                            @RequestParam(name = "id", required = true) String id) {

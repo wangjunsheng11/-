@@ -72,6 +72,7 @@ public class ProtocolController extends BaseController {
      * @remark 详细的协议根据group_name获取
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
     @RequestMapping(value = "findGroup", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findGroup(
             @RequestParam(name="type", required=true, defaultValue = "all") String type,
@@ -98,6 +99,7 @@ public class ProtocolController extends BaseController {
      * @remark 详细的协议根据group_name获取
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
     @RequestMapping(value = "addProtocol", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp addProtocol(
             HttpServletRequest request,

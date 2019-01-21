@@ -11,11 +11,9 @@ import com.kakacl.product_service.utils.SignUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -37,7 +35,7 @@ public class SignTestController extends BaseController {
      * @return
      */
     @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
-    @RequestMapping("send")
+    @GetMapping(value = "send", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String send(HttpServletRequest request){
         Map<String,String> param = new HashMap<>();
         param.put("userId","9527");
@@ -70,7 +68,7 @@ public class SignTestController extends BaseController {
      * @number 99
      */
     @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
-    @RequestMapping("checkSign")
+    @GetMapping(value = "checkSign", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp checkSign(HttpServletRequest request){
         //从request中获取参数列表，转成map
         Map<String, String> map = SignUtil.toVerifyMap(request.getParameterMap(),false);

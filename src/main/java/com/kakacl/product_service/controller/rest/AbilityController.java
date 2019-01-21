@@ -51,7 +51,7 @@ public class AbilityController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @GetMapping(value = "findOne", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findOne(HttpServletRequest request, String time, String token) {
         Map params = new HashMap();
@@ -84,6 +84,7 @@ public class AbilityController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @GetMapping(value = "edit", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp edit(HttpServletRequest request,
                      String token,

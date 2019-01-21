@@ -1,10 +1,14 @@
 package com.kakacl.product_service.controller.rest;
 
+import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
+import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.TntegralService;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,7 +45,8 @@ public class TntegralController  extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
-    @RequestMapping("findUsTertntegral")
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
+    @GetMapping(value = "findUsTertntegral", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findUsTertntegral(HttpServletRequest request) {
         Map params = new HashMap();
         params.put("user_id", getUserid(request));

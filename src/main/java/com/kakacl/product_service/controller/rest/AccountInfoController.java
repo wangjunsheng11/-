@@ -1,6 +1,8 @@
 package com.kakacl.product_service.controller.rest;
 
+import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
+import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.*;
 import com.kakacl.product_service.utils.JWTUtils;
 import com.kakacl.product_service.utils.Resp;
@@ -64,6 +66,7 @@ public class AccountInfoController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "findInfo" , method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findInfo(@RequestParam(name = "token", required = true) String token, String time){
         Map<String, Object> params = new HashMap();
@@ -110,6 +113,7 @@ public class AccountInfoController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "findgrade" , method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findgrade (HttpServletRequest request, String time) {
         Map<String, Object> params = new HashMap();
@@ -141,6 +145,7 @@ public class AccountInfoController extends BaseController {
      * @remark 这里是备注信息
      * @number 99
      */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "findUsTertntegral" , method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findUsTertntegral(HttpServletRequest request) {
         Map result = new HashMap();
