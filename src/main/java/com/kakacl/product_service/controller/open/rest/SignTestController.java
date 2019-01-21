@@ -136,7 +136,7 @@ public class SignTestController extends BaseController {
             return result;
         } else {
             result.put("sysSign", mysign);
-            result.put("sysSign", "sign error .");
+            result.put("sysSign_tips", "sign error .");
             return result;
         }
     }
