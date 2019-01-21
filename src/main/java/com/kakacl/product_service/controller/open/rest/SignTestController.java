@@ -80,7 +80,10 @@ public class SignTestController extends BaseController {
         if (SignUtil.getInstance().verify(map)){
             return Resp.success(this.verify(map));
         }else {
-            return Resp.fail(ErrorCode.CODE_430);
+            Map data = verify(map);
+            map.put("sign", data.toString());
+            map.put("params", map.toString());
+            return Resp.fail(map);
         }
     }
 
@@ -93,20 +96,23 @@ public class SignTestController extends BaseController {
     // 间隔时间
     public int timeout = 1 * 30 * 1000;
 
-    public String verify(Map<String, String> params) {
+    public Map verify(Map<String, String> params) {
+        Map result = new HashMap();
         Logger logger = LoggerFactory.getLogger(this.getClass());
         String sign = "";
         if (params.get("sign") != null) {
             sign = params.get("sign");
         }else {
             logger.info("sign is null");
-            return "";
+            result.put("sign", "sign is null");
+            return result;
         }
         String timestamp = "";
         if (params.get("time") != null) {
             timestamp = params.get("time");
         }else {
-            return "";
+            result.put("time", "time is null");
+            return result;
         }
         //过滤空值、sign
         Map<String, String> sParaNew = SignUtil.paraFilter(params);
@@ -120,11 +126,18 @@ public class SignTestController extends BaseController {
             long curr = System.currentTimeMillis();
             if ((curr - Long.valueOf(timestamp)) > timeout){
                 logger.info("api is time out " + curr);
-                return "";
+                result.put("time", "api is time out " + curr);
+                result.put("sysTime", curr);
+                result.put("sysSign", mysign);
+                return result;
             }
-            return mysign;
+            result.put("time", "sign success .");
+            result.put("sysSign", mysign);
+            return result;
         } else {
-            return "";
+            result.put("sysSign", mysign);
+            result.put("sysSign", "sign error .");
+            return result;
         }
     }
 

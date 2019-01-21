@@ -23,7 +23,15 @@ public class FilterConfig {
         return filterRegistrationBean;
     }
 
-    /*@Bean
+    /*
+     *
+     * 签名控制器
+     * @author wangwei
+     * @date 2019/1/21
+      * @param
+     * @return org.springframework.boot.web.servlet.FilterRegistrationBean
+     */
+    @Bean
     public FilterRegistrationBean buildCFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         filterRegistrationBean.setOrder(3);
@@ -31,7 +39,7 @@ public class FilterConfig {
         filterRegistrationBean.setName("SignFilter");
         filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;
-    }*/
+    }
 
     @Bean
     public FilterRegistrationBean buildDFilter() {

@@ -1,5 +1,6 @@
 package com.kakacl.product_service.filter;
 
+import com.kakacl.product_service.controller.open.rest.SignTestController;
 import com.kakacl.product_service.utils.ErrorCode;
 import com.kakacl.product_service.utils.SignUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -69,15 +70,23 @@ public class SignFilter implements Filter {
         if (SignUtil.getInstance().verify(map)){
             // 签名成功
             filterChain.doFilter(servletRequest, servletResponse);
-            return;
         }else {
+            // 签名失败
+            Map data = new SignTestController().verify(map);
+
+            data.put("code", ErrorCode.CODE_430.getCode());
+            data.put("message", ErrorCode.CODE_430.getMessage());
+            data.put("mysign_tips", "当前内容仅测试用");
+
             PrintWriter writer = null;
             servletResponse.setCharacterEncoding("UTF-8");
             servletResponse.setContentType("text/html; charset=utf-8");
             try {
                 writer = servletResponse.getWriter();
                 String userJson = "{\"code\":\" "+ ErrorCode.CODE_430.getCode() +"\", \"message\": \""+ ErrorCode.CODE_430.getMessage() +"\"}";
-                writer.print(userJson);
+                data.put("productData", userJson);
+                //writer.print(userJson);
+                writer.print(data.toString());
             } catch (IOException e1) {
             } finally {
                 if (writer != null)
