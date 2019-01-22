@@ -248,7 +248,7 @@ public class LoginController extends BaseController {
             cas_base.put("pass_word", "");
             String jwt = JWTUtils.createJWT(cas_base.get("id").toString(), cas_base.get("phone_num").toString(), result.toString(), Constants.CONSTANT_1000 * Constants.CONSTANT_60 * Constants.CONSTANT_30);
             result.put("token", jwt);
-            // 首次登陆 redis 中查询用户是否在24小时中登录过
+            // 首次登陆 redis 中查询用户是否在24小时中登录过 这里需要设置0点清除所有纪录
             String phone = stringRedisTemplate.opsForValue().get("enery_day_login" + cas_base.get("phone_num"));
             if(StringUtils.isBlank(phone)) {
                 Map integral = new HashMap();

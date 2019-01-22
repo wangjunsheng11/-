@@ -81,6 +81,7 @@ public class SignUtil {
         for (String key : sArray.keySet()) {
             String value = sArray.get(key);
             if (value == null || value.equals("") || key.equalsIgnoreCase("sign")) {
+                // || key.equalsIgnoreCase("time") 这里可以将时间参数分离，因为时间参数为毫秒 接口传递需要时间，如果毫秒数一旦超过，则签名验证失败，后面有判断签名时间在合理范围内
                 continue;
             }
             result.put(key, value);

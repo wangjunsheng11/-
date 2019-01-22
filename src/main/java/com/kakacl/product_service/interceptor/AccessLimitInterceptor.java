@@ -1,27 +1,17 @@
 package com.kakacl.product_service.interceptor;
 
 import com.alibaba.fastjson.JSON;
-import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.utils.ErrorCode;
 import com.kakacl.product_service.utils.Resp;
 import com.kakacl.product_service.utils.redis.FlowLimit;
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author wangwei
@@ -30,16 +20,6 @@ import java.util.concurrent.TimeUnit;
  * @date 2019-01-19
  */
 public class AccessLimitInterceptor implements HandlerInterceptor {
-
-    //使用RedisTemplate操作redis
-//    @Resource
-//    public RedisTemplate<String, Integer> redisTemplate;
-
-//    @Autowired
-//    public RedisTemplate<String, Integer> redisTemplate;
-
-//    @Autowired
-//    public StringRedisTemplate stringRedisTemplate;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -60,7 +40,6 @@ public class AccessLimitInterceptor implements HandlerInterceptor {
             int limit = accessLimit.limit();
             int sec = accessLimit.sec();
             String key = getIpAddress(request) + request.getRequestURI();
-
             boolean flag = new FlowLimit().invoke(key, sec, limit);
             if(!flag) {
                 JSON.toJSONString(Resp.fail(ErrorCode.CODE_432));
@@ -69,19 +48,6 @@ public class AccessLimitInterceptor implements HandlerInterceptor {
             } else {
                 return true;
             }
-
-            /*Object data = redisTemplate.opsForValue().get(key);
-            System.out.println(String.format("data : " + data.toString()));
-            Integer maxLimit = redisTemplate.opsForValue().get(key);
-            if (maxLimit == null) {
-                //set时一定要加过期时间
-                redisTemplate.opsForValue().set(key, 1, sec, TimeUnit.SECONDS);
-            } else if (maxLimit < limit) {
-                redisTemplate.opsForValue().set(key, maxLimit + 1, sec, TimeUnit.SECONDS);
-            } else {
-                output(response, "请求太频繁!");
-                return false;
-            }*/
         }
         return true;
     }

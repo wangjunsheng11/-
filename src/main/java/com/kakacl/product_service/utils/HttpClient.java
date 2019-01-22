@@ -139,7 +139,5 @@ public class HttpClient {
         }
         return content.toString();
     }
-
-
 }
 

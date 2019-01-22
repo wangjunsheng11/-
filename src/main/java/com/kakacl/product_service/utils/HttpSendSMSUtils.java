@@ -19,7 +19,6 @@ public class HttpSendSMSUtils {
         try {
             String param = params.toString().substring(1, params.toString().length() -1);
             String returnString = HttpSender.batchSendVariable(url,account, pswd,msg_model,param,needstatus,extno);
-            System.out.println(returnString);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -7,6 +7,9 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
+ * 拦截器配置类
+ *
+ *
  * @author wangwei
  * @version v1.0.0
  * @description
@@ -18,6 +21,7 @@ public class MywebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // 限流拦截器
         registry.addInterceptor(new AccessLimitInterceptor()).addPathPatterns("/**");
 //        registry.addInterceptor(new AccessLimitInterceptor()).excludePathPatterns("/**");
 //        registry.addInterceptor(new MyInterceptor())
