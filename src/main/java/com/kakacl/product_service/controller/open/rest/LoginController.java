@@ -7,7 +7,6 @@ import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.AccountService;
 import com.kakacl.product_service.service.CasAccountService;
 import com.kakacl.product_service.utils.*;
-import io.jsonwebtoken.Claims;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author wangwei
@@ -53,7 +53,9 @@ public class LoginController extends BaseController {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
-    private final static String countKey="redis:lock:test";
+    private final static String countKey = "redis:lock:test";
+
+    private final static String every_login_content = "redis:every_login_area:container";
 
     @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
     @RequestMapping(value = "test", name = "test")
@@ -119,7 +121,7 @@ public class LoginController extends BaseController {
         params.put("phone_num", phoneNum);
         Map result = accountService.selectByPhone(params);
         if(result != null) {
-            // exist
+            // 手机号码已经注册过
             return Resp.fail(ErrorCode.CODE_6001);
         }
         String code = NumberUtils.getRandomNumber(Constants.CONSTANT_100000, Constants.CONSTANT_999999) + "";
@@ -244,15 +246,17 @@ public class LoginController extends BaseController {
         if(result != null) {
             Map cas_base = (Map)result.get("cas_base");
             cas_base.put("pass_word", "");
-            String jwt = JWTUtils.createJWT(cas_base.get("id").toString(), cas_base.get("phone_num").toString(), result.toString(), 1000 * 60 * 30);
+            String jwt = JWTUtils.createJWT(cas_base.get("id").toString(), cas_base.get("phone_num").toString(), result.toString(), Constants.CONSTANT_1000 * Constants.CONSTANT_60 * Constants.CONSTANT_30);
             result.put("token", jwt);
-            // 首次登陆
-            if(1 == 1) {
+            // 首次登陆 redis 中查询用户是否在24小时中登录过
+            String phone = stringRedisTemplate.opsForValue().get("enery_day_login" + cas_base.get("phone_num"));
+            if(StringUtils.isBlank(phone)) {
                 Map integral = new HashMap();
                 int fraction = 1;
                 integral.put("fraction", fraction);
                 integral.put("message", String.format("恭喜你，今日首次登陆，获取%s积分。", fraction));
                 result.put("integral", integral);
+                stringRedisTemplate.opsForValue().set("enery_day_login" + cas_base.get("phone_num").toString(), cas_base.get("phone_num").toString(), Constants.CONSTANT_24, TimeUnit.HOURS);
             }
             return Resp.success(result);
         } else {

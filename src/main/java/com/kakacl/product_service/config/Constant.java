@@ -9,7 +9,9 @@ package com.kakacl.product_service.config;
 public class Constant {
     public static final String JWT_SECRET = "7786df7fc3a34e26a61c034d5ec8245d";
 
+    // 公钥
     public static final String SIGN_SECRETKEY = "mysecret123456";
 
+    // 私钥
     public static final String SIGN_APPKEY= "mykey123456";
 }

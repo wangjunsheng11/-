@@ -47,7 +47,7 @@ public class TntegralController  extends BaseController {
      */
     @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @GetMapping(value = "findUsTertntegral", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Resp findUsTertntegral(HttpServletRequest request) {
+    public Resp findUsTertntegral(HttpServletRequest request, String time, String token) {
         Map params = new HashMap();
         params.put("user_id", getUserid(request));
         Map result = tntegralService.selectOneByUserid(params);

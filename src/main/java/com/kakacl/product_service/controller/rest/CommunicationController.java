@@ -41,12 +41,13 @@ public class CommunicationController extends BaseController {
     @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @PostMapping(value = "addInfo", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp addBackCard(HttpServletRequest request,
-                            @RequestParam(name = "time", required = true)String time,
-                            @RequestParam(name = "token", required = true) String token,
-                            @RequestParam(name = "title", required = true) String title,
-                            @RequestParam(name = "content", required = true) String content,
-                            @RequestParam(name = "receiveid") String receiveid,
-                            @RequestParam(name = "type") String type){
+                @RequestParam(name = "time", required = true)String time,
+                @RequestParam(name = "token", required = true) String token,
+                @RequestParam(name = "title", required = true) String title,
+                @RequestParam(name = "content", required = true) String content,
+                @RequestParam(name = "receiveid") String receiveid,
+                @RequestParam(name = "type") String type){
+
         return Resp.success();
     }
 
