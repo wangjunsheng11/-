@@ -14,4 +14,17 @@ public class Constant {
 
     // 私钥
     public static final String SIGN_APPKEY= "mykey123456";
+
+
+    // -------------------------------------------------REDIS ----------------------------------------------------------------------------------------------------
+
+    // 测试容器
+    public final static String COUNTKEY = "redis:lock:test";
+
+    // 用户每天登录的容器
+    public final static String EVERY_LOGIN_CONTENT = "redis:every_login_area:container";
+
+    // 注册的容器
+    public final static String REGISTER_CONTENT = "redis:register_area:container";
+
 }

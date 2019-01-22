@@ -1,7 +1,6 @@
 package com.kakacl.product_service.controller.open.rest;
 
-import com.kakacl.product_service.config.ConstantSMSMessage;
-import com.kakacl.product_service.config.Constants;
+import com.kakacl.product_service.config.*;
 import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.AccountService;
@@ -53,10 +52,6 @@ public class LoginController extends BaseController {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
-    private final static String countKey = "redis:lock:test";
-
-    private final static String every_login_content = "redis:every_login_area:container";
-
     @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
     @RequestMapping(value = "test", name = "test")
     public Resp test() {
@@ -66,7 +61,7 @@ public class LoginController extends BaseController {
             String value = UUID.randomUUID().toString()+System.nanoTime();
             res = stringRedisTemplate.opsForValue().setIfAbsent(key,value);
             if (res) {
-                stringRedisTemplate.opsForValue().increment(countKey, 1L);
+                stringRedisTemplate.opsForValue().increment(Constant.COUNTKEY, 1L);
                 try {
                     // 执行业务
                     res = false;
@@ -162,6 +157,7 @@ public class LoginController extends BaseController {
             @RequestParam(name="phoneCode", required=true)String phoneCode,
             @RequestParam(name="password", required=true)String password){
         Map<String, Object> params = new HashMap<>();
+        Map reesult = new HashMap();
         int num = NumberUtils.getRandomNumber(Constants.CONSTANT_110000, Constants.CONSTANT_200000);
         // 如果咔咔号和手机号都没有注册过，则允许注册; 如果咔咔号存在，则再一次获取一个咔咔号
         params.clear();
@@ -201,7 +197,19 @@ public class LoginController extends BaseController {
         params.put("id_card", idCode);
         boolean flag = casAccountService.insert(params);
         if(flag) {
-            return Resp.success(num);
+            // 首次注册成功50
+            final String key = String.format(Constant.REGISTER_CONTENT + ":%s", phoneNum);
+            String data = stringRedisTemplate.opsForValue().get(key);
+            if(StringUtils.isBlank(data)) {
+                stringRedisTemplate.opsForValue().set(key, phoneNum, Constants.CONSTANT_999999, TimeUnit.DAYS);
+                Map integral = new HashMap();
+                int fraction = ContantFraction.TOP_REDISTER_SUCCESSFUL;
+                integral.put("fraction", fraction);
+                integral.put("message", String.format(ConstantViewMessage.FIRST_REGISTER, fraction));
+                result.put("integral", integral);
+            }
+            reesult.put("kakanum", num);
+            return Resp.success(reesult);
         } else {
             return Resp.fail();
         }
@@ -249,14 +257,15 @@ public class LoginController extends BaseController {
             String jwt = JWTUtils.createJWT(cas_base.get("id").toString(), cas_base.get("phone_num").toString(), result.toString(), Constants.CONSTANT_1000 * Constants.CONSTANT_60 * Constants.CONSTANT_30);
             result.put("token", jwt);
             // 首次登陆 redis 中查询用户是否在24小时中登录过 这里需要设置0点清除所有纪录
-            String phone = stringRedisTemplate.opsForValue().get("enery_day_login" + cas_base.get("phone_num"));
+            final String key = String.format(Constant.EVERY_LOGIN_CONTENT + ":%s", cas_base.get("phone_num").toString());
+            String phone = stringRedisTemplate.opsForValue().get(key);
             if(StringUtils.isBlank(phone)) {
                 Map integral = new HashMap();
-                int fraction = 1;
+                int fraction = ContantFraction.LOGIN;
                 integral.put("fraction", fraction);
-                integral.put("message", String.format("恭喜你，今日首次登陆，获取%s积分。", fraction));
+                integral.put("message", String.format(ConstantViewMessage.EVERY_DAY_FIRST_LOGIN, fraction));
                 result.put("integral", integral);
-                stringRedisTemplate.opsForValue().set("enery_day_login" + cas_base.get("phone_num").toString(), cas_base.get("phone_num").toString(), Constants.CONSTANT_24, TimeUnit.HOURS);
+                stringRedisTemplate.opsForValue().set(key, cas_base.get("phone_num").toString(), Constants.CONSTANT_24, TimeUnit.HOURS);
             }
             return Resp.success(result);
         } else {
