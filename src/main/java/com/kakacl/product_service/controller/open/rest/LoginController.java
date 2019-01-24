@@ -215,6 +215,25 @@ public class LoginController extends BaseController {
                 if(result == null) {
                     result = new HashMap();
                 }
+
+                params.clear();
+                params.put("phone_num", phoneNum);
+                result = casAccountService.selectOneByPhonenum(params);
+                if(result != null) {
+                    params.clear();
+                    params.put("id", IDUtils.genHadId());
+                    params.put("user_id", result.get("id"));
+                    params.put("fraction", fraction);
+                    params.put("create_time", System.currentTimeMillis() / Constants.CONSTANT_1000);
+                    params.put("create_by", result.get("id"));
+                    // 异步增加积分
+                    new Thread (new Runnable(){
+                        public void run(){
+                            tntegralService.insertOne(params);
+                        }
+                    }).start();
+                }
+
                 result.put("integral", integral);
             }
             reesult.put("kakanum", num);
