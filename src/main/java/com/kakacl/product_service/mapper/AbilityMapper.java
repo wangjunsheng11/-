@@ -1,5 +1,6 @@
 package com.kakacl.product_service.mapper;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -18,4 +19,7 @@ public interface AbilityMapper {
 
     @Update("UPDATE zzf_user_ability SET name=#{name}, remark=#{remark} WHERE id=#{id}")
     boolean updateOne(Map params);
+
+    @Insert("INSERT INTO zzf_user_ability (id, user_id, `name`, img_path, remark, create_date, create_by) VALUES (#{id}, #{user_id}, #{name}, #{img_path}, #{remark}, #{create_date}, #{create_by})")
+    public boolean insertOne(Map params);
 }

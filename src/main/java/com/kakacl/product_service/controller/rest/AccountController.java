@@ -5,10 +5,7 @@ import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.AccountService;
 import com.kakacl.product_service.service.CasAccountService;
-import com.kakacl.product_service.utils.ErrorCode;
-import com.kakacl.product_service.utils.JWTUtils;
-import com.kakacl.product_service.utils.Resp;
-import com.kakacl.product_service.utils.SymmetricEncoder;
+import com.kakacl.product_service.utils.*;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +32,9 @@ public class AccountController extends BaseController {
 
     @Value("${sms-pwd}")
     private String pswd;
+
+    @Value("${account-paaakey}")
+    private String account_paaakey;
 
     @Autowired
     private AccountService accountService;
@@ -110,7 +110,11 @@ public class AccountController extends BaseController {
             @RequestParam(name="phoneCode", required=true)String phoneCode){
         Map params = new HashMap();
         params.put("phone_num", phone_num);
-        params.put("pass_word", SymmetricEncoder.AESEncode(sysName, new_pass));
+        try {
+            params.put("pass_word", SecurityUtil.encrypt(new_pass, account_paaakey));
+        } catch (Exception e) {
+            log.info("${}", e.getMessage());
+        }
         int result = casAccountService.updateOnePassByPhonenum(params);
         if(result == Constants.CONSTANT_1) {
             return Resp.success();
@@ -151,7 +155,11 @@ public class AccountController extends BaseController {
             Claims claims = JWTUtils.parseJWT(token);
             String id = claims.getId();
             params.put("id", id);
-            params.put("pass_word",  SymmetricEncoder.AESEncode(sysName, new_pass));
+            try {
+                params.put("pass_word", SecurityUtil.encrypt(new_pass, account_paaakey));
+            } catch (Exception e) {
+                log.info("${}", e.getMessage());
+            }
             int flag = casAccountService.updateOnePassById(params);
             if(flag == Constants.CONSTANT_1) {
                 params.put("pass_word",  "");

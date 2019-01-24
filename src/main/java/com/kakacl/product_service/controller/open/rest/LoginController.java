@@ -1,5 +1,6 @@
 package com.kakacl.product_service.controller.open.rest;
 
+import com.alibaba.fastjson.JSON;
 import com.kakacl.product_service.config.*;
 import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
@@ -13,7 +14,6 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -206,6 +206,9 @@ public class LoginController extends BaseController {
                 int fraction = ContantFraction.TOP_REDISTER_SUCCESSFUL;
                 integral.put("fraction", fraction);
                 integral.put("message", String.format(ConstantViewMessage.FIRST_REGISTER, fraction));
+                if(result == null) {
+                    result = new HashMap();
+                }
                 result.put("integral", integral);
             }
             reesult.put("kakanum", num);

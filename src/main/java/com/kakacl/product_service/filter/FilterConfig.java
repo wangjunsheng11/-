@@ -41,7 +41,7 @@ public class FilterConfig {
         return filterRegistrationBean;
     }*/
 
-    @Bean
+   @Bean
     public FilterRegistrationBean buildDFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         filterRegistrationBean.setOrder(4);

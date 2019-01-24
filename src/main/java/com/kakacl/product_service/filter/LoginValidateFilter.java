@@ -37,28 +37,13 @@ public class LoginValidateFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        String token = "";
+        String token = servletRequest.getParameter("token");
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        Enumeration headerNames = request.getHeaderNames();
-        // 遍历Header
-        while (headerNames.hasMoreElements()) {
-            String key = (String) headerNames.nextElement();
-            String value = request.getHeader(key);
-            if("token".equals(key)) {
-                token = value;
-            }
-        }
-
-        if(StringUtils.isBlank(token)) {
-            token = servletRequest.getParameter("token");
-        }
-
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
         String path = request.getRequestURI();
-
         if(path.indexOf("/api/open/")> -1 ){
             filterChain.doFilter(servletRequest, servletResponse);
             return;

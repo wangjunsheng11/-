@@ -42,7 +42,7 @@ public class LogFilter implements Filter {
                 String value = ((HttpServletRequest) request).getHeader(key);
                 map.put(key, value);
             }
-            log.info("参数Header ： ${}", map.toString());
+            log.info("LogFilter参数Header ： ${}", map.toString());
 
             Map map1 = request.getParameterMap();
             Set keSet=map1.entrySet();
@@ -58,8 +58,7 @@ public class LogFilter implements Filter {
                 }
 
                 for(int k=0;k<value.length;k++){
-                    System.out.println(ok+"="+value[k]);
-                    log.info("参数request ： ${}", ok + " - " + value[k]);
+                    log.info("LogFilter参数request ： ${}", ok + " - " + value[k]);
                 }
             }
         }

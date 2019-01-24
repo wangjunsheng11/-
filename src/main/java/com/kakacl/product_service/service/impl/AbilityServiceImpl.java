@@ -27,4 +27,9 @@ public class AbilityServiceImpl implements AbilityService {
     public boolean updateOne(Map params) {
         return abilityMapper.updateOne(params);
     }
+
+    @Override
+    public boolean insertOne(Map params) {
+        return abilityMapper.insertOne(params);
+    }
 }

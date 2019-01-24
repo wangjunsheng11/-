@@ -7,4 +7,6 @@ public interface AbilityService {
     List<Map> selectByUserid(java.util.Map params);
 
     boolean updateOne(Map params);
+
+    boolean insertOne(Map params);
 }

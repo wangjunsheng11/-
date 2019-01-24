@@ -29,7 +29,7 @@ public class TestController extends BaseController {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
-    /*@RequestMapping(value = "get", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "get", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp get(HttpServletRequest request, String time, String key) {
         String redisValue=stringRedisTemplate.opsForValue().get(key);
         return Resp.success(redisValue);
@@ -40,7 +40,7 @@ public class TestController extends BaseController {
         Boolean res=true;
         res=stringRedisTemplate.opsForValue().setIfAbsent(key,key + System.nanoTime());
         return Resp.success(res);
-    }*/
+    }
 
     @Value("${server.port}")
     private String port;

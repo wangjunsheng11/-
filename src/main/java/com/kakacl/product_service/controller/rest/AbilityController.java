@@ -4,13 +4,11 @@ import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.AbilityService;
+import com.kakacl.product_service.utils.IDUtils;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -66,9 +64,51 @@ public class AbilityController extends BaseController {
      * @date 2019/1/8
      *
      * @catalog v1.0.1/用户相关
+     * @title 添加能力
+     * @description 添加能力
+     * @method post
+     * @url /api/rest/v1.0.1/ability/add
+     * @param token 必选 string token
+     * @param time 必选 string 时间
+     * @param name 必选 string 能力名称
+     * @param remark 必选 string 能力介绍
+     * @return {"status":"200","message":"请求成功","data":"","page":null,"ext":null}
+     * @return_param ability object 能力
+     * @return_param grade object 等级
+     * @return_param sys_account_info object 用户信息
+     * @return_param subject object 单点系统中的用户信息
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
+    @PostMapping(value = "add", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp add(HttpServletRequest request,
+                     String token,
+                     @RequestParam(name = "name", required = true) String name,
+                     @RequestParam(name = "remark", required = true) String remark,
+                     @RequestParam(name = "time", required = true)String time) {
+        Map params = new HashMap();
+        params.put("id", IDUtils.genHadId());
+        params.put("user_id", getUserid(request));
+        params.put("name", name);
+        params.put("img_path", "http//xx.jpg");
+        params.put("remark", remark);
+        params.put("create_date", System.currentTimeMillis() / Constants.CONSTANT_1000);
+        params.put("create_by", getUserid(request));
+        abilityService.insertOne(params);
+        return Resp.success();
+    }
+
+    /**
+     * showdoc
+     * @author wangwei
+     * @date 2019/1/8
+     *
+     * @catalog v1.0.1/用户相关
      * @title 编辑能力
      * @description 编辑能力
-     * @method get
+     * @method post
      * @url /api/rest/v1.0.1/ability/edit
      * @param token 必选 string token
      * @param time 必选 string 时间
@@ -85,7 +125,7 @@ public class AbilityController extends BaseController {
      * @number 99
      */
     @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
-    @GetMapping(value = "edit", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "edit", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp edit(HttpServletRequest request,
                      String token,
                      @RequestParam(name = "id", required = true) String id,
