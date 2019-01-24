@@ -85,6 +85,10 @@ public class AccountInfoController extends BaseController {
             // 用户等级
             data = gradeService.selectById(params);
             result.put("grade", data);
+            // 用户积分
+            params.clear();
+            params.put("user_id", user_id);
+            result.put("tntegral", tntegralService.selectOneByUserid(params));
             // 我的能力列表数据
             params.clear();
             params.put("user_id", user_id);

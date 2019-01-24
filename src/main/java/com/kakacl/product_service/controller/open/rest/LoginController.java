@@ -6,6 +6,7 @@ import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.AccountService;
 import com.kakacl.product_service.service.CasAccountService;
+import com.kakacl.product_service.service.TntegralService;
 import com.kakacl.product_service.utils.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -48,6 +51,9 @@ public class LoginController extends BaseController {
 
     @Autowired
     private CasAccountService casAccountService;
+
+    @Autowired
+    private TntegralService tntegralService;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -239,6 +245,7 @@ public class LoginController extends BaseController {
     @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
     @RequestMapping(value = "login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp login(
+            HttpServletRequest request,
             @RequestParam(name="account", required=true)String account,
             @RequestParam(name="pass", required=true)String pass,
             String time){
@@ -268,6 +275,19 @@ public class LoginController extends BaseController {
                 integral.put("fraction", fraction);
                 integral.put("message", String.format(ConstantViewMessage.EVERY_DAY_FIRST_LOGIN, fraction));
                 result.put("integral", integral);
+
+                params.clear();
+                params.put("id", IDUtils.genHadId());
+                params.put("user_id", cas_base.get("id"));
+                params.put("fraction", fraction);
+                params.put("create_time", System.currentTimeMillis() / Constants.CONSTANT_1000);
+                params.put("create_by", cas_base.get("id"));
+                // 异步增加积分
+                new Thread (new Runnable(){
+                    public void run(){
+                        tntegralService.insertOne(params);
+                    }
+                }).start();
                 stringRedisTemplate.opsForValue().set(key, cas_base.get("phone_num").toString(), Constants.CONSTANT_24, TimeUnit.HOURS);
             }
             return Resp.success(result);

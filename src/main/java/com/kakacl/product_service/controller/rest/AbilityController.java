@@ -72,11 +72,7 @@ public class AbilityController extends BaseController {
      * @param time 必选 string 时间
      * @param name 必选 string 能力名称
      * @param remark 必选 string 能力介绍
-     * @return {"status":"200","message":"请求成功","data":"","page":null,"ext":null}
-     * @return_param ability object 能力
-     * @return_param grade object 等级
-     * @return_param sys_account_info object 用户信息
-     * @return_param subject object 单点系统中的用户信息
+     * @return {"status":"200","message":"请求成功","data":null,"page":null,"ext":null}
      * @return_param status string 状态
      * @remark 这里是备注信息
      * @number 99
@@ -92,7 +88,7 @@ public class AbilityController extends BaseController {
         params.put("id", IDUtils.genHadId());
         params.put("user_id", getUserid(request));
         params.put("name", name);
-        params.put("img_path", "http//xx.jpg");
+        params.put("img_path", "http//这里应该是用户默认的图片.jpg");
         params.put("remark", remark);
         params.put("create_date", System.currentTimeMillis() / Constants.CONSTANT_1000);
         params.put("create_by", getUserid(request));
