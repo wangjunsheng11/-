@@ -46,7 +46,9 @@ public class CommunicationController extends BaseController {
                 @RequestParam(name = "title", required = true) String title,
                 @RequestParam(name = "content", required = true) String content,
                 @RequestParam(name = "receiveid") String receiveid,
-                @RequestParam(name = "type") String type){
+                @RequestParam(name = "type", required = true, defaultValue = "申诉") String type){
+
+        // 用户给客服发送消息
 
         return Resp.success();
     }

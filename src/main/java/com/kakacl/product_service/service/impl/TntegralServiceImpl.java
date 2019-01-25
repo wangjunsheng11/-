@@ -23,4 +23,9 @@ public class TntegralServiceImpl implements TntegralService {
     public Map selectOneByUserid(Map params) {
         return tntegralMapper.selectOneByUserid(params);
     }
+
+    @Override
+    public boolean insertOne(Map params) {
+        return tntegralMapper.insertOne(params);
+    }
 }
