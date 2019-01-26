@@ -51,7 +51,7 @@ public class MyInComeController extends BaseController {
      * @param name 必选 string 银行卡拥有者名称
      * @param phoneNum 必选 int 银行卡保留手机号
      * @param idCard 必选 string 银行卡拥有者身份证号码
-     * @param opanCardBack 必选 string 开户行标志
+     * @param opanCardBack 必选 string 开户行标志-如ICBC\ABC
      * @return {"status":"200","message":"请求成功","data":null,"page":null,"ext":null}
      * @return_param status string 状态
      * @return_param message string 消息
@@ -70,7 +70,6 @@ public class MyInComeController extends BaseController {
                             @RequestParam(name = "opanCardBack", required = true)String opanCardBack) {
         Map params = new HashMap<>();
         String userId = getUserid(request);
-        System.out.println(userId);
 
         // 只有当当前key不存在的时候，SETNX 会成功 – 此时相当于获取到可以对这个资源进行操作的同步锁
         final String key = String.format("redis:add_card_num:id:%s", userId +"");
@@ -88,7 +87,7 @@ public class MyInComeController extends BaseController {
                     List<Map>  result = backCardService.selectBackCarcdExist(params);
                     if(result != null && result.size() > Constants.CONSTANT_0) {
                         // 已经有绑定过
-                        log.info("基于redis实战分布式锁-成功：stock={} 这个银行卡已经有账户绑定过 ",cardNum);
+                        log.info("lock：stock={} 这个银行卡已经有账户绑定过 ",cardNum);
                         return Resp.fail(ErrorCode.CODE_6010);
                     } else {
                         // 继续执行
