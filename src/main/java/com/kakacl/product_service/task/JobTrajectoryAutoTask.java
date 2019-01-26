@@ -1,5 +1,6 @@
 package com.kakacl.product_service.task;
 
+import com.kakacl.product_service.config.Constant;
 import com.kakacl.product_service.service.JobTrajectoryAutoService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -33,8 +34,6 @@ public class JobTrajectoryAutoTask {
     @Autowired
     private JobTrajectoryAutoService jobTrajectoryAutoService;
 
-    private final static String countKey ="redis:zzf:task:employee_orbit_task_auto_lock";
-
     /*
      * 求职者轨迹定时任务-多久执行一次需要根据线上服务器负载和刷新频率， 不建议超过10s.
      *
@@ -65,7 +64,7 @@ public class JobTrajectoryAutoTask {
             String value = UUID.randomUUID().toString() + System.nanoTime();
             res = stringRedisTemplate.opsForValue().setIfAbsent(key, value);
             if (res) {
-                stringRedisTemplate.opsForValue().increment(countKey, 1L);
+                stringRedisTemplate.opsForValue().increment(Constant.EMPLOYEE_ORBIT_TASK_AUTO_LOCK, 1L);
                 try {
                     res = false;
                     log.info("开始执行业务啦： className: {}", this.getClass().getName());
@@ -139,6 +138,5 @@ public class JobTrajectoryAutoTask {
                 }
             }
         }
-
     }
 }

@@ -21,7 +21,7 @@ public interface TntegralMapper {
      * @param params
      * @return boolean
      */
-    @Insert("INSERT INTO zzf_user_integral_record (`id`, `user_id`, `fraction`, `create_time`, `create_by`) VALUES (#{id}, #{user_id}, #{fraction},#{create_time}, #{create_by})")
+    @Insert("INSERT INTO zzf_user_integral_record (`id`, `user_id`, `fraction`, `create_time`, `create_by`, message) VALUES (#{id}, #{user_id}, #{fraction},#{create_time}, #{create_by}, #{message})")
     boolean insertOne(Map params);
 
     /*

@@ -211,7 +211,8 @@ public class LoginController extends BaseController {
                 Map integral = new HashMap();
                 int fraction = ContantFraction.TOP_REDISTER_SUCCESSFUL;
                 integral.put("fraction", fraction);
-                integral.put("message", String.format(ConstantViewMessage.FIRST_REGISTER, fraction));
+                String message = String.format(ConstantViewMessage.FIRST_REGISTER, fraction);
+                integral.put("message", message);
                 if(result == null) {
                     result = new HashMap();
                 }
@@ -226,6 +227,7 @@ public class LoginController extends BaseController {
                     params.put("fraction", fraction);
                     params.put("create_time", System.currentTimeMillis() / Constants.CONSTANT_1000);
                     params.put("create_by", result.get("id"));
+                    params.put("message", message);
                     // 异步增加积分
                     new Thread (new Runnable(){
                         public void run(){
@@ -291,8 +293,9 @@ public class LoginController extends BaseController {
             if(StringUtils.isBlank(phone)) {
                 Map integral = new HashMap();
                 int fraction = ContantFraction.LOGIN;
+                String message = String.format(ConstantViewMessage.EVERY_DAY_FIRST_LOGIN, fraction);
                 integral.put("fraction", fraction);
-                integral.put("message", String.format(ConstantViewMessage.EVERY_DAY_FIRST_LOGIN, fraction));
+                integral.put("message", message);
                 result.put("integral", integral);
 
                 params.clear();
@@ -301,6 +304,7 @@ public class LoginController extends BaseController {
                 params.put("fraction", fraction);
                 params.put("create_time", System.currentTimeMillis() / Constants.CONSTANT_1000);
                 params.put("create_by", cas_base.get("id"));
+                params.put("message", message);
                 // 异步增加积分
                 new Thread (new Runnable(){
                     public void run(){

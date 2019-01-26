@@ -22,9 +22,12 @@ public class Constant {
     public final static String COUNTKEY = "redis:lock:test";
 
     // 用户每天登录的容器
-    public final static String EVERY_LOGIN_CONTENT = "redis:every_login_area:container";
+    public final static String EVERY_LOGIN_CONTENT = "redis:zzf:every_login_area:container";
 
     // 注册的容器
-    public final static String REGISTER_CONTENT = "redis:register_area:container";
+    public final static String REGISTER_CONTENT = "redis:zzf:register_area:container";
+
+    // 求职者轨迹任务自动锁
+    public final static String EMPLOYEE_ORBIT_TASK_AUTO_LOCK ="redis:zzf:task:employee_orbit_task_auto_lock";
 
 }
