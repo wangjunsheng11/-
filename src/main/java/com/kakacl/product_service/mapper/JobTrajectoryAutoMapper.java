@@ -14,7 +14,8 @@ public interface JobTrajectoryAutoMapper {
       * @param params
      * @return java.util.List<java.util.Map>
      */
-    @Select("SELECT * FROM store_subsidy WHERE del_flag = 0 AND DATE_FORMAT( start_wark_date,'%Y-%m-%d') = DATE_FORMAT(CURDATE()-1,'%Y-%m-%d') AND end_wark_date IS NOT NULL AND `no` NOT IN (SELECT `no` FROM zzf_user_employee_hitory WHERE `no` IS NOT NULL) ORDER BY start_wark_date ASC LIMIT 0, 50")
+    // @Select("SELECT * FROM store_subsidy WHERE del_flag = 0 AND DATE_FORMAT( start_wark_date,'%Y-%m-%d') = DATE_FORMAT(CURDATE()-1,'%Y-%m-%d') AND end_wark_date IS NOT NULL AND `no` NOT IN (SELECT `no` FROM zzf_user_employee_hitory WHERE `no` IS NOT NULL) ORDER BY start_wark_date ASC LIMIT 0, 50")
+    @Select("SELECT * FROM store_subsidy WHERE del_flag = 0 AND end_wark_date IS NOT NULL AND `no` NOT IN (SELECT `no` FROM zzf_user_employee_hitory WHERE `no` IS NOT NULL) ORDER BY start_wark_date ASC LIMIT 0, 50")
     List<Map> findListo0_50(Map params);
 
     /*
@@ -50,7 +51,7 @@ public interface JobTrajectoryAutoMapper {
      * @return java.util.Map
      */
     @Select("SELECT id FROM store_account WHERE phone = #{phone} LIMIT 0, 1")
-    Map findPhoneBuUserInfo(Map params);
+    Map findPhoneByUserInfo(Map params);
 
     /*
      * 添加用户轨迹到周周发系统

@@ -29,7 +29,7 @@ public class ScheduledTest{
     private JobTrajectoryAutoService jobTrajectoryAutoService;
 
     /*
-     *
+     * @deprecated 该方法为测试用
      *
      * 需要将用户的入职信息从表store_employee_history - zzf_user_employee_hitory
      * 获取用户的工资信息 - 补贴信息 - 入职时间 - 离职信息 - 补贴到期时间 等信息

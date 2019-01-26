@@ -45,7 +45,7 @@ public interface JobTrajectoryAutoService {
       * @param params
      * @return java.util.Map
      */
-    Map findPhoneBuUserInfo(Map params);
+    Map findPhoneByUserInfo(Map params);
 
     /*
      * 添加用户轨迹到周周发系统

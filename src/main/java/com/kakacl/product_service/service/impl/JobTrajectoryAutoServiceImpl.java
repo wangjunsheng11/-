@@ -37,8 +37,8 @@ public class JobTrajectoryAutoServiceImpl implements JobTrajectoryAutoService {
     }
 
     @Override
-    public Map findPhoneBuUserInfo(Map params) {
-        return jobTrajectoryAutoMapper.findPhoneBuUserInfo(params);
+    public Map findPhoneByUserInfo(Map params) {
+        return jobTrajectoryAutoMapper.findPhoneByUserInfo(params);
     }
 
     @Override

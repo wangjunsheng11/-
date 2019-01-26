@@ -33,7 +33,7 @@ public class JobTrajectoryAutoTask {
     @Autowired
     private JobTrajectoryAutoService jobTrajectoryAutoService;
 
-    private final static String countKey ="redis:employee_orbit_task_auto_lock";
+    private final static String countKey ="redis:zzf:task:employee_orbit_task_auto_lock";
 
     /*
      * 求职者轨迹定时任务-多久执行一次需要根据线上服务器负载和刷新频率， 不建议超过10s.
@@ -59,7 +59,7 @@ public class JobTrajectoryAutoTask {
     public void employeeOrbitTask(){
 
         // 加Redis同步锁
-        final String key = String.format("redis:employee_orbit_task_auto_task:id:%s", "employeeOrbitTask");
+        final String key = String.format("redis:zzf:task:employee_orbit_task_auto_task:id:%s", "employeeOrbitTask");
         Boolean res = true;
         while(res) {
             String value = UUID.randomUUID().toString() + System.nanoTime();
