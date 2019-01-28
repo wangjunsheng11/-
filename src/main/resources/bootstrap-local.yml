@@ -14,7 +14,7 @@ eureka:
 #服务的名称
 spring:
   application:
-    name: provider-service
+    name: provider_zzf_service
     #指定从哪个配置中心读取
   #      cloud:
   #        config:

@@ -215,7 +215,7 @@ public class MyInComeController extends BaseController {
      * @url /api/rest/v1.0.1/myincome/delBackcard
      * @param time 必选 string 请求时间戳
      * @param token 必选 string token
-     * @param  backCardardNum 必选 string 银行卡卡号
+     * @param  backCardNum 必选 string 银行卡卡号
      * @return {"status":"200","message":"请求成功","data":null,"page":null,"ext":null}
      * @return_param status string 状态
      * @return_param message string 消息
@@ -225,10 +225,10 @@ public class MyInComeController extends BaseController {
     @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "delBackcard", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp delBackcard(HttpServletRequest request, String token, String time,
-                            @RequestParam(name = "backCardardNum", required = true) String backCardardNum) {
+                            @RequestParam(name = "backCardNum", required = true) String backCardNum) {
         Map params = new HashMap();
         params.put("user_id", getUserid(request));
-        params.put("card_num", backCardardNum);
+        params.put("card_num", backCardNum);
         params.put("del_flag", "1");
         boolean flag = backCardService.updateByUserIdAndBackcardNum(params);
         if(flag) {
