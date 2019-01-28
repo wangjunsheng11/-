@@ -25,4 +25,15 @@ public interface ChatMapper {
     @Update("UPDATE zzf_user_chat_history SET update_by=#{update_by}, update_time=#{update_time}, read_status = #{read_status} WHERE (id=#{id})")
     boolean updateInfo(Map params);
 
+    @Insert("INSERT INTO zzf_user_friends (id, my_id, friend_id, group_name, create_time, create_by) VALUES (#{id}, #{my_id}, #{friend_id}, #{group_name}, #{create_time}, #{create_by})")
+    boolean addFriend(Map params);
+
+    @Update("update zzf_user_friends set del_flag = #{del_flag} where friend_id = #{friend_id} and my_id = #{my_id}")
+    boolean updateFriend(Map params);
+
+    @Select("SELECT * FROM zzf_user_chat_history WHERE content like '%${search_key}%' and (to_id = #{user_id} or send_id = #{user_id}) AND del_flag = 0")
+    List<Map> findMessages(Map params);
+
+    @Select("SELECT DISTINCT group_name FROM zzf_user_friends WHERE my_id = #{user_id} AND del_flag = 0")
+    List<Map> findGroup(Map params);
 }

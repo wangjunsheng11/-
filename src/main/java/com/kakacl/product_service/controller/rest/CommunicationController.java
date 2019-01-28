@@ -4,6 +4,7 @@ import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.ChatService;
+import com.kakacl.product_service.utils.ErrorCode;
 import com.kakacl.product_service.utils.IDUtils;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +69,7 @@ public class CommunicationController extends BaseController {
         if(flag) {
             return Resp.success();
         } else {
-            return Resp.fail();
+            return Resp.fail(ErrorCode.CODE_6801);
         }
     }
 
@@ -135,7 +136,7 @@ public class CommunicationController extends BaseController {
         if(flag) {
             return Resp.success();
         } else {
-            return Resp.fail();
+            return Resp.fail(ErrorCode.CODE_6801);
         }
     }
 

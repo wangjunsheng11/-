@@ -16,4 +16,12 @@ public interface ChatService {
     List<Map> findInfoBySendid(Map params);
 
     boolean updateInfo(Map params);
+
+    boolean addFriend(Map params);
+
+    boolean updateFriend(Map params);
+
+    List<Map> findMessages(Map params);
+
+    List<Map> findGroup(Map params);
 }

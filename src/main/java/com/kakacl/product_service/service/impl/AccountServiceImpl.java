@@ -29,6 +29,11 @@ public class AccountServiceImpl
     }
 
     @Override
+    public List<Map> selectByPhoneORKakaNum(Map params) {
+        return accountMapper.selectByPhoneORKakaNum(params);
+    }
+
+    @Override
     public PageInfo<Map> selectByPageAndSelections(int currentPage, int pageSize) {
         PageHelper.startPage(currentPage, pageSize);
         List<Map> docs = accountMapper.selectByPageAndSelections(null);
