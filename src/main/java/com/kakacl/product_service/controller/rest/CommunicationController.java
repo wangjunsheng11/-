@@ -57,7 +57,6 @@ public class CommunicationController extends BaseController {
                 @RequestParam(name = "type", required = true, defaultValue = "申诉") String type,
                         Map params){
 
-        // 用户相互发送消息 id, send_id, to_id, content, title, create_by, create_time
         params.put("id", IDUtils.genHadId());
         params.put("send_id", getUserid(request));
         params.put("to_id", receiveid);
