@@ -1,9 +1,12 @@
 package com.kakacl.product_service.controller.rest;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.BackCardService;
+import com.kakacl.product_service.utils.BackUtils;
 import com.kakacl.product_service.utils.ErrorCode;
 import com.kakacl.product_service.utils.IDUtils;
 import com.kakacl.product_service.utils.Resp;
@@ -51,7 +54,7 @@ public class MyInComeController extends BaseController {
      * @param name 必选 string 银行卡拥有者名称
      * @param phoneNum 必选 int 银行卡保留手机号
      * @param idCard 必选 string 银行卡拥有者身份证号码
-     * @param opanCardBack 必选 string 开户行标志-如ICBC\ABC
+     * @param openCardBack 必选 string 开户行标志-如ICBC\ABC
      * @return {"status":"200","message":"请求成功","data":null,"page":null,"ext":null}
      * @return_param status string 状态
      * @return_param message string 消息
@@ -67,7 +70,7 @@ public class MyInComeController extends BaseController {
                             @RequestParam(name = "name", required = true)String name,
                             @RequestParam(name = "phoneNum", required = true)String phoneNum,
                             @RequestParam(name = "idCard", required = true)String idCard,
-                            @RequestParam(name = "opanCardBack", required = true)String opanCardBack) {
+                            @RequestParam(name = "openCardBack", required = true)String openCardBack) {
         Map params = new HashMap<>();
         String userId = getUserid(request);
 
@@ -105,13 +108,34 @@ public class MyInComeController extends BaseController {
                         log.info("继续执行 身份证号码验证通过：stock={}  ", data.get("id_card"));
 
                         // 3.判断银行卡和开户行是否一致
-
+                        String backResult = BackUtils.getCardDetail(cardNum);
+                        log.info("银行卡接口返回值 ： %s", backResult);
+                        JSONObject obj = JSON.parseObject(backResult);
+                        if(obj != null && obj.get("validated").toString().equals("true")) {
+                            if(obj.get("cardType").toString().toLowerCase().contains("dc")) {
+                                String bank = obj.get("bank").toString(); // CCB
+                                if(!bank.equals(openCardBack)) {
+                                    return Resp.fail(ErrorCode.CODE_454);
+                                }
+                                String cardType = obj.get("cardType").toString(); // DC 储蓄卡； CC 信用卡, 贷记卡 ；
+                                String validated = obj.get("validated").toString(); // true
+                                String stat = obj.get("stat").toString(); // ok
+                                String.format(" bank: %s ,  ", bank);
+                                // System.out.println(String.format(" bank: %s , cardType %s ,  validated %s , stat %s ", bank, cardType, validated, stat));
+                                log.info("bank {} , cardType {} , validated {} , stat {}  ", bank, cardType, validated, stat);
+                            } else {
+                                return Resp.fail(ErrorCode.CODE_452);
+                            }
+                        } else {
+                            return Resp.fail(ErrorCode.CODE_453);
+                        }
                         // 4.银行卡四要素验证
+
                         // 5.保存数据
                         params.clear();
                         params.put("id", IDUtils.genHadId());
                         params.put("user_id", userId);
-                        params.put("back_type", opanCardBack);
+                        params.put("back_type", openCardBack);
                         params.put("phone_num", phoneNum);
                         params.put("card_num", cardNum);
                         params.put("id_card", idCard);

@@ -67,8 +67,8 @@ public class JobTrajectoryAutoTask {
                 stringRedisTemplate.opsForValue().increment(Constant.EMPLOYEE_ORBIT_TASK_AUTO_LOCK, 1L);
                 try {
                     res = false;
-                    log.info("开始执行业务啦： className: {}", this.getClass().getName());
-                    log.info("开始执行业务啦： FunctionName employeeOrbitTask , value: {}", value);
+//                    log.info("开始执行业务啦： className: {}", this.getClass().getName());
+//                    log.info("开始执行业务啦： FunctionName employeeOrbitTask , value: {}", value);
                     Map params = new HashMap();
                     params.clear();
                     List<Map> data = jobTrajectoryAutoService.findListo0_50(params);
