@@ -119,7 +119,7 @@ public class MyChatController extends BaseController {
      * @url /api/rest/v1.0.1/mychat/findAddFriends
      * @param time 必选 string 请求时间戳
      * @param token 必选 string token
-     * @return {"status":"200","message":"请求成功","data":,"page":null,"ext":null}
+     * @return {"status":"200","message":"请求成功","data":[{"create_by":"1547006424247526","del_flag":0,"friend_id":"1547006424247526","create_time":1548664467,"group_name":"同学","my_id":"1547006424247526","id":"1548664465580429","update_by":"50200","status":50200},{"create_by":"1547006424247526","del_flag":0,"friend_id":"1547006424247526","create_time":1548664507,"group_name":"同事","my_id":"1547006424247526","id":"1548664507173319","update_by":"50203","status":50200}],"page":null,"ext":null}
      * @return_param message string 消息
      * @return_param status string 状态
      * @remark 这里是备注信息
@@ -143,11 +143,11 @@ public class MyChatController extends BaseController {
      * @catalog v1.0.1/用户聊天
      * @title 同意添加单个好友
      * @description  同意添加单个好友，如果同意者需要添加申请者为好友
-     * @method get
+     * @method post
      * @url /api/rest/v1.0.1/mychat/agreeOne
      * @param time 必选 string 请求时间戳
      * @param token 必选 string token
-     * @return {"status":"200","message":"请求成功","data":,"page":null,"ext":null}
+     * @return {"status":"200","message":"请求成功","data":[{"group_name":"1"},{"group_name":"同事"}],"page":null,"ext":null}
      * @return_param message string 消息
      * @return_param status string 状态
      * @remark 这里是备注信息

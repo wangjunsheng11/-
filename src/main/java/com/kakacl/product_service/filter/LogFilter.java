@@ -33,6 +33,7 @@ public class LogFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest r = (HttpServletRequest) request;
+        log.info("LogFilter RequestURI ： ${}", ((HttpServletRequest) request).getRequestURI());
         String path = r.getQueryString();
         if (path != null) {
             Map<String, String> map = new HashMap<String, String>();
