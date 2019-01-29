@@ -31,6 +31,11 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
+    public List<Map> findAddFriends(Map params) {
+        return chatMapper.findAddFriends(params);
+    }
+
+    @Override
     public boolean updateInfo(Map params) {
         return chatMapper.updateInfo(params);
     }
@@ -43,6 +48,11 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public boolean updateFriend(Map params) {
         return chatMapper.updateFriend(params);
+    }
+
+    @Override
+    public boolean agreeOne(Map params) {
+        return chatMapper.agreeOne(params);
     }
 
     @Override

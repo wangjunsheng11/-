@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
-
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 
 /**
  * @author wangwei
@@ -30,8 +28,8 @@ public class CommunicationController extends BaseController {
 
     /**
      * showdoc
-     * @catalog v1.0.1/用户和客服聊天
-     * @title 用户申诉
+     * @catalog v1.0.1/聊天
+     * @title 用户发送消息
      * @description 类似于用户和客服聊天，发送消息
      * @method post
      * @url /api/rest/v1.0.1/communication/addInfo
@@ -77,7 +75,7 @@ public class CommunicationController extends BaseController {
      * showdoc
      * @catalog v1.0.1/聊天
      * @title 查询和某一用户的聊天
-     * @description 查询和某一用户的聊天
+     * @description 查询和某一用户的聊天，内容仅限于发送本人发送的消息内容。
      * @method get
      * @url /api/rest/v1.0.1/communication/findInfoBySendid
      * @param time 必选 string 请求时间戳

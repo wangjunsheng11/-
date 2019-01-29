@@ -31,6 +31,7 @@ public class ProductServiceApplication {
     public RedissonClient redissonClient(){
         Config config=new Config();
         config.useSingleServer().setAddress(env.getProperty("redisson.address"));
+//        config.useSingleServer().setPassword("root");
         RedissonClient client = Redisson.create(config);
         return client;
     }

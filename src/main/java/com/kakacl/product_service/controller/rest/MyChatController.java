@@ -1,5 +1,6 @@
 package com.kakacl.product_service.controller.rest;
 
+import com.kakacl.product_service.config.ConstantDBStatus;
 import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
@@ -106,6 +107,67 @@ public class MyChatController extends BaseController {
             return Resp.success();
         } else {
             return Resp.success(ErrorCode.CODE_6801);
+        }
+    }
+
+    /**
+     * showdoc
+     * @catalog v1.0.1/用户聊天
+     * @title 获取申请好友的列表
+     * @description  获取申请好友的列表，包括提交申请的，忽略的
+     * @method get
+     * @url /api/rest/v1.0.1/mychat/findAddFriends
+     * @param time 必选 string 请求时间戳
+     * @param token 必选 string token
+     * @return {"status":"200","message":"请求成功","data":,"page":null,"ext":null}
+     * @return_param message string 消息
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
+    @RequestMapping(value = "findAddFriends", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp findAddFriends(HttpServletRequest request,
+                           String  token,
+                           @RequestParam(name="time")String time,
+                           Map params) {
+        params.put("status_01", Constants.CONSTANT_50200);
+        params.put("status_02", Constants.CONSTANT_50203);
+        params.put("user_id", getUserid(request));
+        List<Map> data = chatService.findAddFriends(params);
+        return Resp.success(data);
+    }
+
+    /**
+     * showdoc
+     * @catalog v1.0.1/用户聊天
+     * @title 同意添加单个好友
+     * @description  同意添加单个好友，如果同意者需要添加申请者为好友
+     * @method get
+     * @url /api/rest/v1.0.1/mychat/agreeOne
+     * @param time 必选 string 请求时间戳
+     * @param token 必选 string token
+     * @return {"status":"200","message":"请求成功","data":,"page":null,"ext":null}
+     * @return_param message string 消息
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
+    @RequestMapping(value = "agreeOne", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp agreeOne(HttpServletRequest request,
+                               String  token,
+                               @RequestParam(name="time")String time,
+                                @RequestParam(name="friend_id")String friend_id,
+                               Map params) {
+        params.put("friend_id", friend_id);
+        params.put("status_01", Constants.CONSTANT_50201);
+        params.put("user_id", getUserid(request));
+        boolean flag = chatService.agreeOne(params);
+        if(flag) {
+            return Resp.success();
+        } else {
+            return Resp.fail(ErrorCode.CODE_6801);
         }
     }
 
