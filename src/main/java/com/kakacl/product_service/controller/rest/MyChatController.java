@@ -56,7 +56,7 @@ public class MyChatController extends BaseController {
      * @param time 必选 string 请求时间戳
      * @param token 必选 string token
      * @param search_key 必选 咔咔号或者手机号
-     * @return {"status":"200","message":"请求成功","data":,"page":null,"ext":null}
+     * @return {"status":"200","message":"请求成功","data":[{"create_by":"1","hear_path":"","del_flag":0,"create_time":1547006424,"user_name":"test","roleid":"1","kaka_num":"128643","id_card":"2222","phone_num":"13800138000","id":"1547006424247526","account_status":52000,"introduction":"456"}],"page":null,"ext":null}
      * @return_param message string 消息
      * @return_param status string 状态
      * @remark 这里是备注信息
@@ -205,7 +205,7 @@ public class MyChatController extends BaseController {
      * @param time 必选 string 请求时间戳
      * @param token 必选 string token
      * @param friend_id 必选 string 需要查询的好友主键
-     * @return {"status":"200","message":"请求成功","data":,"page":null,"ext":null}
+     * @return {"status":"200","message":"请求成功","data":{"user_id":"1547008191643825","userMap":{"create_by":"1","hear_path":"","del_flag":0,"create_time":1547008191,"user_name":"anonymous","roleid":"2","kaka_num":"149386","id_card":"22221","phone_num":"13800138001","id":"1547008191643825","account_status":52000,"introduction":"没有简介"},"gradeMap":{"create_by":"1","del_flag":0,"create_time":1547008191,"user_id":"1547008191643825","grade":1,"id":"1547008191666655","fraction":0},"talentMap":[]},"page":null,"ext":null}
      * @return_param message string 消息
      * @return_param status string 状态
      * @remark 这里是备注信息
