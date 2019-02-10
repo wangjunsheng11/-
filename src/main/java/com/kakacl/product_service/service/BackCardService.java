@@ -5,6 +5,26 @@ import java.util.Map;
 
 public interface BackCardService {
 
+    /*
+     * 查询银行规则
+     *
+     * @author wangwei
+     * @date 2019/2/10
+     * @param params
+     * @return java.util.Map
+     */
+    List<Map> selectBankRule(Map params);
+
+    /*
+     * 设置银行规则
+     *
+     * @author wangwei
+     * @date 2019/2/10
+     * @param params
+     * @return java.util.Map
+     */
+    boolean insertBankRule(Map params);
+
     boolean addCard(Map params);
 
     List<Map> selectList(Map params);

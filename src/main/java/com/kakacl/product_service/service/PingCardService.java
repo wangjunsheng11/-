@@ -10,5 +10,15 @@ import java.util.Map;
  */
 public interface PingCardService {
 
+    /*
+     * 获取用户最后一次打卡数据
+     *
+     * @author wangwei
+     * @date 2019/2/10
+     * @param params
+     * @return java.util.Map
+     */
+    Map slectLastPingType(Map params);
+
     boolean insertPingCard(Map params);
 }

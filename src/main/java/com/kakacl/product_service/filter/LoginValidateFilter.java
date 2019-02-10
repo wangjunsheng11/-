@@ -53,7 +53,7 @@ public class LoginValidateFilter implements Filter {
             // 判断是否过期 没有过期在header更新token
             try{
                 Claims claims = JWTUtils.parseJWT(token);
-                ((HttpServletResponse) servletResponse).setHeader("token", JWTUtils.createJWT(claims.getId(), claims.getIssuer(), claims.getSubject(), Constants.CONSTANT_1000 * Constants.CONSTANT_60 * Constants.CONSTANT_30));
+                ((HttpServletResponse) servletResponse).setHeader("token", JWTUtils.createJWT(claims.getId(), claims.getIssuer(), claims.getSubject(), Constants.CONSTANT_1000 * Constants.CONSTANT_60 * Constants.CONSTANT_30 * 5000));
                 filterChain.doFilter(servletRequest, servletResponse);
             } catch (Exception e) {
                 PrintWriter writer = null;

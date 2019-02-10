@@ -30,4 +30,13 @@ public class Constant {
     // 求职者轨迹任务自动锁
     public final static String EMPLOYEE_ORBIT_TASK_AUTO_LOCK ="redis:zzf:task:employee_orbit_task_auto_lock";
 
+
+
+    // ------------------------------------------------- PING Type ----------------------------------------------------------------------------------------------------
+
+
+    public final static String PING_TYPE_UP = "上班";
+
+    public final static String PING_TYPE_DOWN = "下班";
+
 }

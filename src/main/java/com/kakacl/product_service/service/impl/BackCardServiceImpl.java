@@ -21,6 +21,16 @@ public class BackCardServiceImpl implements BackCardService {
     private BackCardMapper backCardMapper;
 
     @Override
+    public List<Map> selectBankRule(Map params) {
+        return backCardMapper.selectBankRule(params);
+    }
+
+    @Override
+    public boolean insertBankRule(Map params) {
+        return backCardMapper.insertBankRule(params);
+    }
+
+    @Override
     public boolean addCard(Map params) {
         return backCardMapper.addCard(params);
     }

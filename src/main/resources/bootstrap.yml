@@ -1,12 +1,13 @@
 server:
+  #port: 8086
   port: 8773
 
 #指定注册中心地址
 eureka:
   client:
     serviceUrl:
-      # 172.19.186.233  192.168.4.172 127.0.0.1
-      defaultZone: http://192.168.4.172:8762/eureka/
+      # 172.19.186.233 47.101.63.222 192.168.4.172 127.0.0.1
+      defaultZone: http://47.101.63.222:8764/eureka/
   instance:
     instance-id: ${spring.cloud.client.ip-address}:${server.port}
     prefer-ip-address: true
@@ -24,17 +25,17 @@ spring:
   #          profile: test
   #消息队列
   rabbitmq:
-    host: 192.168.4.172
+    host: 211.149.226.29
     port: 5672
-    username: admin
-    password: admin
+    username: guest
+    password: guest
   datasource:
     username: root
-    password: kakacldb2018u
-    url: jdbc:mysql://192.168.4.131:23336/springcloud_guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8
+    password: kakacl_123456
+    url: jdbc:mysql://211.149.226.29:8088/springcloud_guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-    initialSize: 2
+    initialSize: 5
     minIdle: 5
     maxActive: 10
     maxWait: 60000
@@ -51,17 +52,12 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
   redis:
-    host: 192.168.4.189
-    port: 6379
-    password:
-
-
-#redisson:
-#  address: redis://211.149.226.29:56379
-
+    host: 47.101.63.222
+    port: 56379
+    password: root
 
 redisson:
-  address: redis://192.168.4.189:6379
+  address: redis://47.101.63.222:56379
 
 mybatis:
   config-location: classpath:sqlMapConfig.xml

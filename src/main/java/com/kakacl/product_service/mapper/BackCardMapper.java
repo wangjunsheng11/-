@@ -16,6 +16,28 @@ import java.util.*;
 public interface BackCardMapper {
 
     /*
+     * 查询银行规则
+     *
+     * @author wangwei
+     * @date 2019/2/10
+      * @param params
+     * @return java.util.Map
+     */
+    @Select("select * from zzf_user_bank_rule where del_flag = 0")
+    List<Map> selectBankRule(Map params);
+
+    /*
+     * 设置银行规则
+     *
+     * @author wangwei
+     * @date 2019/2/10
+     * @param params
+     * @return java.util.Map
+     */
+    @Insert("INSERT INTO zzf_user_bank_rule (id, bank_name, bank_type, card_type, bank_sign, sign_path, `order`) VALUES (#{id},#{bank_name}, #{bank_type}, #{card_type}, #{bank_sign}, #{sign_path}, #{order})")
+    boolean insertBankRule(Map params);
+
+    /*
      *
      * 添加银行卡
      * @author wangwei

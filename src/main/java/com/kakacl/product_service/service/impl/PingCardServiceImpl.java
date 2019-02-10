@@ -20,6 +20,11 @@ public class PingCardServiceImpl implements PingCardService {
     private PingCardMapper pingCardMapper;
 
     @Override
+    public Map slectLastPingType(Map params) {
+        return pingCardMapper.slectLastPingType(params);
+    }
+
+    @Override
     public boolean insertPingCard(Map params) {
         return pingCardMapper.insertPingCard(params);
     }

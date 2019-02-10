@@ -1,5 +1,6 @@
 package com.kakacl.product_service.test;
 
+import com.kakacl.product_service.utils.SignUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ import java.util.*;
 public class SignTest {
 
     /** 加密密钥 */
-    public String appkey = "myprovitekey";
+    public String appkey = "mykey123456";
 
     // 间隔时间
     public int timeout = 1 * 30 * 1000;
@@ -33,11 +34,13 @@ public class SignTest {
      * @return void
      */
     @Test
-    public void testSign() {
+    public void testSign() throws Exception {
         Map params = new HashMap();
-        params.put("sign", "f34440e6a59729220aadd6fa843e9ba6");
+        params.put("sign", "89e4d9da9c3b6e8ffb1c80848c1f8d32");
         params.put("time", System.currentTimeMillis() + "");
         params.put("secretKey", "mysecret123456");
+        // Thread.sleep(500L);
+        System.out.println(params.toString());
         System.out.println(verify(params));;
     }
 
@@ -58,11 +61,11 @@ public class SignTest {
             return result;
         }
         //过滤空值、sign
-        Map<String, String> sParaNew = paraFilter(params);
+        Map<String, String> sParaNew = SignUtil.paraFilter(params);
         //获取待签名字符串
-        String preSignStr = createLinkString(sParaNew);
+        String preSignStr = SignUtil.createLinkString(sParaNew);
         //获得签名验证结果
-        String mysign = DigestUtils.md5Hex(getContentBytes(preSignStr + appkey, "UTF-8"));
+        String mysign = DigestUtils.md5Hex(SignUtil.getContentBytes(preSignStr + appkey, "UTF-8"));
         if (mysign.equals(sign)) {
             //是否超时
             long curr = System.currentTimeMillis();
@@ -79,77 +82,6 @@ public class SignTest {
             result.put("sysSign", mysign);
             result.put("sysSign_tips", "sign error .");
             return result;
-        }
-    }
-
-    /**
-     * 除去数组中的空值和签名参数
-     * @param sArray 签名参数组
-     * @return 去掉空值与签名参数后的新签名参数组
-     */
-    public Map<String, String> paraFilter(Map<String, String> sArray) {
-        Map<String, String> result = new HashMap<>();
-        if (sArray == null || sArray.size() <= 0) {
-            return result;
-        }
-        for (String key : sArray.keySet()) {
-            String value = sArray.get(key);
-            if (value == null || value.equals("") || key.equalsIgnoreCase("sign")) {
-                continue;
-            }
-            result.put(key, value);
-        }
-        return result;
-    }
-
-    /**
-     * 把数组所有元素排序，并按照“参数=参数值”的模式用“&”字符拼接成字符串
-     * @param params 需要排序并参与字符拼接的参数组
-     * @return 拼接后字符串
-     */
-    public String createLinkString(Map<String, String> params) {
-        return createLinkString(params, false);
-    }
-
-    /**
-     * 把数组所有元素排序，并按照“参数=参数值”的模式用“&”字符拼接成字符串
-     * @param params 需要排序并参与字符拼接的参数组
-     * @param encode 是否需要UrlEncode
-     * @return 拼接后字符串
-     */
-    public String createLinkString(Map<String, String> params, boolean encode) {
-        List<String> keys = new ArrayList<>(params.keySet());
-        Collections.sort(keys);
-        String prestr = "";
-        for (int i = 0; i < keys.size(); i++) {
-            String key = keys.get(i);
-            String value = params.get(key);
-            if (encode)
-                // value = urlEncode(value, INPUT_CHARSET);
-            if (i == keys.size() - 1) {//拼接时，不包括最后一个&字符
-                prestr = prestr + key + "=" + value;
-            } else {
-                prestr = prestr + key + "=" + value + "&";
-            }
-        }
-        return prestr;
-    }
-
-    /**
-     * 编码转换
-     * @param content
-     * @param charset
-     * @return
-     * @throws UnsupportedEncodingException
-     */
-    public byte[] getContentBytes(String content, String charset) {
-        if (charset == null || "".equals(charset)) {
-            return content.getBytes();
-        }
-        try {
-            return content.getBytes(charset);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("MD5签名过程中出现错误,指定的编码集不对,您目前指定的编码集是:" + charset);
         }
     }
 
