@@ -12,4 +12,10 @@ import java.util.Map;
 public interface TalentService {
 
     List<Map> selectList(Map params);
+
+    List<Map> selectListTalent(Map params);
+
+    Map selectTalentById(Map params);
+
+    boolean edit(Map params);
 }

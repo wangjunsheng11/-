@@ -46,6 +46,11 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
+    public List<Map> findFriends(Map params) {
+        return chatMapper.findFriends(params);
+    }
+
+    @Override
     public boolean updateFriend(Map params) {
         return chatMapper.updateFriend(params);
     }

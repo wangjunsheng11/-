@@ -8,6 +8,8 @@ import java.util.Map;
 
 public interface AccountService {
 
+    Map selectHistoryByYserId(Map params);
+
     Map selectById(java.util.Map params);
 
     Map selectByPhone(java.util.Map params);
@@ -15,4 +17,14 @@ public interface AccountService {
     List<Map> selectByPhoneORKakaNum(java.util.Map params);
 
     PageInfo<Map> selectByPageAndSelections(int currentPage, int pageSize);
+
+    /*
+     * 更新个人资料
+     *
+     * @author wangwei
+     * @date 2019/2/10
+      * @param params
+     * @return boolean
+     */
+    boolean updateInfo(Map params);
 }

@@ -12,7 +12,7 @@ import java.util.*;
  *
  * @author wangwei
  * @date 2019/1/28
-  * @param null
+ * @param null
  * @return
  */
 public interface ChatMapper {
@@ -50,6 +50,10 @@ public interface ChatMapper {
     // 同意申请者添加好友
     @Update("UPDATE zzf_user_friends SET `status` = #{status_01}  WHERE del_flag = 0 AND my_id = #{friend_id} AND friend_id = #{user_id}")
     boolean agreeOne(Map params);
+
+    // 根据群组查询自己的好友
+    @Select("SELECT * FROM zzf_friends_info WHERE group_name = #{group_name} and del_flag = 0 AND account_id = #{account_id} and `status` = #{status}")
+    List<Map> findFriends(Map params);
 
     @Select("SELECT * FROM zzf_user_chat_history WHERE content like '%${search_key}%' and (to_id = #{user_id} or send_id = #{user_id}) AND del_flag = 0")
     List<Map> findMessages(Map params);

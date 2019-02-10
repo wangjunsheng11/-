@@ -56,6 +56,8 @@ public enum ConstantDBStatus {
     private final Integer value;
     private final String message;
 
+
+
     ConstantDBStatus(int value, String message) {
         this.value = value;
         this.message = message;

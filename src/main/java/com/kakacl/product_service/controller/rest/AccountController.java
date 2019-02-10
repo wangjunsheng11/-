@@ -172,6 +172,64 @@ public class AccountController extends BaseController {
         }
     }
 
+    // resetinfo
+    /**
+     * showdoc
+     * @author wangwei
+     * @date 2019/1/8
+     *
+     * @catalog v1.0.1/用户相关
+     * @title 用户修改自己的资料
+     * @description 用户修改自己的资料，身份号码一般不允许修改，这里暂时传递用户当前身份证号码
+     * @method post
+     * @url /api/rest/v1.0.1/account/editInfo
+     * @param token 必选 string token
+     * @param user_name 必选 string 用户名
+     * @param phone_num 必选 string 手机号码
+     * @param introduction 必选 string 个人简介
+     * @param id_card 必选 string 身份证号码
+     * @param time 必选 string 当前请求时间
+     * @return {"status":"200","message":"请求成功","data":{"user_name":"test","phone_num":"13800138000","id":"1547006424247526","introduction":"456"},"page":null,"ext":null}
+     * @return_param data string data
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
+    @PostMapping(value = "editInfo", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp editInfo(
+            @RequestParam(name="token", required=true)String token,
+            @RequestParam(name="user_name", required=true)String user_name,
+            @RequestParam(name="phone_num", required=true)String phone_num,
+            @RequestParam(name="introduction", required=true)String introduction,
+            @RequestParam(name="id_card", required=true)String id_card,
+            String time){
+        Map params = new HashMap();
+        try {
+            Claims claims = JWTUtils.parseJWT(token);
+            String id = claims.getId();
+            params.put("id", id);
+            try {
+                // 根据主键更新数据
+                params.put("user_name", user_name);
+                params.put("phone_num", phone_num);
+                params.put("introduction", introduction);
+                params.put("id_card", id_card);
+                boolean flag = accountService.updateInfo(params);
+                if(flag) {
+                    return Resp.success(params);
+                } else {
+                    return Resp.fail(params);
+                }
+            } catch (Exception e) {
+                log.error("${}", e.getMessage());
+                return Resp.fail(ErrorCode.CODE_6800);
+            }
+        } catch (Exception e) {
+            return Resp.fail(ErrorCode.UNLOGIN_ERROR);
+        }
+    }
+
     /**
      * showdoc
      * @author wangwei

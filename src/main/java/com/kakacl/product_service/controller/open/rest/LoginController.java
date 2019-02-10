@@ -113,26 +113,43 @@ public class LoginController extends BaseController {
         String msg_model = "";
         if(type.equals("register")) {
             msg_model = ConstantSMSMessage.CONSTANT_REGIATER;
+            java.util.Map params = new HashMap();
+            params.put("phone_num", phoneNum);
+            Map result = accountService.selectByPhone(params);
+            if(result != null) {
+                // 手机号码已经注册过
+                return Resp.fail(ErrorCode.CODE_6001);
+            }
+            String code = NumberUtils.getRandomNumber(Constants.CONSTANT_100000, Constants.CONSTANT_999999) + "";
+            List sms_params = new ArrayList();
+            sms_params.add(phoneNum);
+            sms_params.add(phoneNum);
+            sms_params.add(code);
+            sms_params.add(Constants.CONSTANT_10);
+            new HttpSendSMSUtils().SendVariable(ConstantSMSMessage.SEND_URL, msg_model, sms_params, account, pswd);
+            return Resp.success(code);
         } else if(type.equals("refindpass")){
             msg_model = ConstantSMSMessage.CONSTANT_REPASSWORD;
+            String code = NumberUtils.getRandomNumber(Constants.CONSTANT_100000, Constants.CONSTANT_999999) + "";
+            List sms_params = new ArrayList();
+            sms_params.add(phoneNum);
+            sms_params.add(phoneNum);
+            sms_params.add(code);
+            sms_params.add(Constants.CONSTANT_10);
+            new HttpSendSMSUtils().SendVariable(ConstantSMSMessage.SEND_URL, msg_model, sms_params, account, pswd);
+            return Resp.success(code);
         } else if(type.equals("IllegalBindingBackCard")){
             msg_model = ConstantSMSMessage.CONSTANT_ACCOUNT_ILLEGAL_BIND_BACK_NUM;
+            String code = NumberUtils.getRandomNumber(Constants.CONSTANT_100000, Constants.CONSTANT_999999) + "";
+            List sms_params = new ArrayList();
+            sms_params.add(phoneNum);
+            sms_params.add(phoneNum);
+            sms_params.add(code);
+            sms_params.add(Constants.CONSTANT_10);
+            new HttpSendSMSUtils().SendVariable(ConstantSMSMessage.SEND_URL, msg_model, sms_params, account, pswd);
+            return Resp.success(code);
         }
-        java.util.Map params = new HashMap();
-        params.put("phone_num", phoneNum);
-        Map result = accountService.selectByPhone(params);
-        if(result != null) {
-            // 手机号码已经注册过
-            return Resp.fail(ErrorCode.CODE_6001);
-        }
-        String code = NumberUtils.getRandomNumber(Constants.CONSTANT_100000, Constants.CONSTANT_999999) + "";
-        List sms_params = new ArrayList();
-        sms_params.add(phoneNum);
-        sms_params.add(phoneNum);
-        sms_params.add(code);
-        sms_params.add(Constants.CONSTANT_10);
-        new HttpSendSMSUtils().SendVariable(ConstantSMSMessage.SEND_URL, msg_model, sms_params, account, pswd);
-        return Resp.success(code);
+        return Resp.fail();
     }
 
     /**

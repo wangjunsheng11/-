@@ -22,6 +22,9 @@ public interface ChatService {
 
     boolean addFriend(Map params);
 
+    // 根据群组查询自己的好友
+    List<Map> findFriends(Map params);
+
     boolean updateFriend(Map params);
 
     // 同意申请者添加好友

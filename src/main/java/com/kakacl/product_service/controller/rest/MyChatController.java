@@ -1,13 +1,11 @@
 package com.kakacl.product_service.controller.rest;
 
+import com.github.pagehelper.PageInfo;
 import com.kakacl.product_service.config.ConstantDBStatus;
 import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
-import com.kakacl.product_service.service.AccountService;
-import com.kakacl.product_service.service.ChatService;
-import com.kakacl.product_service.service.GradeService;
-import com.kakacl.product_service.service.TalentService;
+import com.kakacl.product_service.service.*;
 import com.kakacl.product_service.utils.ErrorCode;
 import com.kakacl.product_service.utils.IDUtils;
 import com.kakacl.product_service.utils.Resp;
@@ -38,6 +36,9 @@ public class MyChatController extends BaseController {
 
     @Autowired
     private ChatService chatService;
+
+    @Autowired
+    private UserDataService userDataService;
 
     @Autowired
     private GradeService gradeService;
@@ -128,9 +129,9 @@ public class MyChatController extends BaseController {
     @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "findAddFriends", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp findAddFriends(HttpServletRequest request,
-                           String  token,
-                           @RequestParam(name="time")String time,
-                           Map params) {
+                               String  token,
+                               @RequestParam(name="time")String time,
+                               Map params) {
         params.put("status_01", Constants.CONSTANT_50200);
         params.put("status_02", Constants.CONSTANT_50203);
         params.put("user_id", getUserid(request));
@@ -156,10 +157,10 @@ public class MyChatController extends BaseController {
     @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "agreeOne", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp agreeOne(HttpServletRequest request,
-                               String  token,
-                               @RequestParam(name="time")String time,
-                                @RequestParam(name="friend_id")String friend_id,
-                               Map params) {
+                         String  token,
+                         @RequestParam(name="time")String time,
+                         @RequestParam(name="friend_id")String friend_id,
+                         Map params) {
         params.put("friend_id", friend_id);
         params.put("status_01", Constants.CONSTANT_50201);
         params.put("user_id", getUserid(request));
@@ -269,7 +270,7 @@ public class MyChatController extends BaseController {
      * @param token 必选 string token
      * @param content 必选 string 发送内容
      * @param scope 可选 string 查找范围-默认全局-global
-     * @return {"status":"200","message":"请求成功","data":,"page":null,"ext":null}
+     * @return {"status":"200","message":"请求成功","data":[{"create_by":"1547006424247526","send_id":"1547006424247526","del_flag":0,"create_time":1549378177,"to_id":"1547008191643825","read_status":0,"id":"1549378177269689","title":"ttt","user":{"create_by":"1","hear_path":"","del_flag":0,"create_time":1547006424,"user_name":"test","roleid":"1","kaka_num":"128643","phone_num":"13800138000","id":"1547006424247526","account_status":52000,"introduction":"456"},"content":"ggg"}],"page":null,"ext":null}
      * @return_param message string 消息
      * @return_param status string 状态
      * @remark 这里是备注信息
@@ -282,11 +283,62 @@ public class MyChatController extends BaseController {
                              String token,
                              @RequestParam(value = "content", required = true)String content,
                              @RequestParam(value = "scope", required = false, defaultValue = "global")String scope,
-                                Map params) {
+                             Map params) {
         params.put("search_key", content);
         params.put("user_id", getUserid(request));
         List<Map> data = chatService.findMessages(params);
+        for (int i = 0; i < data.size(); i++) {
+            String user_id = data.get(i).get("send_id") + "";
+            params.put("user_id", user_id);
+            Map user = accountService.selectById(params);
+            user.remove("id_card");
+            data.get(i).put("user", user);
+        }
         return Resp.success(data);
+    }
+
+    /**
+     * showdoc
+     * @catalog v1.0.1/用户聊天
+     * @title 查询好友-根据组名称
+     * @description 查询好友-根据组名称
+     * @method get
+     * @url /api/rest/v1.0.1/mychat/findFriendsByGroupName
+     * @param time 必选 string 请求时间戳
+     * @param token 必选 string token
+     * @param group_name 必选 string 群组名称
+     * @return {"status":"200","message":"请求成功","data":[{"create_by":"1547006424247526","del_flag":0,"friend_id":"1547008191643825","account_id":"1547006424247526","create_time":1547006424,"group_name":"好友","workHistory":{"image":"http://oy98yiue4.bkt.clouddn.com/FnhEPHpDnZY0-OieCmRZYUpc8Amj","orbit_id":"73","entry_time":"1548325839","company_id":7,"company_name":"凯博电脑-昆山-有限公司","resignation_time":"4118493723","work_status":"52100"},"id":"1","user":{"create_by":"1","hear_path":"","del_flag":0,"create_time":1547008191,"user_name":"anonymous","roleid":"2","kaka_num":"149386","id_card":"22221","phone_num":"13800138001","id":"1547008191643825","account_status":52000,"introduction":"没有简介"},"order":1,"status":50201},{"create_by":"1547006424247526","del_flag":0,"friend_id":"1547006424247526","account_id":"1547006424247526","create_time":1547006424,"group_name":"好友","workHistory":{"image":"http://oy98yiue4.bkt.clouddn.com/FnhEPHpDnZY0-OieCmRZYUpc8Amj","orbit_id":"73","entry_time":"1548325839","company_id":7,"company_name":"凯博电脑-昆山-有限公司","resignation_time":"4118493723","work_status":"52100"},"id":"2","user":{"create_by":"1","hear_path":"","del_flag":0,"create_time":1547006424,"user_name":"anonymous","roleid":"1","kaka_num":"128643","id_card":"2222","phone_num":"13800138000","id":"1547006424247526","account_status":52000,"introduction":"没有简介"},"order":1,"status":50201}],"page":null,"ext":null}
+     * @return_param message string 消息
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
+    @RequestMapping(value = "findFriendsByGroupName", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp findFriendsByGroupName (HttpServletRequest request, String token, String time, String group_name) {
+        Map params = new HashMap();
+        params.put("account_id", getUserid(request));
+        params.put("group_name", group_name);
+        params.put("status", Constants.CONSTANT_50201);
+        List<Map> result = chatService.findFriends(params);
+        params.put("userList", result);
+
+        for (int i = 0; i < result.size(); i++) {
+            Object friend_id = result.get(i).get("friend_id");
+            params.put("user_id", friend_id);
+            params.put("currentPage", 1);
+            params.put("pageSize", 10);
+            Map data = accountService.selectHistoryByYserId(params);
+            result.get(i).put("workHistory", data);
+            // params.put("data", data);
+
+            params.put("user_id", friend_id);
+            Map user = accountService.selectById(params);
+            result.get(i).put("user", user);
+        }
+
+        params.put("userList", result);
+        return Resp.success(result);
     }
 
     /**

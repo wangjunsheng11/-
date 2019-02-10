@@ -19,6 +19,11 @@ public class AccountServiceImpl
     private AccountMapper accountMapper;
 
     @Override
+    public Map selectHistoryByYserId(Map params) {
+        return accountMapper.selectHistoryByYserId(params);
+    }
+
+    @Override
     public Map selectById(Map params) {
         return accountMapper.selectByUserid(params);
     }
@@ -39,5 +44,10 @@ public class AccountServiceImpl
         List<Map> docs = accountMapper.selectByPageAndSelections(null);
         PageInfo<Map> pageInfo = new PageInfo<Map>(docs);
         return pageInfo;
+    }
+
+    @Override
+    public boolean updateInfo(Map params) {
+        return accountMapper.updateInfo(params);
     }
 }
