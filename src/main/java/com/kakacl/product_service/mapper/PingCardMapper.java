@@ -2,8 +2,7 @@ package com.kakacl.product_service.mapper;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
-
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author wangwei<br />
@@ -12,6 +11,17 @@ import java.util.Map;
  * ${TAGS}
  */
 public interface PingCardMapper {
+
+    /*
+     * 根据公司获取打卡位置
+     *
+     * @author wangwei
+     * @date 2019/2/11
+      * @param params
+     * @return java.util.List<java.util.Map>
+     */
+    @Select("SELECT * FROM zzf_pingcard_scope_rule WHERE company_id = 1 AND del_flag = 0")
+    List<Map> selectCompanyLocation(Map params);
 
     /*
      * 获取用户最后一次打卡数据

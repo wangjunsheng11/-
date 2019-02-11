@@ -5,6 +5,7 @@ import com.kakacl.product_service.service.PingCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,6 +19,11 @@ public class PingCardServiceImpl implements PingCardService {
 
     @Autowired
     private PingCardMapper pingCardMapper;
+
+    @Override
+    public List<Map> selectCompanyLocation(Map params) {
+        return pingCardMapper.selectCompanyLocation(params);
+    }
 
     @Override
     public Map slectLastPingType(Map params) {

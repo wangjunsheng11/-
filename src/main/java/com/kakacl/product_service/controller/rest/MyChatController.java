@@ -96,6 +96,13 @@ public class MyChatController extends BaseController {
                            @RequestParam(name="group_name") String group_name,
                            @RequestParam(name="time")String time,
                            Map params) {
+
+        // 查询好友是否已经存在，如果存在则先删除
+        params.put("friend_id", friend_id);
+        params.put("my_id", getUserid(request));
+        params.put("del_flag", ConstantDBStatus.STATUS_DEL_FLAG_1);
+        chatService.updateFriend(params);
+
         // 添加到某个组-添加组里必须需要最少一个好友
         params.put("id", IDUtils.genHadId());
         params.put("my_id", getUserid(request));

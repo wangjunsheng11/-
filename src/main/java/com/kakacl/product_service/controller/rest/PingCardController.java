@@ -1,11 +1,14 @@
 package com.kakacl.product_service.controller.rest;
 
+import com.alibaba.fastjson.JSON;
 import com.kakacl.product_service.config.Constant;
 import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.PingCardService;
+import com.kakacl.product_service.utils.ErrorCode;
 import com.kakacl.product_service.utils.IDUtils;
+import com.kakacl.product_service.utils.LatLonUtil;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author wangwei<br />
@@ -27,6 +30,52 @@ public class PingCardController extends BaseController {
 
     @Autowired
     private PingCardService pingCardService;
+
+    /**
+     * showdoc
+     * @catalog v1.0.1/用户打卡
+     * @title 判断用户当前是否允许打卡
+     * @description 根据当前用户坐标和公司，判断用户是否允许打卡，打卡前需要先调用此方法，否则可能打卡不成功，此方法返回成功前，打卡按钮无效。
+     * @method get
+     * @url /api/rest/v1.0.1/pingcard/pingCardValidate
+     * @param time 必选 string 请求时间戳
+     * @param token 必选 string token
+     * @param company_id 必选 string 公司主键
+     * @param longitude 必选 string 经度
+     * @param latitude 必选 string 纬度
+     * @return
+     * @return_param message string 消息
+     * @return_param ping_type string 上一次打卡类型
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
+    @GetMapping(value = "pingCardValidate", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp pingCardValidate(HttpServletRequest request,
+                                 @RequestParam(value = "time", required = true)String time,
+                                 String token,
+                                 @RequestParam(value = "company_id", required = true)String company_id,
+                                 @RequestParam(value = "longitude", required = true)String longitude,
+                                 @RequestParam(value = "latitude", required = true)String latitude,
+                                 Map params) {
+        params.put("company_id", company_id);
+        List<Map> data = pingCardService.selectCompanyLocation(params);
+        for (int i = 0; i < data.size(); i++) {
+            double e_longitude = Double.valueOf(data.get(i).get("longitude").toString());
+            double e_latitude = Double.valueOf(data.get(i).get("latitude").toString());
+            double[] data_scope = LatLonUtil.GetAround(e_longitude, e_latitude, 500);
+            double lo_1 = data_scope[0];
+            double la_1 = data_scope[1];
+            double lo_2 = data_scope[2];
+            double la_2 = data_scope[3];
+            if(lo_1 < Double.valueOf(longitude) && lo_2 > Double.valueOf(longitude)
+                    && la_1 < Double.valueOf(latitude) && la_2 > Double.valueOf(latitude)) {
+                return Resp.success();
+            }
+        }
+        return Resp.fail(ErrorCode.CODE_460);
+    }
 
     /**
      * showdoc

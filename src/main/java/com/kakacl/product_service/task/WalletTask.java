@@ -1,6 +1,7 @@
 package com.kakacl.product_service.task;
 
 import com.kakacl.product_service.config.Constant;
+import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.service.WalletService;
 import com.kakacl.product_service.utils.IDUtils;
 import org.apache.commons.lang.StringUtils;
@@ -55,7 +56,7 @@ public class WalletTask {
                     params.clear();
                     String user_id = data.get(i).get("id") + "";
                     String id = IDUtils.genHadId();
-                    long create_time = System.currentTimeMillis() / 1000;
+                    long create_time = System.currentTimeMillis() / Constants.CONSTANT_1000;
                     params.put("id", id);
                     params.put("user_id", user_id);
                     params.put("create_time", create_time);
