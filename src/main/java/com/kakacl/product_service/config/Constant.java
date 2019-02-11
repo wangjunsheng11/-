@@ -31,6 +31,11 @@ public class Constant {
     public final static String EMPLOYEE_ORBIT_TASK_AUTO_LOCK ="redis:zzf:task:employee_orbit_task_auto_lock";
 
 
+    public final static String WALLET_CREATE_TASK_AUTO_TASK = "redis:zzf:task:wallet_create_task_auto_task:id:%s";
+
+    public final static String WALLET_CREATE_TASK_AUTO_TASK_INCREMENT = "redis:zzf:task:wallet_create_task_auto_lock";
+
+
 
     // ------------------------------------------------- PING Type ----------------------------------------------------------------------------------------------------
 
