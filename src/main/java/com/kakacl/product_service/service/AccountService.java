@@ -27,4 +27,14 @@ public interface AccountService {
      * @return boolean
      */
     boolean updateInfo(Map params);
+
+    /*
+     * 更新个人头像地址
+     *
+     * @author wangwei
+     * @date 2019/2/10
+     * @param params
+     * @return boolean
+     */
+    boolean updateHead(Map params);
 }

@@ -39,6 +39,17 @@ public interface AccountMapper {
     @Update("UPDATE zzf_user_info SET user_name=#{user_name}, phone_num=#{phone_num}, id_card=#{id_card}, introduction=#{introduction} WHERE (id=#{id})")
     boolean updateInfo(Map params);
 
+    /*
+     * 更新个人头像地址
+     *
+     * @author wangwei
+     * @date 2019/2/10
+     * @param params
+     * @return boolean
+     */
+    @Update("update zzf_user_info set head_path = #{head_path} where id = #{id}")
+    boolean updateHead(Map params);
+
     @Select("SELECT * FROM zzf_user_info WHERE del_flag = 0 ORDER BY create_time DESC")
     List<Map> selectByPageAndSelections(java.util.Map params);
 }

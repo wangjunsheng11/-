@@ -50,4 +50,9 @@ public class AccountServiceImpl
     public boolean updateInfo(Map params) {
         return accountMapper.updateInfo(params);
     }
+
+    @Override
+    public boolean updateHead(Map params) {
+        return accountMapper.updateHead(params);
+    }
 }

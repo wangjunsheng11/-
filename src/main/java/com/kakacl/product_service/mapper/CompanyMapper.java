@@ -15,4 +15,15 @@ public interface CompanyMapper {
 
     @Update("update store_company set province = #{province}, city = #{city} WHERE id=#{id}")
     boolean updateProvinceCityById(Map<String, Object> params);
+
+    /*
+     * 根据主键获取公司数据
+     *
+     * @author wangwei
+     * @date 2019/2/10
+     * @param params
+     * @return java.util.Map
+     */
+    @Select("select * from store_company where id = #{id}")
+    Map selectById(Map params);
 }

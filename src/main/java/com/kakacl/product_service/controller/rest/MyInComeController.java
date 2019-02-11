@@ -149,7 +149,7 @@ public class MyInComeController extends BaseController {
                         }
                     }
                 } catch (Exception e) {
-                    return Resp.fail();
+                    return Resp.fail(ErrorCode.CODE_6802);
                 } finally {
                     // 释放锁-释放当时自己获取到的锁-value
                     String redisValue = stringRedisTemplate.opsForValue().get(key);
