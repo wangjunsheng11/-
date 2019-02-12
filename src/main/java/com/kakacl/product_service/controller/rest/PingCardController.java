@@ -1,6 +1,5 @@
 package com.kakacl.product_service.controller.rest;
 
-import com.alibaba.fastjson.JSON;
 import com.kakacl.product_service.config.Constant;
 import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
@@ -61,14 +60,14 @@ public class PingCardController extends BaseController {
                                  Map params) {
         params.put("company_id", company_id);
         List<Map> data = pingCardService.selectCompanyLocation(params);
-        for (int i = 0; i < data.size(); i++) {
+        for (int i = Constants.CONSTANT_0; i < data.size(); i++) {
             double e_longitude = Double.valueOf(data.get(i).get("longitude").toString());
             double e_latitude = Double.valueOf(data.get(i).get("latitude").toString());
-            double[] data_scope = LatLonUtil.GetAround(e_longitude, e_latitude, 500);
-            double lo_1 = data_scope[0];
-            double la_1 = data_scope[1];
-            double lo_2 = data_scope[2];
-            double la_2 = data_scope[3];
+            double[] data_scope = LatLonUtil.GetAround(e_longitude, e_latitude, Constants.CONSTANT_500);
+            double lo_1 = data_scope[Constants.CONSTANT_0];
+            double la_1 = data_scope[Constants.CONSTANT_1];
+            double lo_2 = data_scope[Constants.CONSTANT_2];
+            double la_2 = data_scope[Constants.CONSTANT_3];
             if(lo_1 < Double.valueOf(longitude) && lo_2 > Double.valueOf(longitude)
                     && la_1 < Double.valueOf(latitude) && la_2 > Double.valueOf(latitude)) {
                 return Resp.success();
