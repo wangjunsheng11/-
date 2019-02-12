@@ -86,7 +86,7 @@ public class PingCardController extends BaseController {
      * @param longitude 必选 string 经度
      * @param latitude 必选 string 纬度
      * @return
-     * @return_param message string 消息
+     * @return_param {"status":"460","message":"当前位置在打卡范围外","data":null,"page":null,"ext":null}
      * @return_param ping_type string 上一次打卡类型
      * @return_param status string 状态
      * @remark 这里是备注信息
