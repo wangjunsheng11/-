@@ -44,7 +44,7 @@ public class PingCardController extends BaseController {
      * @param latitude 必选 string 纬度
      * @param order 可选 int 顺序，默认99
      * @return
-     * @return_param message string 消息
+     * @return_param {"status":"200","message":"请求成功","data":{"id":"1549945941237165","company_id":"2","order":1,"longitude":"30.40628917093897","latitude":"118.51529848521174"},"page":null,"ext":null}
      * @return_param ping_type string 上一次打卡类型
      * @return_param status string 状态
      * @remark 这里是备注信息

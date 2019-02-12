@@ -15,6 +15,14 @@ public class Constant {
     // 私钥
     public static final String SIGN_APPKEY= "mykey123456";
 
+    // -------------------------------------------------BAIDU API ----------------------------------------------------------------------------------------------------
+
+    public static final String APP_ID = "15541912";
+
+    public static final String API_KEY = "ZAbVWVqucF8p7fGloiljrS7N";
+
+    public static final String SECRET_KEY = "KtcLpy9MxvyUqzgxwHqez1Xe1z3QSH9i";
+
 
     // -------------------------------------------------REDIS ----------------------------------------------------------------------------------------------------
 
