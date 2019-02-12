@@ -21,6 +21,11 @@ public class PingCardServiceImpl implements PingCardService {
     private PingCardMapper pingCardMapper;
 
     @Override
+    public boolean insertPingCardScopeRule(Map params) {
+        return pingCardMapper.insertPingCardScopeRule(params);
+    }
+
+    @Override
     public List<Map> selectCompanyLocation(Map params) {
         return pingCardMapper.selectCompanyLocation(params);
     }

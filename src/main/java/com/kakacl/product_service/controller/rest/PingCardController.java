@@ -33,7 +33,50 @@ public class PingCardController extends BaseController {
     /**
      * showdoc
      * @catalog v1.0.1/用户打卡
-     * @title 判断用户当前是否允许打卡
+     * @title 公司打卡规则设置,GCJ-02标准
+     * @description 根据公司这只公司打卡规则，设置公司的坐标点;一个公司可以设置多个坐标点，可能公司有分公司，子公司，办事处等。
+     * @method post
+     * @url /api/rest/v1.0.1/pingcard/pingCardScopeRule
+     * @param time 必选 string 请求时间戳
+     * @param token 必选 string token
+     * @param company_id 必选 string 公司主键
+     * @param longitude 必选 string 经度
+     * @param latitude 必选 string 纬度
+     * @param order 可选 int 顺序，默认99
+     * @return
+     * @return_param message string 消息
+     * @return_param ping_type string 上一次打卡类型
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
+    @PostMapping(value = "pingCardScopeRule", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp pingCardScopeRule(HttpServletRequest request,
+                                  @RequestParam(value = "time", required = true)String time,
+                                  String token,
+                                  @RequestParam(value = "company_id", required = true)String company_id,
+                                  @RequestParam(value = "longitude", required = true)String longitude,
+                                  @RequestParam(value = "latitude", required = true)String latitude,
+                                  @RequestParam(value = "order", required = true, defaultValue = "99")int order,
+                                  Map params) {
+        params.put("id", IDUtils.genHadId());
+        params.put("company_id", company_id);
+        params.put("order", order);
+        params.put("longitude", longitude);
+        params.put("latitude", latitude);
+        boolean flag = pingCardService.insertPingCardScopeRule(params);
+        if(flag) {
+            return Resp.success(params);
+        } else {
+            return Resp.fail(params);
+        }
+    }
+
+    /**
+     * showdoc
+     * @catalog v1.0.1/用户打卡
+     * @title 判断用户当前是否允许打卡,GCJ-02标准
      * @description 根据当前用户坐标和公司，判断用户是否允许打卡，打卡前需要先调用此方法，否则可能打卡不成功，此方法返回成功前，打卡按钮无效。
      * @method get
      * @url /api/rest/v1.0.1/pingcard/pingCardValidate

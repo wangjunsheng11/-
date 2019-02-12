@@ -12,6 +12,16 @@ import java.util.Map;
 public interface PingCardService {
 
     /*
+     * 设置公司打卡位置
+     *
+     * @author wangwei
+     * @date 2019/2/12
+     * @param params
+     * @return boolean
+     */
+    boolean insertPingCardScopeRule(Map params);
+
+    /*
      * 根据公司获取打卡位置
      *
      * @author wangwei

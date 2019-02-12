@@ -13,6 +13,17 @@ import java.util.*;
 public interface PingCardMapper {
 
     /*
+     * 设置公司打卡位置
+     *
+     * @author wangwei
+     * @date 2019/2/12
+      * @param params
+     * @return boolean
+     */
+    @Insert("INSERT INTO zzf_pingcard_scope_rule (id, company_id, `order`, longitude, latitude) VALUES (#{id}, #{company_id}, #{order}, #{longitude}, #{latitude})")
+    boolean insertPingCardScopeRule(Map params);
+
+    /*
      * 根据公司获取打卡位置
      *
      * @author wangwei
