@@ -4,8 +4,10 @@ import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.AccountService;
+import com.kakacl.product_service.utils.FileUtils;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,40 +34,52 @@ import java.io.*;
 @RefreshScope
 public class FileUpLoadController extends BaseController {
 
+    @Value("${up-load-file-path}")
+    private String upLoadFilePath;
+
+    @Value("${file-upload-ip-and-port}")
+    private String fileUploadIpAndPort;
+
+
     @Autowired
     private AccountService accountService;
 
-    /*
-     * 头像文件上传
-     *
-     * @author wangwei
-     * @date 2019/2/10
-      * @param request
-     * @param token
-     * @param time
-     * @return com.kakacl.product_service.utils.Resp
+    /**
+     * showdoc
+     * @catalog v1.0.1/用户相关
+     * @title 用户头像上传
+     * @description 用户头像上传
+     * @method post
+     * @url /api/open/rest/v1.0.1/fileupload/headUpLoad
+     * @param token 必选 string token
+     * @param time 必选 string time
+     * @param file 必选 CommonsMultipartFile file，文件对象
+     * @return {"status":"200","message":"请求成功","data":{"id":"1547006424247526","head_path":"http://211.149.226.29:8081d:/fileData\\headFiles\\1547006424247526.jpg"},"page":null,"ext":null}
+     * @return_param code int 验证码
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
      */
     @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
-    @RequestMapping(value = "headUpLoad", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "headUpLoad", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Resp headUpLoad(HttpServletRequest request,
-                           @RequestParam("file") CommonsMultipartFile file,
-                           String token,
+                           @RequestParam("file") MultipartFile file,
                            String time,
+                           String token,
                            java.util.Map params) {
         String user_id = getUserid(request);
-        String path = "D:"+ File.separator +"headimages" + File.separator + user_id + ".jpg";
+        String path = FileUtils.getFileUploadPath(upLoadFilePath + File.separator + "headFiles") + user_id + ".jpg";
         try {
             java.io.File newFile = new java.io.File(path);
-            //通过CommonsMultipartFile的方法直接写文件（注意这个时候）
             file.transferTo(newFile);
             params.put("id", user_id);
-            params.put("head_path", path);
+            params.put("head_path", fileUploadIpAndPort + path);
             accountService.updateHead(params);
         } catch (Exception e) {
             log.error("error: {}", e.getMessage());
-            return Resp.fail();
+            return Resp.fail(params);
         }
-        return Resp.success();
+        return Resp.success(params);
     }
 
     @RequestMapping("springUpload")

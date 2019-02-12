@@ -3,7 +3,7 @@ package com.kakacl.product_service.service;
 import java.util.List;
 import java.util.Map;
 
-public interface BackCardService {
+public interface BankCardService {
 
     /*
      * 查询银行规则
@@ -14,6 +14,16 @@ public interface BackCardService {
      * @return java.util.Map
      */
     List<Map> selectBankRule(Map params);
+
+    /*
+     * 用户设置银行卡顺序
+     *
+     * @author wangwei
+     * @date 2019/2/12
+     * @param params
+     * @return boolean
+     */
+    boolean setBankCardMain(Map params);
 
     /*
      * 设置银行规则

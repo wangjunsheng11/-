@@ -79,3 +79,8 @@ sms-pwd: iFqXn8Etz
 
 #账户生成秘钥的key
 account-paaakey: kakacl_zzfsadasdsadsads
+
+# 上传文件路径
+up-load-file-path: d:/fileData # /usr/local/fileData/
+# 文件映射地址
+file-upload-ip-and-port: http://211.149.226.29:8081 #文件显示的地址加端口号

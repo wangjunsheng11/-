@@ -13,7 +13,7 @@ import java.util.*;
   * @param null
  * @return
  */
-public interface BackCardMapper {
+public interface BankCardMapper {
 
     /*
      * 查询银行规则
@@ -25,6 +25,17 @@ public interface BackCardMapper {
      */
     @Select("select * from zzf_user_bank_rule where del_flag = 0")
     List<Map> selectBankRule(Map params);
+
+    /*
+     * 用户设置银行卡顺序
+     *
+     * @author wangwei
+     * @date 2019/2/12
+      * @param params
+     * @return boolean
+     */
+    @Update("UPDATE zzf_user_back_card SET `order`=#{order} WHERE (id=#{id})")
+    boolean setBankCardMain(Map params);
 
     /*
      * 设置银行规则

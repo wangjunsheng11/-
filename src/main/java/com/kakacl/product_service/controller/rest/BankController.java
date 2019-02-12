@@ -3,7 +3,7 @@ package com.kakacl.product_service.controller.rest;
 import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
-import com.kakacl.product_service.service.BackCardService;
+import com.kakacl.product_service.service.BankCardService;
 import com.kakacl.product_service.utils.IDUtils;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,7 @@ import java.util.Map;
 public class BankController extends BaseController {
 
     @Autowired
-    private BackCardService bankCardService;
+    private BankCardService bankCardService;
 
     /**
      * showdoc

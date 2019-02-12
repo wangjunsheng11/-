@@ -33,7 +33,7 @@ import java.util.*;
 public class MyInComeController extends BaseController {
 
     @Autowired
-    private BackCardService backCardService;
+    private BackCardService bankCardService;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -87,7 +87,7 @@ public class MyInComeController extends BaseController {
                     res = false;
                     // 1.查询用户是否已经绑定过相同的银行卡,根据银行卡判断
                     params.put("card_num", cardNum);
-                    List<Map>  result = backCardService.selectBackCarcdExist(params);
+                    List<Map>  result = bankCardService.selectBackCarcdExist(params);
                     if(result != null && result.size() > Constants.CONSTANT_0) {
                         // 已经有绑定过
                         log.info("lock：stock={} 这个银行卡已经有账户绑定过 ",cardNum);
@@ -99,7 +99,7 @@ public class MyInComeController extends BaseController {
                         // 2.判断系统中，当前用户身份证号码是否一致。
                         params.clear();
                         params.put("id_card", idCard);
-                        List<Map> userList = backCardService.selectUSerByIdcard(params);
+                        List<Map> userList = bankCardService.selectUSerByIdcard(params);
                         if(userList.size() ==  Constants.CONSTANT_0) {
                             return Resp.fail(ErrorCode.CODE_451);
                         }
@@ -141,7 +141,7 @@ public class MyInComeController extends BaseController {
                         params.put("id_card", idCard);
                         params.put("create_time", System.currentTimeMillis() / Constants.CONSTANT_1000);
                         params.put("create_by", userId);
-                        boolean flag = backCardService.addCard(params);
+                        boolean flag = bankCardService.addCard(params);
                         if(flag) {
                             return Resp.success();
                         } else {
@@ -165,6 +165,32 @@ public class MyInComeController extends BaseController {
             }
         }
         return Resp.fail(ErrorCode.CODE_9999);
+    }
+
+    /**
+     * showdoc
+     * @catalog v1.0.1/我的收入
+     * @title 设置一张银行卡
+     * @description 根据token设置一张银行卡,当前为主银行卡，设置为1，其他为99
+     * @method post
+     * @url /api/rest/v1.0.1/myincome/setMainBankCard
+     * @param time 必选 string 请求时间戳
+     * @param token 必选 string token
+     * @param cardNum 必选 string cardNum，银行卡
+     * @return {"status":"200","message":"请求成功","data":,"page":null,"ext":null}
+     * @return_param status string 状态
+     * @return_param message string 消息
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
+    @RequestMapping(value = "setMainBankCard", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp setMainBankCard(
+            HttpServletRequest request, String token,
+            @RequestParam(name="time",required=true)String time,
+            @RequestParam(name="cardNum",required=true)String cardNum){
+        List<Map> data = bankCardService.selectBankRule(null);
+        return Resp.success(data);
     }
 
     /**
@@ -198,9 +224,9 @@ public class MyInComeController extends BaseController {
         params.put("user_id", getUserid(request));
         // 获取银行卡信息，如果有
 
-        List<Map> back_data = backCardService.selectList(params);
+        List<Map> back_data = bankCardService.selectList(params);
         result.put("back_data", back_data);
-        List<Map> income_data = backCardService.selectIncomeByUserid(params);
+        List<Map> income_data = bankCardService.selectIncomeByUserid(params);
         result.put("income_data", income_data);
 
         return Resp.success(result);
@@ -230,7 +256,7 @@ public class MyInComeController extends BaseController {
         params.put("user_id", getUserid(request));
         params.put("card_num", backCardNum);
         params.put("del_flag", "1");
-        boolean flag = backCardService.updateByUserIdAndBackcardNum(params);
+        boolean flag = bankCardService.updateByUserIdAndBackcardNum(params);
         if(flag) {
             return Resp.success();
         } else {
@@ -266,7 +292,7 @@ public class MyInComeController extends BaseController {
                            @RequestParam(name = "id", required = true) String id) {
         Map params = new HashMap();
         params.put("id", id);
-        Map data = backCardService.selectIncomeDetail(params);
+        Map data = bankCardService.selectIncomeDetail(params);
         return Resp.success(data);
     }
 
