@@ -42,6 +42,7 @@ public class PingCardController extends BaseController {
      * @param company_id 必选 string 公司主键
      * @param longitude 必选 string 经度
      * @param latitude 必选 string 纬度
+     * @param effective_radius 可选 int 有效半，默认0
      * @param order 可选 int 顺序，默认99
      * @return
      * @return_param {"status":"200","message":"请求成功","data":{"id":"1549945941237165","company_id":"2","order":1,"longitude":"30.40628917093897","latitude":"118.51529848521174"},"page":null,"ext":null}
@@ -58,6 +59,7 @@ public class PingCardController extends BaseController {
                                   @RequestParam(value = "company_id", required = true)String company_id,
                                   @RequestParam(value = "longitude", required = true)String longitude,
                                   @RequestParam(value = "latitude", required = true)String latitude,
+                                  @RequestParam(value = "effective_radius", required = true, defaultValue = "0")String effective_radius,
                                   @RequestParam(value = "order", required = true, defaultValue = "99")int order,
                                   Map params) {
         params.put("id", IDUtils.genHadId());
@@ -65,6 +67,7 @@ public class PingCardController extends BaseController {
         params.put("order", order);
         params.put("longitude", longitude);
         params.put("latitude", latitude);
+        params.put("effective_radius", effective_radius);
         boolean flag = pingCardService.insertPingCardScopeRule(params);
         if(flag) {
             return Resp.success(params);
@@ -86,7 +89,7 @@ public class PingCardController extends BaseController {
      * @param longitude 必选 string 经度
      * @param latitude 必选 string 纬度
      * @return
-     * @return_param {"status":"460","message":"当前位置在打卡范围外","data":null,"page":null,"ext":null}
+     * @return_param {"status":"200","message":"请求成功","data":null,"page":null,"ext":null}
      * @return_param ping_type string 上一次打卡类型
      * @return_param status string 状态
      * @remark 这里是备注信息
@@ -106,7 +109,7 @@ public class PingCardController extends BaseController {
         for (int i = Constants.CONSTANT_0; i < data.size(); i++) {
             double e_longitude = Double.valueOf(data.get(i).get("longitude").toString());
             double e_latitude = Double.valueOf(data.get(i).get("latitude").toString());
-            double[] data_scope = LatLonUtil.GetAround(e_longitude, e_latitude, Constants.CONSTANT_500);
+            double[] data_scope = LatLonUtil.GetAround(e_longitude, e_latitude, Integer.parseInt(data.get(i).get("effective_radius").toString()));
             double lo_1 = data_scope[Constants.CONSTANT_0];
             double la_1 = data_scope[Constants.CONSTANT_1];
             double lo_2 = data_scope[Constants.CONSTANT_2];

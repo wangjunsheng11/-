@@ -57,11 +57,15 @@ public class ChatMoodAnalysisTask {
     }
 
     private static String getMood (String text) {
-        AipNlp client = new AipNlp(APP_ID, API_KEY, SECRET_KEY);
-        JSONObject res = client.sentimentClassify(text, null);
-        JSON jArray = JSON.parseArray(res.get("items").toString());
+        try {
+            AipNlp client = new AipNlp(APP_ID, API_KEY, SECRET_KEY);
+            JSONObject res = client.sentimentClassify(text, null);
+            JSON jArray = JSON.parseArray(res.get("items").toString());
 //        System.out.println("积极概率： " + JSON.parseObject(((JSONArray) jArray).get(0).toString()).get("positive_prob"));
 //        System.out.println(res.toString(2));
-        return JSON.parseObject(((JSONArray) jArray).get(0).toString()).get("positive_prob") + "";
+            return JSON.parseObject(((JSONArray) jArray).get(0).toString()).get("positive_prob") + "";
+        } catch (Exception e){
+            return "0";
+        }
     }
 }

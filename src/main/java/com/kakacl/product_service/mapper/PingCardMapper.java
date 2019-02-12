@@ -20,7 +20,7 @@ public interface PingCardMapper {
       * @param params
      * @return boolean
      */
-    @Insert("INSERT INTO zzf_pingcard_scope_rule (id, company_id, `order`, longitude, latitude) VALUES (#{id}, #{company_id}, #{order}, #{longitude}, #{latitude})")
+    @Insert("INSERT INTO zzf_pingcard_scope_rule (id, company_id, `order`, longitude, latitude, effective_radius) VALUES (#{id}, #{company_id}, #{order}, #{longitude}, #{latitude}, #{effective_radius})")
     boolean insertPingCardScopeRule(Map params);
 
     /*
@@ -31,7 +31,7 @@ public interface PingCardMapper {
       * @param params
      * @return java.util.List<java.util.Map>
      */
-    @Select("SELECT * FROM zzf_pingcard_scope_rule WHERE company_id = 1 AND del_flag = 0")
+    @Select("SELECT * FROM zzf_pingcard_scope_rule WHERE company_id = #{company_id} AND del_flag = 0")
     List<Map> selectCompanyLocation(Map params);
 
     /*
