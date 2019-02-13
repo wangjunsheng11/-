@@ -57,7 +57,7 @@ public class TalentController extends BaseController {
      * showdoc
      * @catalog v1.0.1/用户相关
      * @title 获取初始天赋
-     * @description 获取初始天赋
+     * @description 获取初始天赋，天赋的名称name确定唯一性，不可重复。
      * @method get
      * @url /api/rest/v1.0.1/talent/selectListTalent
      * @param time 必选 string 请求时间戳
@@ -80,12 +80,12 @@ public class TalentController extends BaseController {
      * showdoc
      * @catalog v1.0.1/用户相关
      * @title 编辑当前用户天赋
-     * @description 编辑当前用户天赋-param_ids参数请调用获取初始天赋接口
+     * @description 编辑当前用户天赋-param_ids参数请调用获取初始天赋接口，用户默认天赋使用-天赋的名称-name字段进行关联。
      * @method post
      * @url /api/rest/v1.0.1/talent/edit
      * @param time 必选 string 请求时间戳
      * @param token 必选 string token
-     * @param param_ids 必选 string 选择的参数主键,传递String数组
+     * @param params_ids 必选 string 选择的参数主键,传递String数组
      * @return {"status":"200","message":"请求成功","data":,"page":null,"ext":null}
      * @return_param code int 验证码
      * @return_param status string 状态

@@ -44,7 +44,7 @@ public interface ChatMapper {
     @Insert("INSERT INTO zzf_user_friends (id, my_id, friend_id, group_name, create_time, create_by) VALUES (#{id}, #{my_id}, #{friend_id}, #{group_name}, #{create_time}, #{create_by})")
     boolean addFriend(Map params);
 
-    @Update("update zzf_user_friends set del_flag = #{del_flag} where friend_id = #{friend_id} and my_id = #{my_id}")
+    @Update("update zzf_user_friends set del_flag = #{del_flag} WHERE (friend_id = #{friend_id} AND my_id = #{my_id})")
     boolean updateFriend(Map params);
 
     // 同意申请者添加好友

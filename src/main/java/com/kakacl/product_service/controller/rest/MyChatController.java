@@ -100,7 +100,7 @@ public class MyChatController extends BaseController {
         // 查询好友是否已经存在，如果存在则先删除
         params.put("friend_id", friend_id);
         params.put("my_id", getUserid(request));
-        params.put("del_flag", ConstantDBStatus.STATUS_DEL_FLAG_1);
+        params.put("del_flag", Constants.CONSTANT_1);
         chatService.updateFriend(params);
 
         // 添加到某个组-添加组里必须需要最少一个好友
@@ -296,8 +296,7 @@ public class MyChatController extends BaseController {
         params.put("user_id", getUserid(request));
         List<Map> data = chatService.findMessages(params);
         for (int i = Constants.CONSTANT_0; i < data.size(); i++) {
-            String user_id = data.get(i).get("send_id") + "";
-            params.put("user_id", user_id);
+            params.put("user_id", data.get(i).get("to_id"));
             Map user = accountService.selectById(params);
             user.remove("id_card");
             data.get(i).put("user", user);
