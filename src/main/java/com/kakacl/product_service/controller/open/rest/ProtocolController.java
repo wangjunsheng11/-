@@ -60,7 +60,7 @@ public class ProtocolController extends BaseController {
     /**
      * showdoc
      * @catalog v1.0.1/协议相关
-     * @title 获取协议组
+     * @title 获取所有协议
      * @description 协议获取相关
      * @method get
      * @url /api/open/rest/v1.0.1/protocol/findGroup

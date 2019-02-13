@@ -342,6 +342,37 @@ public class LoginController extends BaseController {
      * @date 2019/1/8
      *
      * @catalog v1.0.1/用户相关
+     * @title 当前用户退出登录
+     * @description 当前用户退出登录，本地清除token参数
+     * @method get
+     * @url /api/open/rest/v1.0.1/do/logout
+     * @param token 必选 string token
+     * @param time 必选 string 请求时间戳
+     * @return {"status":"200","message":"请求成功","data":null,"page":null,"ext":null}
+     * @return_param data string data
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
+    @GetMapping(value = "logout", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp logout(HttpServletRequest request,
+                       String token,
+                       String time
+            ){
+        String user_id = getUserid(request);
+        java.util.Map result = new HashMap();
+        result.put("user_id", user_id);
+        return Resp.success(result);
+
+    }
+
+    /**
+     * showdoc
+     * @author wangwei
+     * @date 2019/1/8
+     *
+     * @catalog v1.0.1/用户相关
      * @title 根据手机号修改密码
      * @description 根据手机号修改密码
      * @method post

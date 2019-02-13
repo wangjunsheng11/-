@@ -1,6 +1,5 @@
 package com.kakacl.product_service.mapper;
 
-import jnr.ffi.annotations.In;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 

@@ -12,6 +12,7 @@ public interface Constants {
     int CONSTANT_24 = 24;
     int CONSTANT_30 = 30;
     int CONSTANT_60 = 60;
+    int CONSTANT_99 = 99;
     int CONSTANT_500 = 500;
     int CONSTANT_1000 = 1000;
     int CONSTANT_50200 = 50200;

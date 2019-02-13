@@ -68,12 +68,14 @@ public class FileUpLoadController extends BaseController {
                            String token,
                            java.util.Map params) {
         String user_id = getUserid(request);
-        String path = FileUtils.getFileUploadPath(upLoadFilePath + File.separator + "headFiles") + user_id + ".jpg";
+        String file_dir = "headFiles";
+        String image_name = user_id + ".jpg";
+        String path = FileUtils.getFileUploadPath(upLoadFilePath + File.separator + file_dir) + image_name;
         try {
             java.io.File newFile = new java.io.File(path);
             file.transferTo(newFile);
             params.put("id", user_id);
-            params.put("head_path", fileUploadIpAndPort + path);
+            params.put("head_path", fileUploadIpAndPort + File.separator + FileUtils.getFileUploadPath(file_dir) + image_name);
             accountService.updateHead(params);
         } catch (Exception e) {
             log.error("error: {}", e.getMessage());
@@ -83,8 +85,7 @@ public class FileUpLoadController extends BaseController {
     }
 
     @RequestMapping("springUpload")
-    public String  springUpload(HttpServletRequest request) throws Exception
-    {
+    public String  springUpload(HttpServletRequest request) throws Exception {
         long  startTime=System.currentTimeMillis();
         //将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
         CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver(

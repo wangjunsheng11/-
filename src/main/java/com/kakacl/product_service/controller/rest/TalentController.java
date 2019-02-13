@@ -85,7 +85,7 @@ public class TalentController extends BaseController {
      * @url /api/rest/v1.0.1/talent/edit
      * @param time 必选 string 请求时间戳
      * @param token 必选 string token
-     * @param param_ids 必选 string 选择的参数主键
+     * @param param_ids 必选 string 选择的参数主键,传递String数组
      * @return {"status":"200","message":"请求成功","data":,"page":null,"ext":null}
      * @return_param code int 验证码
      * @return_param status string 状态

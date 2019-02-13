@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
-import com.kakacl.product_service.service.BackCardService;
+import com.kakacl.product_service.service.BankCardService;
 import com.kakacl.product_service.utils.BackUtils;
 import com.kakacl.product_service.utils.ErrorCode;
 import com.kakacl.product_service.utils.IDUtils;
@@ -33,7 +33,7 @@ import java.util.*;
 public class MyInComeController extends BaseController {
 
     @Autowired
-    private BackCardService bankCardService;
+    private BankCardService bankCardService;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -177,6 +177,7 @@ public class MyInComeController extends BaseController {
      * @param time 必选 string 请求时间戳
      * @param token 必选 string token
      * @param cardNum 必选 string cardNum，银行卡
+     * @param order 可选 string order，顺序-默认99
      * @return {"status":"200","message":"请求成功","data":,"page":null,"ext":null}
      * @return_param status string 状态
      * @return_param message string 消息
@@ -188,8 +189,21 @@ public class MyInComeController extends BaseController {
     public Resp setMainBankCard(
             HttpServletRequest request, String token,
             @RequestParam(name="time",required=true)String time,
-            @RequestParam(name="cardNum",required=true)String cardNum){
-        List<Map> data = bankCardService.selectBankRule(null);
+            @RequestParam(name="cardNum",required=true)String cardNum,
+            @RequestParam(name="order",required=true, defaultValue = "99")String order,
+            Map params){
+        params.put("user_id", getUserid(request));
+        List<Map> data = bankCardService.selectList(params);
+        System.out.println(JSON.toJSONString(data));
+        for (int i = 0; i < data.size(); i++) {
+            params.put("id", data.get(i).get("id"));
+            if(data.get(i).get("card_num").equals(cardNum)) {
+                params.put("order", order);
+            } else {
+                params.put("order", Constants.CONSTANT_99);
+            }
+            bankCardService.setBankCardMain(params);
+        }
         return Resp.success(data);
     }
 
