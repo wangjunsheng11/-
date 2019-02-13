@@ -195,7 +195,7 @@ public class MyInComeController extends BaseController {
         params.put("user_id", getUserid(request));
         List<Map> data = bankCardService.selectList(params);
         System.out.println(JSON.toJSONString(data));
-        for (int i = 0; i < data.size(); i++) {
+        for (int i = Constants.CONSTANT_0; i < data.size(); i++) {
             params.put("id", data.get(i).get("id"));
             if(data.get(i).get("card_num").equals(cardNum)) {
                 params.put("order", order);

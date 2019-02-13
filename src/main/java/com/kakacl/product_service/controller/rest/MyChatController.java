@@ -249,7 +249,8 @@ public class MyChatController extends BaseController {
      * @param token 必选 string token
      * @param to_friend_id 必选 string 接收者主键
      * @param content 必选 string 发送内容
-     * @param type 可选 string 发送类型
+     * @param type 可选 string 发送类型-默认为-note,帖子
+     * @param title 可选 string 标题-默认为消息
      * @return {"status":"200","message":"请求成功","data":,"page":null,"ext":null}
      * @return_param message string 消息
      * @return_param status string 状态
@@ -261,8 +262,8 @@ public class MyChatController extends BaseController {
     public Resp sendMessage(HttpServletRequest request, String token, String time,
                             @RequestParam(value = "to_friend_id", required = true)String to_friend_id,
                             @RequestParam(value = "content", required = true)String content,
-                            @RequestParam(value = "type", required = false)String type,
-                            @RequestParam(value = "title", required = false)String title) {
+                            @RequestParam(value = "type", required = true, defaultValue = "note")String type,
+                            @RequestParam(value = "title", required = true, defaultValue = "消息")String title) {
         return Resp.fail();
     }
 
@@ -294,7 +295,7 @@ public class MyChatController extends BaseController {
         params.put("search_key", content);
         params.put("user_id", getUserid(request));
         List<Map> data = chatService.findMessages(params);
-        for (int i = 0; i < data.size(); i++) {
+        for (int i = Constants.CONSTANT_0; i < data.size(); i++) {
             String user_id = data.get(i).get("send_id") + "";
             params.put("user_id", user_id);
             Map user = accountService.selectById(params);
@@ -330,11 +331,11 @@ public class MyChatController extends BaseController {
         List<Map> result = chatService.findFriends(params);
         params.put("userList", result);
 
-        for (int i = 0; i < result.size(); i++) {
+        for (int i = Constants.CONSTANT_0; i < result.size(); i++) {
             Object friend_id = result.get(i).get("friend_id");
             params.put("user_id", friend_id);
-            params.put("currentPage", 1);
-            params.put("pageSize", 10);
+            params.put("currentPage", Constants.CONSTANT_1);
+            params.put("pageSize", Constants.CONSTANT_10);
             Map data = accountService.selectHistoryByYserId(params);
             result.get(i).put("workHistory", data);
             // params.put("data", data);

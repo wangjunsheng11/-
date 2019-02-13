@@ -55,10 +55,11 @@ public class GradeController extends BaseController {
     @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @GetMapping(value = "selectById", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Object selectById(
-            @RequestParam(name="userId",required=true) String user_id,
+            @RequestParam(name="userId",required=true) String userId,
+            String token,
             String time){
         java.util.Map params = new HashMap();
-        params.put("user_id", user_id);
+        params.put("user_id", userId);
         return Resp.success(gradeService.selectById(params));
     }
 }

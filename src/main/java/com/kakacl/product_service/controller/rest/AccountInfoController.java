@@ -214,7 +214,7 @@ public class AccountInfoController extends BaseController {
      */
     @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "findUsTertntegral" , method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Resp findUsTertntegral(HttpServletRequest request) {
+    public Resp findUsTertntegral(HttpServletRequest request, String token, String time) {
         Map result = new HashMap();
         Map params = new HashMap();
         params.put("user_id", getUserid(request));

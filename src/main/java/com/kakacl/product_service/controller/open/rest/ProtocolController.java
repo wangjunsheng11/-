@@ -116,7 +116,7 @@ public class ProtocolController extends BaseController {
         map.put("status", "1");
         map.put("order", order);
         map.put("remake", "");
-        map.put("create_time", System.currentTimeMillis() / 1000);
+        map.put("create_time", System.currentTimeMillis() / Constants.CONSTANT_1000);
         map.put("create_by", getUserid(request));
         boolean flag = protocolService.addProtocol(map);
         return Resp.success(flag);

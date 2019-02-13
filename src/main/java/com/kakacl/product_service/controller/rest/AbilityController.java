@@ -88,7 +88,7 @@ public class AbilityController extends BaseController {
         params.put("id", IDUtils.genHadId());
         params.put("user_id", getUserid(request));
         params.put("name", name);
-        params.put("img_path", "http//这里应该是用户默认的图片.jpg");
+        params.put("img_path", "http//这里应该是默认图片.jpg");
         params.put("remark", remark);
         params.put("create_date", System.currentTimeMillis() / Constants.CONSTANT_1000);
         params.put("create_by", getUserid(request));

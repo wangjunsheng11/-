@@ -1,5 +1,6 @@
 package com.kakacl.product_service.controller.base;
 
+import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.utils.JWTUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,9 +37,9 @@ public class BaseController extends ApplicationObjectSupport {
      * @return boolean
      */
     public boolean isAjaxRequest(HttpServletRequest request) {
-        if (!(request.getHeader("accept").indexOf("application/json") > -1
+        if (!(request.getHeader("accept").indexOf("application/json") > -Constants.CONSTANT_1
                 || (request.getHeader("X-Requested-With") != null
-                && request.getHeader("X-Requested-With").indexOf("XMLHttpRequest") > -1)
+                && request.getHeader("X-Requested-With").indexOf("XMLHttpRequest") > - Constants.CONSTANT_1)
                 || "XMLHttpRequest".equalsIgnoreCase(request.getParameter("X_REQUESTED_WITH")))) {
             return false;
         }
@@ -58,7 +59,7 @@ public class BaseController extends ApplicationObjectSupport {
         Map map = request.getParameterMap();
         for (Object o : map.keySet()) {
             String key = (String) o;
-            conditions.put(key, ((String[]) map.get(key))[0]);
+            conditions.put(key, ((String[]) map.get(key))[Constants.CONSTANT_0]);
         }
         return conditions;
     }
