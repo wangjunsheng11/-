@@ -52,7 +52,7 @@ public class CommunicationController extends BaseController {
                 @RequestParam(name = "token", required = true) String token,
                 @RequestParam(name = "title", required = true) String title,
                 @RequestParam(name = "content", required = true) String content,
-                @RequestParam(name = "receiveid") String receiveid,
+                @RequestParam(name = "receiveid", required = true) String receiveid,
                 @RequestParam(name = "type", required = true, defaultValue = "申诉") String type,
                         Map params){
 
