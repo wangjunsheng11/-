@@ -54,6 +54,69 @@ public class AccountInfoController extends BaseController {
      * @date 2019/1/8
      *
      * @catalog v1.0.1/用户相关
+     * @title 获取用户默认头像
+     * @description 获取默认头像集合
+     * @method get
+     * @url /api/rest/v1.0.1/accountinfo/findDefaultHead
+     * @param time 必选 string 当前时间戳
+     * @param token 必选 string token
+     * @return {"status":"200","message":"请求成功","data":[{"file_path":"http://none.jpg","del_flag":0,"id":"1","order":1},{"file_path":"http://none_02.jpg","del_flag":0,"id":"2","order":2}],"page":null,"ext":null}
+     * @return_param data string data
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
+    @RequestMapping(value = "findDefaultHead" , method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp findDefaultHead(@RequestParam(name = "token", required = true) String token, String time){
+        List<Map> data = accountService.findDetailtList(null);
+        return Resp.success(data);
+    }
+
+    /**
+     * showdoc
+     * @author wangwei
+     * @date 2019/1/8
+     *
+     * @catalog v1.0.1/用户相关
+     * @title 设置用户默认头像
+     * @description 根据系统设置用户默认的头像地址,如果用户选择默认的头像地址，则直接传递返回的默认头像地址，调用此接口。
+     * @method post
+     * @url /api/rest/v1.0.1/accountinfo/setUserHeadPath
+     * @param time 必选 string 当前时间戳
+     * @param token 必选 string token
+     * @param head_path 必选 string 头像地址例如-http://none.jpg
+     * @return {"status":"200","message":"请求成功","data":{"id":"1547006424247526","head_path":"http://dd.jpg"},"page":null,"ext":null}
+     * @return_param data string data
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
+    @RequestMapping(value = "setUserHeadPath" , method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp setUserHeadPath(
+            HttpServletRequest request,
+            String token,
+            String time,
+            @RequestParam(name = "head_path", required = true)String head_path,
+            Map params){
+        String user_id = getUserid(request);
+        params.put("id", user_id);
+        params.put("head_path", head_path);
+        boolean flag = accountService.updateHead(params);
+        if(flag) {
+            return Resp.success(params);
+        }else{
+            return Resp.fail(params);
+        }
+    }
+
+    /**
+     * showdoc
+     * @author wangwei
+     * @date 2019/1/8
+     *
+     * @catalog v1.0.1/用户相关
      * @title 用户基础信息查询
      * @description 根据token查询账户基本信息
      * @method get
@@ -119,7 +182,7 @@ public class AccountInfoController extends BaseController {
      */
     @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
     @RequestMapping(value = "findgrade" , method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Resp findgrade (HttpServletRequest request, String time) {
+    public Resp findgrade (HttpServletRequest request, String time, String token) {
         Map<String, Object> params = new HashMap();
         Map<String, Object> result = new HashMap();
         String user_id = getUserid(request);

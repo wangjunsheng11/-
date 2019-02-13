@@ -48,7 +48,7 @@ public class FileUpLoadController extends BaseController {
      * showdoc
      * @catalog v1.0.1/用户相关
      * @title 用户头像上传
-     * @description 用户头像上传
+     * @description 用户头像上传,类型指定multipart/form-data
      * @method post
      * @url /api/open/rest/v1.0.1/fileupload/headUpLoad
      * @param token 必选 string token

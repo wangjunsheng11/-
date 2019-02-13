@@ -13,10 +13,16 @@ import java.util.Map;
 
 @Service
 public class AccountServiceImpl
-        implements AccountService {
+        implements
+        AccountService {
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Override
+    public List<Map> findDetailtList(Map params) {
+        return accountMapper.findDetailtList(params);
+    }
 
     @Override
     public Map selectHistoryByYserId(Map params) {

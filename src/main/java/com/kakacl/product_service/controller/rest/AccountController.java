@@ -119,7 +119,7 @@ public class AccountController extends BaseController {
         if(result == Constants.CONSTANT_1) {
             return Resp.success();
         } else {
-            return Resp.success();
+            return Resp.fail();
         }
     }
 

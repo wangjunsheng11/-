@@ -1,0 +1,86 @@
+server:
+  #port: 8086
+  port: 8773
+
+#指定注册中心地址
+eureka:
+  client:
+    serviceUrl:
+      # 172.19.186.233 47.101.63.222 192.168.4.172 127.0.0.1
+      defaultZone: http://47.101.63.222:8764/eureka/
+  instance:
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    prefer-ip-address: true
+
+#服务的名称
+spring:
+  application:
+    name: provider_zzf_service
+    #指定从哪个配置中心读取
+  #      cloud:
+  #        config:
+  #          discovery:
+  #            service-id: CONFIG-SERVER
+  #            enabled: true
+  #          profile: test
+  #消息队列
+  rabbitmq:
+    host: 211.149.226.29
+    port: 5672
+    username: guest
+    password: guest
+  datasource:
+    username: root
+    password: kakacl_123456
+    url: jdbc:mysql://211.149.226.29:8088/springcloud_guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 5
+    minIdle: 5
+    maxActive: 10
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+  redis:
+    host: 47.101.63.222
+    port: 56379
+    password: root
+
+redisson:
+  address: redis://47.101.63.222:56379
+
+mybatis:
+  config-location: classpath:sqlMapConfig.xml
+  mapper-locations: classpath:mappers/*.xml
+  type-aliases-package: com.kakacl.springboot.model
+
+env: devp
+branch: dev
+
+#版本号
+version: v1.0.1
+
+#系统类型
+sys-name: kakacl_zzf
+
+# 短信配置
+sms-account: N9960209
+sms-pwd: iFqXn8Etz
+
+#账户生成秘钥的key
+account-paaakey: kakacl_zzfsadasdsadsads
+
+# 上传文件路径
+up-load-file-path: d:/fileData # /usr/local/fileData/ d:/fileData
+# 文件映射地址
+file-upload-ip-and-port: http://211.149.226.29:8081 #文件显示的地址加端口号

@@ -46,6 +46,12 @@ public class LoginController extends BaseController {
     @Value("${account-paaakey}")
     private String account_paaakey;
 
+    @Value("${file-upload-ip-and-port}")
+    private String fileUploadIpAndPort;
+
+    @Value("${user-default-head}")
+    private String user_default_head;
+
     @Autowired
     private AccountService accountService;
 
@@ -217,7 +223,9 @@ public class LoginController extends BaseController {
         params.put("del_flag", Constants.CONSTANT_0);
         params.put("create_time", NumberUtils.getCurrentTimes());
         params.put("create_by", sysName);
+
         params.put("id_card", idCode);
+        params.put("head_path", fileUploadIpAndPort + user_default_head);
         boolean flag = casAccountService.insert(params);
         if(flag) {
             // 首次注册成功50
@@ -373,8 +381,8 @@ public class LoginController extends BaseController {
      * @date 2019/1/8
      *
      * @catalog v1.0.1/用户相关
-     * @title 根据手机号修改密码
-     * @description 根据手机号修改密码
+     * @title 根据手机验证码修改密码
+     * @description 根据手机验证码修改密码
      * @method post
      * @url /api/open/rest/v1.0.1/do/rePassByPhonenum
      * @param phone_num 必选 string 指定用户的手机号码
@@ -394,12 +402,16 @@ public class LoginController extends BaseController {
             @RequestParam(name="phoneCode", required=true)String phoneCode){
         java.util.Map params = new HashMap();
         params.put("phone_num", phone_num);
-        params.put("pass_word", SymmetricEncoder.AESEncode(sysName, new_pass));
+        try {
+            params.put("pass_word", SecurityUtil.encrypt(new_pass, account_paaakey));
+        } catch (Exception e) {
+            log.info("${}", e.getMessage());
+        }
         int result = casAccountService.updateOnePassByPhonenum(params);
         if(result == Constants.CONSTANT_1) {
             return Resp.success();
         } else {
-            return Resp.success();
+            return Resp.fail();
         }
     }
 

@@ -8,6 +8,9 @@ import java.util.Map;
 
 public interface AccountService {
 
+    // 获取默认头像列表
+    List<Map> findDetailtList(Map params);
+
     Map selectHistoryByYserId(Map params);
 
     Map selectById(java.util.Map params);
