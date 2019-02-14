@@ -1,5 +1,6 @@
 package com.kakacl.product_service.controller.open.rest;
 
+import com.kakacl.product_service.config.Constant;
 import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.domain.Product;
@@ -9,6 +10,7 @@ import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
 
 /**
  * @author wangwei
@@ -40,6 +43,23 @@ public class TestController extends BaseController {
         Boolean res=true;
         res=stringRedisTemplate.opsForValue().setIfAbsent(key,key + System.nanoTime());
         return Resp.success(res);
+    }
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    // 清除用户每天首次登录的数据
+    @RequestMapping(value = "clear")
+    public Resp clear () {
+        String key = String.format(Constant.EVERY_LOGIN_CONTENT + ":%s", "*");
+        Set s = redisTemplate.keys(key);
+        redisTemplate.delete(s);
+        /*for (Object t : s) {
+            Object v = redisTemplate.opsForValue().get(t);
+            System.out.println(v);
+            redisTemplate.delete(t);
+        }*/
+        return Resp.success(s);
     }
 
     @Value("${server.port}")
