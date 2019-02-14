@@ -20,6 +20,11 @@ public class AccountServiceImpl
     private AccountMapper accountMapper;
 
     @Override
+    public Map findStoreAccountInfoByCard(Map params) {
+        return accountMapper.findStoreAccountInfoByCard(params);
+    }
+
+    @Override
     public List<Map> findDetailtList(Map params) {
         return accountMapper.findDetailtList(params);
     }

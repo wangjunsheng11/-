@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -218,6 +219,17 @@ public class LoginController extends BaseController {
         } catch (Exception e) {
             log.info("${}", e.getMessage());
         }
+
+        // 根据身份证号码查询用户是否存在，如果不存在，用户名称设置为 anonymous
+        params.put("card_no", idCode);
+        Map accountInfo = accountService.findStoreAccountInfoByCard(params);
+        if(accountInfo == null) {
+            params.put("user_name", "anonymous");
+
+        } else {
+            params.put("user_name", accountInfo.get("name"));
+        }
+
 //        params.put("pass_word", password);
         params.put("status", Constants.CONSTANT_1);
         params.put("del_flag", Constants.CONSTANT_0);
@@ -225,7 +237,7 @@ public class LoginController extends BaseController {
         params.put("create_by", sysName);
 
         params.put("id_card", idCode);
-        params.put("head_path", fileUploadIpAndPort + user_default_head);
+        params.put("head_path", fileUploadIpAndPort + File.separator + user_default_head);
         boolean flag = casAccountService.insert(params);
         if(flag) {
             // 首次注册成功50

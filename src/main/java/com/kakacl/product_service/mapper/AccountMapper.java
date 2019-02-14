@@ -8,6 +8,10 @@ import java.util.*;
 
 public interface AccountMapper {
 
+    // 根据用户的身份证号码查询门店系统中的用户信息是否存在
+    @Select("select * from store_account_id_card where card_no = #{card_no} LIMIT 0, 1")
+    Map findStoreAccountInfoByCard(Map params);
+
     // 获取默认头像列表
     @Select("SELECT * FROM zzf_images_user_head_default WHERE del_flag = 0")
     List<Map> findDetailtList(Map params);
@@ -28,7 +32,7 @@ public interface AccountMapper {
     List<Map> selectByPhoneORKakaNum(java.util.Map params);
 
     @Insert("INSERT INTO zzf_user_info (id, user_name, head_path, phone_num, kaka_num, roleid, id_card, create_time, create_by, account_status, introduction, del_flag) " +
-            "VALUES (#{id}, 'anonymous', #{head_path}, #{phone_num}, #{kaka_num}, '0', #{id_card}, #{create_time}, '1', '52000', '没有简介', '0')")
+            "VALUES (#{id}, #{user_name}, #{head_path}, #{phone_num}, #{kaka_num}, '0', #{id_card}, #{create_time}, '1', '52000', '没有简介', '0')")
     boolean insert(Map<String, Object> params);
 
     /*
