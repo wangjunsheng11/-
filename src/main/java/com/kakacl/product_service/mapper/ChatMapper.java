@@ -35,7 +35,7 @@ public interface ChatMapper {
             "</foreach>",
             "</script>"
     })*/
-    @Select("SELECT * FROM zzf_user_friends WHERE del_flag = 0 AND (`status` = #{status_01} OR `status` = #{status_02}) AND friend_id = #{user_id}")
+    @Select("SELECT * FROM zzf_user_friends WHERE del_flag = 0 AND (`status` = #{status_01} OR `status` = #{status_02}) AND my_id = #{user_id}")
     List<Map> findAddFriends(Map params);
 
     @Update("UPDATE zzf_user_chat_history SET update_by=#{update_by}, update_time=#{update_time}, read_status = #{read_status} WHERE (id=#{id})")
@@ -48,7 +48,7 @@ public interface ChatMapper {
     boolean updateFriend(Map params);
 
     // 同意申请者添加好友
-    @Update("UPDATE zzf_user_friends SET `status` = #{status_01}  WHERE del_flag = 0 AND my_id = #{friend_id} AND friend_id = #{user_id}")
+    @Update("UPDATE zzf_user_friends SET `status` = #{status_01}  WHERE del_flag = 0 AND my_id = #{user_id} AND friend_id = #{friend_id}")
     boolean agreeOne(Map params);
 
     // 根据群组查询自己的好友

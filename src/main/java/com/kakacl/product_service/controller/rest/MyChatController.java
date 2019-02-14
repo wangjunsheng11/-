@@ -143,6 +143,15 @@ public class MyChatController extends BaseController {
         params.put("status_02", Constants.CONSTANT_50203);
         params.put("user_id", getUserid(request));
         List<Map> data = chatService.findAddFriends(params);
+        for (int i = 0; i < data.size(); i++) {
+            Object friend_id = data.get(i).get("friend_id");
+            params.put("user_id", friend_id);
+            Map friend = accountService.selectById(params);
+            if(friend != null) {
+                friend.remove("id_card");
+            }
+            data.get(i).put("friend", friend);
+        }
         return Resp.success(data);
     }
 
@@ -155,6 +164,7 @@ public class MyChatController extends BaseController {
      * @url /api/rest/v1.0.1/mychat/agreeOne
      * @param time 必选 string 请求时间戳
      * @param token 必选 string token
+     * @param friend_id 必选 string 好友主键
      * @return {"status":"200","message":"请求成功","data":[{"group_name":"1"},{"group_name":"同事"}],"page":null,"ext":null}
      * @return_param message string 消息
      * @return_param status string 状态
@@ -170,6 +180,40 @@ public class MyChatController extends BaseController {
                          Map params) {
         params.put("friend_id", friend_id);
         params.put("status_01", Constants.CONSTANT_50201);
+        params.put("user_id", getUserid(request));
+        boolean flag = chatService.agreeOne(params);
+        if(flag) {
+            return Resp.success();
+        } else {
+            return Resp.fail(ErrorCode.CODE_6801);
+        }
+    }
+
+    /**
+     * showdoc
+     * @catalog v1.0.1/用户聊天
+     * @title 忽略好友
+     * @description  忽略好友
+     * @method post
+     * @url /api/rest/v1.0.1/mychat/ignore
+     * @param time 必选 string 请求时间戳
+     * @param token 必选 string token
+     * @param friend_id 必选 string 好友主键
+     * @return {"status":"200","message":"请求成功","data":,"page":null,"ext":null}
+     * @return_param message string 消息
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
+    @RequestMapping(value = "ignore", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp ignore(HttpServletRequest request,
+                         String  token,
+                         @RequestParam(name="time")String time,
+                         @RequestParam(name="friend_id")String friend_id,
+                         Map params) {
+        params.put("friend_id", friend_id);
+        params.put("status_01", Constants.CONSTANT_50203);
         params.put("user_id", getUserid(request));
         boolean flag = chatService.agreeOne(params);
         if(flag) {
