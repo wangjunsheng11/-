@@ -19,6 +19,16 @@ public class AbilityServiceImpl implements AbilityService {
     private AbilityMapper abilityMapper;
 
     @Override
+    public List<Map> selectRuleList(Map params) {
+        return abilityMapper.selectRuleList(params);
+    }
+
+    @Override
+    public Map selectRuleById(Map params) {
+        return abilityMapper.selectRuleById(params);
+    }
+
+    @Override
     public List<Map> selectByUserid(Map params) {
         return abilityMapper.selectByUserid(params);
     }

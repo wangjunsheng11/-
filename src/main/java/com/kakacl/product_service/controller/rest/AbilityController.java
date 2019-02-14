@@ -4,6 +4,7 @@ import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.AbilityService;
+import com.kakacl.product_service.utils.ErrorCode;
 import com.kakacl.product_service.utils.IDUtils;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,14 +65,43 @@ public class AbilityController extends BaseController {
      * @date 2019/1/8
      *
      * @catalog v1.0.1/用户相关
+     * @title 获取能力规则
+     * @description 获取能力的规则，一般此接口为系统调用
+     * @method post
+     * @url /api/rest/v1.0.1/ability/add
+     * @param token 必选 string token
+     * @param time 必选 string 时间
+     * @return {"status":"200","message":"请求成功","data":null,"page":null,"ext":null}
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
+    @PostMapping(value = "findRule", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp findRule(HttpServletRequest request,
+                    String token,
+                    @RequestParam(name = "time", required = true)String time,
+                    Map params) {
+        List<Map> data = abilityService.selectRuleList(params);
+        return Resp.success(data);
+    }
+
+    /**
+     * showdoc
+     * @author wangwei
+     * @date 2019/1/8
+     *
+     * @catalog v1.0.1/用户相关
      * @title 添加能力
-     * @description 添加能力
+     * @description 添加能力，用户添加能力
      * @method post
      * @url /api/rest/v1.0.1/ability/add
      * @param token 必选 string token
      * @param time 必选 string 时间
      * @param name 必选 string 能力名称
      * @param remark 必选 string 能力介绍
+     * @param img_path 可选 string 能力图片地址默认-http://www.test.cn/none.jpg
+     * @param abilityId 可选 string 能力主键，如果传递能力主键，则使用能力主键的值。如果没有传递能力主键，则使用-name-remark的值。
      * @return {"status":"200","message":"请求成功","data":null,"page":null,"ext":null}
      * @return_param status string 状态
      * @remark 这里是备注信息
@@ -83,15 +113,29 @@ public class AbilityController extends BaseController {
                      String token,
                      @RequestParam(name = "name", required = true) String name,
                      @RequestParam(name = "remark", required = true) String remark,
-                     @RequestParam(name = "time", required = true)String time) {
+                     @RequestParam(name = "time", required = true)String time,
+                    @RequestParam(name = "img_path", required = true, defaultValue = "http://www.test.cn/none.jpg")String img_path,
+                     @RequestParam(name = "abilityId", required = true, defaultValue = "0")String abilityId) {
         Map params = new HashMap();
-        params.put("id", IDUtils.genHadId());
         params.put("user_id", getUserid(request));
-        params.put("name", name);
-        params.put("img_path", "http//这里应该是默认图片.jpg");
-        params.put("remark", remark);
         params.put("create_date", System.currentTimeMillis() / Constants.CONSTANT_1000);
         params.put("create_by", getUserid(request));
+        if((Constants.CONSTANT_0 + "").equals(abilityId)) {
+            params.put("name", name);
+            params.put("img_path", img_path);
+            params.put("remark", remark);
+        } else {
+            params.put("id", abilityId);
+            Map result = abilityService.selectRuleById(params);
+            if(result != null) {
+                params.put("name", result.get("name"));
+                params.put("img_path", result.get("img_path"));
+                params.put("remark", result.get("remark"));
+            } else{
+                return Resp.fail(ErrorCode.CODE_6803);
+            }
+        }
+        params.put("id", IDUtils.genHadId());
         abilityService.insertOne(params);
         return Resp.success();
     }
@@ -103,7 +147,7 @@ public class AbilityController extends BaseController {
      *
      * @catalog v1.0.1/用户相关
      * @title 编辑能力
-     * @description 编辑能力
+     * @description 编辑能力，根据表格的主键编辑用户的能力
      * @method post
      * @url /api/rest/v1.0.1/ability/edit
      * @param token 必选 string token

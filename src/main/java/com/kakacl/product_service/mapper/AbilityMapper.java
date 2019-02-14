@@ -14,6 +14,14 @@ import java.util.*;
  */
 public interface AbilityMapper {
 
+    // 获取能力规则
+    @Select("select * from zzf_user_ability_rule where del_flag = 0")
+    List<Map> selectRuleList(Map params);
+
+    // 根据主键查询规则
+    @Select("select * from zzf_user_ability_rule where id = #{id}")
+    Map selectRuleById(Map params);
+
     @Select("SELECT * FROM zzf_user_ability WHERE user_id = #{user_id}")
     List<Map> selectByUserid(java.util.Map params);
 

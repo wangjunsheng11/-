@@ -54,17 +54,17 @@
             <version>4.10.0</version>
         </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>org.nd4j</groupId>
             <artifactId>nd4j-native-platform</artifactId>
             <version>${nd4j.version}</version>
-        </dependency>
+        </dependency>-->
 
-        <dependency>
+        <!--<dependency>
             <groupId>org.nd4j</groupId>
             <artifactId>nd4j-cuda-7.5-platform</artifactId>
             <version>${nd4j.version}</version>
-        </dependency>
+        </dependency>-->
 
         <!--<dependency>
             <groupId>org.nd4j</groupId>
@@ -72,46 +72,46 @@
         </dependency>-->
 
        <!-- &lt;!&ndash; DL4J核心功能 &ndash;&gt;-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.deeplearning4j</groupId>
             <artifactId>deeplearning4j-core</artifactId>
             <version>${dl4j.version}</version>
-        </dependency>
+        </dependency>-->
 
        <!-- &lt;!&ndash;自然语言处理工具包含在该依赖向内&ndash;&gt;-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.deeplearning4j</groupId>
             <artifactId>deeplearning4j-nlp</artifactId>
             <version>${dl4j.version}</version>
-        </dependency>
+        </dependency>-->
 
         <!--&lt;!&ndash; 强制指定使用UI/HistogramIterationListener时的guava版本 &ndash;&gt;-->
-        <dependency>
+        <!--<dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
-        </dependency>
+        </dependency>-->
 
         <!--&lt;!&ndash; datavec-data-codec：仅用于在视频处理示例中加载视频数据 &ndash;&gt;-->
-        <dependency>
+        <!--<dependency>
             <artifactId>datavec-data-codec</artifactId>
             <groupId>org.datavec</groupId>
             <version>${datavec.version}</version>
-        </dependency>
+        </dependency>-->
 
         <!--&lt;!&ndash; 用于前馈/分类/MLP*和前馈/回归/RegressionMathFunctions示例 &ndash;&gt;-->
-        <dependency>
+        <!--<dependency>
             <groupId>jfree</groupId>
             <artifactId>jfreechart</artifactId>
             <version>${jfreechart.version}</version>
-        </dependency>
+        </dependency>-->
 
         <!--&lt;!&ndash; Arbiter：用于超参数优化示例 &ndash;&gt;-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.deeplearning4j</groupId>
             <artifactId>arbiter-deeplearning4j</artifactId>
             <version>${arbiter.version}</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
