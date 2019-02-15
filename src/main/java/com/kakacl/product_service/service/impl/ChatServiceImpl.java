@@ -5,6 +5,7 @@ import com.kakacl.product_service.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.beans.Transient;
 import java.util.List;
 import java.util.Map;
 
@@ -61,8 +62,10 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
+    @Transient
     public boolean agreeOneFriendAndMy(Map params) {
-        return chatMapper.agreeOneFriendAndMy(params);
+        boolean result = chatMapper.agreeOneFriendAndMy(params);
+        return result;
     }
 
     @Override

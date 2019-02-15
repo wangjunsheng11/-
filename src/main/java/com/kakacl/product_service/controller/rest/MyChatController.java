@@ -48,6 +48,9 @@ public class MyChatController extends BaseController {
     @Autowired
     private TalentService talentService;
 
+    @Autowired
+    private AbilityService abilityService;
+
     /**
      * showdoc
      * @catalog v1.0.1/用户聊天
@@ -291,14 +294,14 @@ public class MyChatController extends BaseController {
         params.put("user_id", friend_id);
         Map userMap = accountService.selectById(params);
         // 石锤能力 - 天赋
-        //params.put("user_id", friend_id);
         Map gradeMap = gradeService.selectById(params);
-        //params.put("user_id", friend_id);
         List<Map> talentMap = talentService.selectList(params);
+        List<Map> abilityMap = abilityService.selectByUserid(params);
 
         data.put("userMap", userMap);
         data.put("gradeMap", gradeMap);
         data.put("talentMap", talentMap);
+        data.put("abilityMap", abilityMap);
         return Resp.success(data);
     }
 
@@ -439,6 +442,13 @@ public class MyChatController extends BaseController {
         params.put("del_flag", del_flag);
         params.put("my_id", getUserid(request));
         boolean flag = chatService.updateFriend(params);
+
+        // 删除好友列表中的自己
+        params.put("friend_id", getUserid(request));
+        params.put("del_flag", del_flag);
+        params.put("my_id", friend_id);
+        boolean flag02 = chatService.updateFriend(params);
+
         if(flag) {
             return Resp.success();
         } else {
