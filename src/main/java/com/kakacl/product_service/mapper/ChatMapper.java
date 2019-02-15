@@ -47,9 +47,13 @@ public interface ChatMapper {
     @Update("update zzf_user_friends set del_flag = #{del_flag} WHERE (friend_id = #{friend_id} AND my_id = #{my_id})")
     boolean updateFriend(Map params);
 
-    // 同意申请者添加好友
+    // 同意申请者添加我为好友；我添加一个好友，设置好友同意
     @Update("UPDATE zzf_user_friends SET `status` = #{status_01}  WHERE del_flag = 0 AND my_id = #{user_id} AND friend_id = #{friend_id}")
     boolean agreeOne(Map params);
+
+    // 同意好友添加我为好友
+    @Update("UPDATE zzf_user_friends SET `status` = #{status_01}  WHERE del_flag = 0 AND my_id = #{friend_id} AND friend_id = #{user_id}")
+    boolean agreeOneFriendAndMy(Map params);
 
     // 根据群组查询自己的好友
     @Select("SELECT * FROM zzf_user_friends WHERE group_name = #{group_name} and del_flag = 0 AND my_id = #{account_id} and `status` = #{status}")
@@ -57,6 +61,12 @@ public interface ChatMapper {
 
     @Select("SELECT * FROM zzf_user_chat_history WHERE content like '%${search_key}%' and (to_id = #{user_id} or send_id = #{user_id}) AND del_flag = 0")
     List<Map> findMessages(Map params);
+
+    // 输入对方姓名、咔咔号、电话号码、聊天记录关键词可进行查找相关信息
+    @Select("SELECT * FROM zzf_user_chat_history zch " +
+            "WHERE 1 = 1 AND (content like '%${search_key}%' OR zch.send_id IN (SELECT id FROM zzf_user_info WHERE 1 = 1 AND (user_name LIKE '%${search_key}%' OR phone_num LIKE '%${search_key}%' OR zzf_user_info.phone_num IN (SELECT phone_num FROM cas_account WHERE 1 = 1 AND kaka_num LIKE '%${search_key}%')))) " +
+            "and (to_id = #{user_id} or send_id = #{user_id}) AND del_flag = 0")
+    List<Map> findMessageByKey(Map params);
 
     @Select("SELECT DISTINCT group_name FROM zzf_user_friends WHERE my_id = #{user_id} AND del_flag = 0")
     List<Map> findGroup(Map params);

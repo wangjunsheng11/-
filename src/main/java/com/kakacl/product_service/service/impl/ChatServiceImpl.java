@@ -61,8 +61,18 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
+    public boolean agreeOneFriendAndMy(Map params) {
+        return chatMapper.agreeOneFriendAndMy(params);
+    }
+
+    @Override
     public List<Map> findMessages(Map params) {
         return chatMapper.findMessages(params);
+    }
+
+    @Override
+    public List<Map> findMessageByKey(Map params) {
+        return chatMapper.findMessageByKey(params);
     }
 
     @Override

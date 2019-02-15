@@ -27,10 +27,16 @@ public interface ChatService {
 
     boolean updateFriend(Map params);
 
-    // 同意申请者添加好友
+    // 同意申请者添加我为好友；我添加一个好友，设置好友同意
     boolean agreeOne(Map params);
 
+    // 同意好友添加我为好友
+    boolean agreeOneFriendAndMy(Map params);
+
     List<Map> findMessages(Map params);
+
+    // 输入对方姓名、咔咔号、电话号码、聊天记录关键词可进行查找相关信息
+    List<Map> findMessageByKey(Map params);
 
     List<Map> findGroup(Map params);
 }

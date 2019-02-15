@@ -10,6 +10,7 @@ import com.kakacl.product_service.service.*;
 import com.kakacl.product_service.utils.ErrorCode;
 import com.kakacl.product_service.utils.IDUtils;
 import com.kakacl.product_service.utils.Resp;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -143,9 +144,11 @@ public class MyChatController extends BaseController {
         params.put("status_01", Constants.CONSTANT_50200);
         params.put("status_02", Constants.CONSTANT_50203);
         params.put("user_id", getUserid(request));
+        // 获取申请我为好友的用户
         List<Map> data = chatService.findAddFriends(params);
         for (int i = 0; i < data.size(); i++) {
-            Object friend_id = data.get(i).get("friend_id");
+            // 这里是那个还有的主键
+            Object friend_id = data.get(i).get("my_id");
             params.put("user_id", friend_id);
             Map friend = accountService.selectById(params);
             if(friend != null) {
@@ -182,7 +185,7 @@ public class MyChatController extends BaseController {
         params.put("friend_id", friend_id);
         params.put("status_01", Constants.CONSTANT_50201);
         params.put("user_id", getUserid(request));
-        boolean flag = chatService.agreeOne(params);
+        boolean flag = chatService.agreeOneFriendAndMy(params);
 
         if(flag) {
             // 将同意的还有存在我的好友列表中
@@ -196,9 +199,9 @@ public class MyChatController extends BaseController {
             boolean flag02 = chatService.addFriend(params);
 
             // 同意为好友添加自己为好友
-            params.put("friend_id", getUserid(request));
+            params.put("friend_id", friend_id);
             params.put("status_01", Constants.CONSTANT_50201);
-            params.put("user_id", friend_id);
+            params.put("user_id", getUserid(request));
             boolean flag03 = chatService.agreeOne(params);
             return Resp.success();
         } else {
@@ -353,9 +356,9 @@ public class MyChatController extends BaseController {
                              @RequestParam(value = "content", required = false)String content,
                              @RequestParam(value = "scope", required = false, defaultValue = "global")String scope,
                              Map params) {
-        params.put("search_key", content);
+        params.put("search_key", StringEscapeUtils.escapeSql(content));
         params.put("user_id", getUserid(request));
-        List<Map> data = chatService.findMessages(params);
+        List<Map> data = chatService.findMessageByKey(params);
         for (int i = Constants.CONSTANT_0; i < data.size(); i++) {
             params.put("user_id", data.get(i).get("to_id"));
             Map user = accountService.selectById(params);
