@@ -6,9 +6,11 @@ import com.baidu.aip.nlp.AipNlp;
 import com.kakacl.product_service.config.Constant;
 import com.kakacl.product_service.service.ChatMoodAnalysisService;
 import com.kakacl.product_service.utils.IDUtils;
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -32,6 +34,9 @@ public class ChatMoodAnalysisTask {
     @Autowired
     private ChatMoodAnalysisService chatMoodAnalysisService;
 
+    @Autowired
+    public StringRedisTemplate stringRedisTemplate;
+
     /*
      * 情绪分析任务，一分钟执行一次，每次分析10条
      *
@@ -42,17 +47,46 @@ public class ChatMoodAnalysisTask {
      */
     @Scheduled(cron = "0 */1 *  * * * ")
     public void chatMoodTask(){
-        Map params = new HashMap();
-        List<Map> data = chatMoodAnalysisService.selectListLimit10(null);
-        for (int i = 0; i < data.size(); i++) {
-            String chat_id = data.get(i).get("id") + "";
-            String id = IDUtils.genHadId();
-            // 根据内容分析情绪
-            String mood = getMood(data.get(i).get("content") + "");
-            params.put("id", id);
-            params.put("chat_id", chat_id);
-            params.put("mood", mood);
-            chatMoodAnalysisService.insert(params);
+        // 加锁
+        String key = Constant.MOOD_ANALYSIS_TASK_AUTO_TASK;
+        Boolean res = true;
+        while(res) {
+            String value = UUID.randomUUID().toString() + System.nanoTime();
+            res = stringRedisTemplate.opsForValue().setIfAbsent(key, value);
+            if (res) {
+                stringRedisTemplate.opsForValue().increment(Constant.EMPLOYEE_ORBIT_TASK_AUTO_LOCK, 1L);
+                try {
+                    res = false;
+                    Map params = new HashMap();
+                    List<Map> data = chatMoodAnalysisService.selectListLimit10(null);
+                    for (int i = 0; i < data.size(); i++) {
+                        String chat_id = data.get(i).get("id") + "";
+                        String id = IDUtils.genHadId();
+                        // 根据内容分析情绪
+                        String mood = getMood(data.get(i).get("content") + "");
+                        params.put("id", id);
+                        params.put("chat_id", chat_id);
+                        params.put("mood", mood);
+                        chatMoodAnalysisService.insert(params);
+                        try {
+                            Thread.sleep(50L);
+                        } catch (Exception e) {
+                        }
+                    }
+                }catch (Exception e) {
+                } finally {
+                    String redisValue = stringRedisTemplate.opsForValue().get(key);
+                    if (StringUtils.isNotBlank(redisValue) && redisValue.equals(value)) {
+                        stringRedisTemplate.delete(key);
+                    }
+                }
+            } else{
+                res = true;
+                try {
+                    Thread.sleep(1000L);
+                } catch (Exception e) {
+                }
+            }
         }
     }
 

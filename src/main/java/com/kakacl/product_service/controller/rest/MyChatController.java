@@ -1,6 +1,7 @@
 package com.kakacl.product_service.controller.rest;
 
 import com.github.pagehelper.PageInfo;
+import com.kakacl.product_service.config.Constant;
 import com.kakacl.product_service.config.ConstantDBStatus;
 import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
@@ -159,7 +160,7 @@ public class MyChatController extends BaseController {
      * showdoc
      * @catalog v1.0.1/用户聊天
      * @title 同意添加单个好友
-     * @description  同意添加单个好友，如果同意者需要添加申请者为好友
+     * @description  同意添加单个好友，如果同意者需要添加申请者为好友;如果同意某一用户为好友，则被同意用户在同意用户的我的好友列表中。
      * @method post
      * @url /api/rest/v1.0.1/mychat/agreeOne
      * @param time 必选 string 请求时间戳
@@ -182,7 +183,23 @@ public class MyChatController extends BaseController {
         params.put("status_01", Constants.CONSTANT_50201);
         params.put("user_id", getUserid(request));
         boolean flag = chatService.agreeOne(params);
+
         if(flag) {
+            // 将同意的还有存在我的好友列表中
+            String group_name = Constant.MY_FRIENDS_GROUP_TITLE;
+            params.put("id", IDUtils.genHadId());
+            params.put("my_id", getUserid(request));
+            params.put("friend_id", friend_id);
+            params.put("group_name", group_name);
+            params.put("create_time", System.currentTimeMillis() / Constants.CONSTANT_1000);
+            params.put("create_by", getUserid(request));
+            boolean flag02 = chatService.addFriend(params);
+
+            // 同意为好友添加自己为好友
+            params.put("friend_id", getUserid(request));
+            params.put("status_01", Constants.CONSTANT_50201);
+            params.put("user_id", friend_id);
+            boolean flag03 = chatService.agreeOne(params);
             return Resp.success();
         } else {
             return Resp.fail(ErrorCode.CODE_6801);
@@ -305,7 +322,7 @@ public class MyChatController extends BaseController {
     @RequestMapping(value = "sendMessage", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Resp sendMessage(HttpServletRequest request, String token, String time,
                             @RequestParam(value = "to_friend_id", required = true)String to_friend_id,
-                            @RequestParam(value = "content", required = false)String content,
+                            @RequestParam(value = "content", required = true)String content,
                             @RequestParam(value = "type", required = true, defaultValue = "note")String type,
                             @RequestParam(value = "title", required = true, defaultValue = "消息")String title) {
         return Resp.fail();
@@ -333,7 +350,7 @@ public class MyChatController extends BaseController {
     public Resp findMessages(HttpServletRequest request,
                              String time,
                              String token,
-                             @RequestParam(value = "content", required = true)String content,
+                             @RequestParam(value = "content", required = false)String content,
                              @RequestParam(value = "scope", required = false, defaultValue = "global")String scope,
                              Map params) {
         params.put("search_key", content);

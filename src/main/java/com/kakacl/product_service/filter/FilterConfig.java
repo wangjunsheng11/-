@@ -31,7 +31,7 @@ public class FilterConfig {
       * @param
      * @return org.springframework.boot.web.servlet.FilterRegistrationBean
      */
-   @Bean
+    @Bean
     public FilterRegistrationBean buildCFilter() {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         filterRegistrationBean.setOrder(3);

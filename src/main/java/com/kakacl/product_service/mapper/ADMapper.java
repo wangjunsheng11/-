@@ -7,6 +7,6 @@ import java.util.Map;
 
 public interface ADMapper {
 
-    @Select("SELECT 'order', path, target_path, del_flag FROM zzf_images_ad WHERE del_flag = 0")
+    @Select("SELECT * FROM zzf_images_ad WHERE del_flag = 0")
     List<Map<String, String>> selectAD(Map params);
 }

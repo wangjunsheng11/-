@@ -7,7 +7,7 @@ eureka:
   client:
     serviceUrl:
       # 172.19.186.233 47.101.63.222 192.168.4.172 127.0.0.1
-      defaultZone: http://47.101.63.222:8764/eureka/
+      defaultZone: http://211.149.226.29:8761/eureka/
   instance:
     instance-id: ${spring.cloud.client.ip-address}:${server.port}
     prefer-ip-address: true
@@ -52,12 +52,12 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
   redis:
-    host: 47.101.63.222
+    host: 211.149.226.29
     port: 56379
     password: root
 
 redisson:
-  address: redis://47.101.63.222:56379
+  address: redis://211.149.226.29:56379
 
 mybatis:
   config-location: classpath:sqlMapConfig.xml
@@ -81,6 +81,8 @@ sms-pwd: iFqXn8Etz
 account-paaakey: kakacl_zzfsadasdsadsads
 
 # 上传文件路径
-up-load-file-path: d:/fileData # /usr/local/fileData/
+up-load-file-path: /usr/local/fileData/ # /usr/local/fileData/ d:/fileData
 # 文件映射地址
 file-upload-ip-and-port: http://211.149.226.29:8081 #文件显示的地址加端口号
+# 用户默认头像
+user-default-head: zzf/file/user/head/images/default_head.png
