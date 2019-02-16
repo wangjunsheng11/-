@@ -42,4 +42,17 @@ public interface CasAccountMapper {
     @Update("UPDATE cas_account SET pass_word=#{pass_word} WHERE phone_num=#{phone_num}")
     int updateOnePassByPhonenum(Map<String, Object> params);
 
+    /*
+     * 根据主键更新状态
+     *
+     * @author wangwei
+     * @date 2019/2/16
+      * @param params MAP 集合对象
+      *     status int 状态
+      *     id int 主键
+     * @return boolean
+     */
+    @Update("update cas_account set `status` = #{status} where id = #{id} limit 1")
+    boolean updateStatusById(Map params);
+
 }

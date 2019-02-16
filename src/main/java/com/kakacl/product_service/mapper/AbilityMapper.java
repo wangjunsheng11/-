@@ -18,6 +18,10 @@ public interface AbilityMapper {
     @Select("select * from zzf_user_ability_rule where del_flag = 0")
     List<Map> selectRuleList(Map params);
 
+    // 查询没有能力的10条用户 已经赋予能力,然后删除的能力不查询
+    @Select("SELECT * FROM zzf_user_info WHERE id NOT IN (SELECT user_id FROM zzf_user_ability)")
+    List<Map> selectAblityListTop10(Map params);
+
     // 根据主键查询规则
     @Select("select * from zzf_user_ability_rule where id = #{id}")
     Map selectRuleById(Map params);

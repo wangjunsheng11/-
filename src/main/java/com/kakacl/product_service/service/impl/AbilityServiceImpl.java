@@ -24,6 +24,11 @@ public class AbilityServiceImpl implements AbilityService {
     }
 
     @Override
+    public List<Map> selectAblityListTop10(Map params) {
+        return abilityMapper.selectAblityListTop10(params);
+    }
+
+    @Override
     public Map selectRuleById(Map params) {
         return abilityMapper.selectRuleById(params);
     }

@@ -46,6 +46,11 @@ public class Constant {
     // 情感分析自动锁
     public final static String MOOD_ANALYSIS_TASK_AUTO_TASK = String.format("redis:zzf:task:mood_analysis_task_auto_task:id:%s", "moodAnalysisTask");
 
+    // 能力自动锁
+    public final static String ABILITY_TASK_AUTO_TASK = String.format("redis:zzf:task:ability_task_auto_task:id:%s", "abilityTask");
+    // 能力序列自动锁
+    public final static String ABILITY_TASK_AUTO_TASK_INCREMENT = "redis:zzf:task:ability_task_auto_lock";
+
 
 
     // ------------------------------------------------- PING Type ----------------------------------------------------------------------------------------------------

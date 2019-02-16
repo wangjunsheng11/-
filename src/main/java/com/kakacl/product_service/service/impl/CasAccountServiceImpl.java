@@ -24,7 +24,8 @@ import java.util.Map;
  */
 @Service
 @RefreshScope
-public class CasAccountServiceImpl implements CasAccountService {
+public class
+CasAccountServiceImpl implements CasAccountService {
 
     @Autowired
     private CasAccountMapper casAccountMapper;
@@ -50,7 +51,6 @@ public class CasAccountServiceImpl implements CasAccountService {
         params.put("user_id", params.get("id"));
         params.put("id", IDUtils.genHadId());
         flag = gradeService.insert(params);
-        // TODO 能力，天赋
         return flag;
     }
 
@@ -87,5 +87,10 @@ public class CasAccountServiceImpl implements CasAccountService {
     @Override
     public int updateOnePassByPhonenum(Map<String, Object> params) {
         return casAccountMapper.updateOnePassByPhonenum(params);
+    }
+
+    @Override
+    public boolean updateStatusById(Map params) {
+        return casAccountMapper.updateStatusById(params);
     }
 }

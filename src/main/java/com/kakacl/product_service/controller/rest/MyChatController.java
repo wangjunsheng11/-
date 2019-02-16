@@ -149,7 +149,7 @@ public class MyChatController extends BaseController {
         params.put("user_id", getUserid(request));
         // 获取申请我为好友的用户
         List<Map> data = chatService.findAddFriends(params);
-        for (int i = 0; i < data.size(); i++) {
+        for (int i = Constants.CONSTANT_0; i < data.size(); i++) {
             // 这里是那个还有的主键
             Object friend_id = data.get(i).get("my_id");
             params.put("user_id", friend_id);

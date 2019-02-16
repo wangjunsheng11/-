@@ -21,4 +21,16 @@ public interface CasAccountService {
     int updateOnePassById(Map<String, Object> params);
 
     int updateOnePassByPhonenum(Map<String, Object> params);
+
+    /*
+     * 根据主键更新状态
+     *
+     * @author wangwei
+     * @date 2019/2/16
+     * @param params MAP 集合对象
+     *     status int 状态
+     *     id int 主键
+     * @return boolean
+     */
+    boolean updateStatusById(Map params);
 }

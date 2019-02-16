@@ -230,8 +230,8 @@ public class LoginController extends BaseController {
             params.put("user_name", accountInfo.get("name"));
         }
 
-//        params.put("pass_word", password);
-        params.put("status", Constants.CONSTANT_1);
+        // 新注册员工 工作状态默认为 待入职 50201
+        params.put("status", Constants.CONSTANT_50201);
         params.put("del_flag", Constants.CONSTANT_0);
         params.put("create_time", NumberUtils.getCurrentTimes());
         params.put("create_by", sysName);
