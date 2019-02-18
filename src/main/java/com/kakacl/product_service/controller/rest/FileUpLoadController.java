@@ -71,11 +71,14 @@ public class FileUpLoadController extends BaseController {
         String file_dir = "headFiles";
         String image_name = user_id + ".jpg";
         String path = FileUtils.getFileUploadPath(upLoadFilePath + File.separator + file_dir) + image_name;
+        String head_path = fileUploadIpAndPort + File.separator + FileUtils.getFileUploadPath(file_dir) + image_name;
+        log.info("path: {}", path);
+        log.info("head_path: {}", head_path);
         try {
             java.io.File newFile = new java.io.File(path);
             file.transferTo(newFile);
             params.put("id", user_id);
-            params.put("head_path", fileUploadIpAndPort + File.separator + FileUtils.getFileUploadPath(file_dir) + image_name);
+            params.put("head_path", head_path);
             accountService.updateHead(params);
         } catch (Exception e) {
             log.error("error: {}", e.getMessage());

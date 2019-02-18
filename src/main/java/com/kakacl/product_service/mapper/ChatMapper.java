@@ -59,7 +59,18 @@ public interface ChatMapper {
     @Select("SELECT * FROM zzf_user_friends WHERE group_name = #{group_name} and del_flag = 0 AND my_id = #{account_id} and `status` = #{status}")
     List<Map> findFriends(Map params);
 
-    @Select("SELECT * FROM zzf_user_chat_history WHERE content like '%${search_key}%' and (to_id = #{user_id} or send_id = #{user_id}) AND del_flag = 0")
+//    @Select("SELECT * FROM zzf_user_chat_history WHERE content like '%${search_key}%' and (to_id = #{user_id} or send_id = #{user_id}) AND del_flag = 0")
+    @Select("({ +" +
+            "<script>" +
+            "select" +
+            "*" +
+            "from zzf_user_chat_history" +
+            "where 1 = 1 AND content like " +
+            "<if test=search_key != null>" +
+            "#{search_key}" +
+            "</if> and (to_id = #{user_id} or send_id = #{user_id}) AND del_flag = 0" +
+            "</script>" +
+            "})")
     List<Map> findMessages(Map params);
 
     // 输入对方姓名、咔咔号、电话号码、聊天记录关键词可进行查找相关信息
