@@ -3,6 +3,7 @@ package com.kakacl.product_service.controller.rest;
 import com.kakacl.product_service.config.Constants;
 import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
+import com.kakacl.product_service.service.GradeRuleService;
 import com.kakacl.product_service.service.GradeService;
 import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 /*
  *
@@ -27,6 +29,9 @@ import java.util.HashMap;
 public class GradeController extends BaseController {
     @Autowired
     private GradeService gradeService;
+
+    @Autowired
+    private GradeRuleService gradeRuleService;
 
     /**
      * 查询单个等级
@@ -61,5 +66,51 @@ public class GradeController extends BaseController {
         java.util.Map params = new HashMap();
         params.put("user_id", userId);
         return Resp.success(gradeService.selectById(params));
+    }
+
+    /**
+     * showdoc
+     * @author wangwei
+     * @date 2019/1/8
+     *
+     * @catalog v1.0.1/用户等级
+     * @title 获取当前用户的等级和经验
+     * @description 获取当前用户的等级和经验，和下一等级和经验
+     * @method get
+     * @url /api/rest/v1.0.1/grade/selectGrade
+     * @param token 必选 string token
+     * @param time 必选 string 请求时间戳
+     * @return {"status":"200","message":"请求成功","data":{"failed_rule":25,"grade":1,"fraction":10},"page":null,"ext":null}
+     * @return_param data string data
+     * @return_param status string 状态
+     * @return_param grade string 当前等级
+     * @return_param failed string 当前分数
+     * @return_param failed_rule string 下一等级的分数
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
+    @GetMapping(value = "selectGrade", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Object selectGrade(
+            HttpServletRequest request,
+            String token,
+            String time){
+        java.util.Map params = new HashMap();
+        Map result = new HashMap<>();
+        String user_id = getUserid(request);
+        params.put("user_id", user_id);
+        Map data = gradeService.selectById(params);
+        log.info(" data {}", data);
+        // 当前等级
+        Object grade = data.get("grade");
+        result.put("grade", grade);
+        params.put("grade", grade);
+        // 当前分数
+        Object fraction = data.get("fraction");
+        result.put("fraction", fraction);
+         // 下一等级的分数
+        Map gradeRule = gradeRuleService.selectMapByUpGrade(params);
+        result.put("failed_rule", gradeRule.get("fraction"));
+        return Resp.success(result);
     }
 }

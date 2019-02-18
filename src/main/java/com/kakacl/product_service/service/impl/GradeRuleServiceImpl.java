@@ -24,4 +24,9 @@ public class GradeRuleServiceImpl implements GradeRuleService {
     public List<Map> selectList(Map params) {
         return gradeRuleMapper.selectList(params);
     }
+
+    @Override
+    public Map selectMapByUpGrade(Map params) {
+        return gradeRuleMapper.selectMapByUpGrade(params);
+    }
 }

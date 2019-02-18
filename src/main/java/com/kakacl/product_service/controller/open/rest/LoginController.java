@@ -6,6 +6,7 @@ import com.kakacl.product_service.controller.base.BaseController;
 import com.kakacl.product_service.limiting.AccessLimit;
 import com.kakacl.product_service.service.AccountService;
 import com.kakacl.product_service.service.CasAccountService;
+import com.kakacl.product_service.service.GradeService;
 import com.kakacl.product_service.service.TntegralService;
 import com.kakacl.product_service.utils.*;
 import org.apache.commons.lang.StringUtils;
@@ -61,6 +62,9 @@ public class LoginController extends BaseController {
 
     @Autowired
     private TntegralService tntegralService;
+
+    @Autowired
+    private GradeService gradeService;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -342,10 +346,12 @@ public class LoginController extends BaseController {
                 params.put("create_time", System.currentTimeMillis() / Constants.CONSTANT_1000);
                 params.put("create_by", cas_base.get("id"));
                 params.put("message", message);
-                // 异步增加积分
+                // 异步增加积分和经验
                 new Thread (new Runnable(){
                     public void run(){
                         tntegralService.insertOne(params);
+                        params.put("fraction", ContantEmpiric.LOGIN);
+                        gradeService.updateGrade(params);
                     }
                 }).start();
                 stringRedisTemplate.opsForValue().set(key, cas_base.get("phone_num").toString(), Constants.CONSTANT_24, TimeUnit.HOURS);

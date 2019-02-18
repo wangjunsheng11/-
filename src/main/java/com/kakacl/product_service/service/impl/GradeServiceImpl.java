@@ -19,6 +19,11 @@ public class GradeServiceImpl implements GradeService {
     }
 
     @Override
+    public boolean updateGrade(Map params) {
+        return gradeMapper.updateGrade(params);
+    }
+
+    @Override
     public boolean insert(Map params) {
         return gradeMapper.insert(params);
     }

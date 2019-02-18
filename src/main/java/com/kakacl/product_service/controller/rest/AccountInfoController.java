@@ -48,6 +48,9 @@ public class AccountInfoController extends BaseController {
     @Autowired
     private TntegralRuleService tntegralRuleService;
 
+    @Autowired
+    private TalentService talentService;
+
     /**
      * showdoc
      * @author wangwei
@@ -156,6 +159,10 @@ public class AccountInfoController extends BaseController {
             params.clear();
             params.put("user_id", user_id);
             result.put("ability", abilityService.selectByUserid(params));
+
+            // 我的天赋
+            params.put("user_id", user_id);
+            result.put("talent", talentService.selectList(params));
             return Resp.success(result);
         } catch (Exception e) {
             return Resp.fail();
