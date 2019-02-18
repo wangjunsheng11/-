@@ -105,6 +105,87 @@ public class CommunicationController extends BaseController {
     /**
      * showdoc
      * @catalog v1.0.1/聊天
+     * @title 查询和某一用户的聊天,接收者
+     * @description 查询和某一用户的聊天，内容仅限于本人发送的内容。
+     * @method get
+     * @url /api/rest/v1.0.1/communication/findInfoByToid
+     * @param time 必选 string 请求时间戳
+     * @param token 必选 string token
+     * @param to_id 必选 string 接收者的用户主键
+     * @return {"status":"200","message":"请求成功","data":171330,"page":null,"ext":null}
+     * @return_param code int 验证码
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
+    @GetMapping(value = "findInfoByToid", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp findInfoByMyid(HttpServletRequest request,
+                                 @RequestParam(name = "time", required = true)String time,
+                                 @RequestParam(name = "token", required = true) String token,
+                                 @RequestParam(name = "to_id") String to_id,
+                                 Map params){
+
+        params.put("to_id", to_id);
+        params.put("send_id", getUserid(request));
+        params.put("del_flag", Constants.CONSTANT_0);
+        List<Map> data = chatService.findInfoBySendid(params);
+        return Resp.success(data);
+    }
+
+    /**
+     * showdoc
+     * @catalog v1.0.1/聊天
+     * @title 查询和某一用户的聊天,发送者，接收者
+     * @description 查询和某一用户的聊天，发送者和接收者；data1-接收者user_id1， data2-接收者user_id2；data3是混合的用户消息。
+     * @method get
+     * @url /api/rest/v1.0.1/communication/findMessageByUserId
+     * @param time 必选 string 请求时间戳
+     * @param token 必选 string token
+     * @param user_id1 必选 string 用户主键
+     * @param user_id2 必选 string 用户主键
+     * @return {"status":"200","message":"请求成功","data":171330,"page":null,"ext":null}
+     * @return_param code int 验证码
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
+    @GetMapping(value = "findMessageByUserId", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp findMessageByUserId(HttpServletRequest request,
+                               @RequestParam(name = "time", required = true)String time,
+                               @RequestParam(name = "token", required = true) String token,
+                               @RequestParam(name = "user_id1") String user_id1,
+                               @RequestParam(name = "user_id2") String user_id2,
+                               Map params){
+
+        params.put("to_id", user_id1);
+        params.put("send_id", user_id2);
+        params.put("del_flag", Constants.CONSTANT_0);
+        List<Map> data1 = chatService.findInfoBySendid(params);
+        params.put("to_id", user_id2);
+        params.put("send_id", user_id1);
+        List<Map> data2 = chatService.findInfoBySendid(params);
+
+        Map data = new HashMap();
+        data.put("data1", data1);
+        data.put("data2", data2);
+
+        data1.addAll(data2);
+//        Collections.sort(data1, new Comparator<Map<String, Object>>(){
+//            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+//                String data1 = (String)o1.get("id");//name1是从你list里面拿出来的一个
+//                String data2 = (String)o2.get("id"); //name1是从你list里面拿出来的第二个name
+//                return data1.compareTo(data2);
+//            }
+//        });
+        data.put("data3", data1);
+        return Resp.success(data);
+    }
+
+    /**
+     * showdoc
+     * @catalog v1.0.1/聊天
      * @title 标注聊天已读
      * @description 标注某一消息已读
      * @method post

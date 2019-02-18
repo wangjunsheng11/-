@@ -5,6 +5,7 @@ import com.kakacl.product_service.service.GradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -26,5 +27,15 @@ public class GradeServiceImpl implements GradeService {
     @Override
     public boolean insert(Map params) {
         return gradeMapper.insert(params);
+    }
+
+    @Override
+    public boolean updateGradegrade(Map params) {
+        return gradeMapper.updateGradegrade(params);
+    }
+
+    @Override
+    public List<Map> selectList() {
+        return gradeMapper.selectList();
     }
 }
