@@ -18,6 +18,7 @@ public interface Constants {
     int CONSTANT_50200 = 50200;
     int CONSTANT_50201 = 50201;
     int CONSTANT_50203 = 50203;
+    int CONSTANT_52101 = 52101;
     int CONSTANT_100000 = 100000;
     int CONSTANT_110000 = 110000;
     int CONSTANT_200000 = 200000;

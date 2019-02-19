@@ -361,12 +361,18 @@ public class MyChatController extends BaseController {
                              Map params) {
         params.put("search_key", StringEscapeUtils.escapeSql(content));
         params.put("user_id", getUserid(request));
+//        Map result = new HashMap();
         List<Map> data = chatService.findMessageByKey(params);
+//        log.info("data {}", data);
         for (int i = Constants.CONSTANT_0; i < data.size(); i++) {
-            params.put("user_id", data.get(i).get("to_id"));
+//            params.put("user_id", data.get(i).get("to_id"));
+            params.put("user_id", data.get(i).get("send_id"));
             Map user = accountService.selectById(params);
-            user.remove("id_card");
-            data.get(i).put("user", user);
+            if(user != null) {
+                user.remove("id_card");
+                data.get(i).put("user", user);
+//                result.put("data", data);
+            }
         }
         return Resp.success(data);
     }
