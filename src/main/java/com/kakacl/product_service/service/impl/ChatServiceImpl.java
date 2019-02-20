@@ -89,4 +89,9 @@ public class ChatServiceImpl implements ChatService {
         return chatMapper.findOneByUserid(params);
     }
 
+    @Override
+    public int findNotReadNum(Map params) {
+        return chatMapper.findNotReadNum(params);
+    }
+
 }

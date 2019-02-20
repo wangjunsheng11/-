@@ -405,9 +405,13 @@ public class MyChatController extends BaseController {
         for (int i = 0; i < res.size(); i++) {
             Map obj = res.get(i);
             if(obj != null) {
-                obj.put("not_read_num", "1");
-//                log.info(" obj {}", obj);
                 Object user_id = obj.get("id");
+                params.put("to_id", getUserid(request));
+                params.put("send_id", user_id);
+                int notReadNum = chatService.findNotReadNum(params);
+                obj.put("not_read_num", notReadNum);
+//                log.info(" obj {}", obj);
+
                 params.put("to_id", user_id);
                 params.put("send_id", getUserid(request));
                 Map message = chatService.findOneByUserid(params);

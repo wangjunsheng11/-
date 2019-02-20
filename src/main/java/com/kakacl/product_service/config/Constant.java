@@ -66,4 +66,10 @@ public class Constant {
 
     // 我的好友组标题
     public final static  String MY_FRIENDS_GROUP_TITLE = "我的好友";
+
+
+    // ------------------------------------------------- APP  ----------------------------------------------------------------------------------------------------
+
+
+    public final static  String APP_TYPE = "ALL";
 }

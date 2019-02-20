@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.Iterator;
 
@@ -119,5 +120,71 @@ public class FileUpLoadOpenController extends BaseController {
         System.out.println("方法三的运行时间："+String.valueOf(endTime-startTime)+"ms");
         return "/success";
     }
+
+    // todo
+    @RequestMapping(value="/upload666666",method= RequestMethod.POST)
+    public void upload(HttpServletRequest request,
+                       HttpServletResponse response,
+                       @RequestParam("comment") String comment,
+                       @RequestParam("file") MultipartFile file,
+                       int type) throws Exception {
+
+        log.info("start upload, comment [{}]", comment);
+
+        if(null==file || file.isEmpty()){
+            log.error("file item is empty!");
+//            responseAndClose(response, "文件数据为空");
+            return;
+        }
+
+        String user_id = getUserid(request);
+        String file_dir = "headFiles";
+        String image_name = user_id + ".jpg";
+        String path = FileUtils.getFileUploadPath(upLoadFilePath + File.separator + file_dir) + image_name;
+        String head_path = fileUploadIpAndPort + File.separator + FileUtils.getFileUploadPath(file_dir) + image_name;
+        log.info("path: {}", path);
+        log.info("head_path: {}", head_path);
+
+        //上传文件路径
+        String savePath = request.getServletContext().getRealPath("/WEB-INF/upload");
+
+        if(type > 10) {
+            savePath = head_path;
+        }
+
+        //上传文件名
+        String fileName = file.getOriginalFilename();
+
+        log.info("base save path [{}], original file name [{}]", savePath, fileName);
+
+        //得到文件保存的名称
+//        fileName = mkFileName(fileName);
+
+        //得到文件保存的路径
+//        String savePathStr = mkFilePath(savePath, fileName);
+
+        String savePathStr = savePath + File.separator + fileName;
+
+        log.info("real save path [{}], real file name [{}]", savePathStr, fileName);
+
+        File filepath = new File(savePathStr, fileName);
+
+        //确保路径存在
+        if(!filepath.getParentFile().exists()){
+            log.info("real save path is not exists, create now");
+            filepath.getParentFile().mkdirs();
+        }
+
+        String fullSavePath = savePathStr + File.separator + fileName;
+
+        //存本地
+        file.transferTo(new File(fullSavePath));
+
+        log.info("save file success [{}]", fullSavePath);
+
+//        responseAndClose(response, "SpringBoot环境下，上传文件成功");
+    }
+
+
 
 }

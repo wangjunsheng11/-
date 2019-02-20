@@ -42,4 +42,7 @@ public interface ChatService {
 
     // 查询和当前用户相关的一条信息 send_id to_id
     Map findOneByUserid(Map params);
+
+    // 获取未读的消息条数 send_id to_id
+    int findNotReadNum(Map params);
 }
