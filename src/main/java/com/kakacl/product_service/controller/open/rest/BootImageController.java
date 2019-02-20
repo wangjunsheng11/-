@@ -64,15 +64,15 @@ public class BootImageController extends BaseController {
      * @method get
      * @url /api/open/rest/v1.0.1/boot/getNowVersion
      * @param time 必选 string 请求时间戳
-     * @param apptype 必选 string 客户机型号，例如荣耀x8，dl100等，数据作为人工参考用，一般不作为标准
+     * @param apptype 必选 string 客户机型号，例如荣耀x8，dl100等，数据作为人工参考用
      * @param iso_version 必选 string 客户机系统版本
      * @param type 必选 string 客户机机型-华为，小米等，根据不同的机型推荐不同的应用市场
-     * @return
+     * @return {"status":"200","message":"请求成功","data":{"del_flag":0,"update_path":"http://www.kakacl.com/file/update.apk","create_time":113,"id":3,"type":"ALL","version":"1.0.1","forch":0},"page":null,"ext":null}
      * @return_param version string 当前最新版本
      * @return_param type string 客户端机型
      * @return_param forch string 是否强制更新0否-1是
      * @return_param update_path string 更新地址
-     * @remark 测试数据
+     * @remark 备注
      * @number 99
      */
     @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
@@ -89,13 +89,7 @@ public class BootImageController extends BaseController {
             params.put("type", Constant.APP_TYPE);
             data = appVersionService.findNowVersion(params);
         }
-        return Resp.success(data.get(0));
-
-//        result.put("version", "1.0.1");
-//        result.put("type", "x8");
-//        result.put("forch", "0");
-//        result.put("update_path", "http://www.kakacl.com/update-1.0.0.apk");
-//        return Resp.success(result);
+        return Resp.success(data.get(Constants.CONSTANT_0));
     }
 
 }
