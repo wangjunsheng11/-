@@ -39,4 +39,7 @@ public interface ChatService {
     List<Map> findMessageByKey(Map params);
 
     List<Map> findGroup(Map params);
+
+    // 查询和当前用户相关的一条信息 send_id to_id
+    Map findOneByUserid(Map params);
 }

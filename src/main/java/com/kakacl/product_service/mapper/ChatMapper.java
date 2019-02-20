@@ -81,4 +81,9 @@ public interface ChatMapper {
 
     @Select("SELECT DISTINCT group_name FROM zzf_user_friends WHERE my_id = #{user_id} AND del_flag = 0")
     List<Map> findGroup(Map params);
+
+    // 查询和当前用户相关的一条信息 send_id to_id
+    @Select("SELECT * FROM zzf_user_chat_history zch WHERE ((send_id = #{send_id} AND to_id = #{to_id}) OR (send_id = #{to_id} AND to_id = #{send_id})) AND del_flag = 0 ORDER BY create_time LIMIT 0, 1")
+    Map findOneByUserid(Map params);
+
 }

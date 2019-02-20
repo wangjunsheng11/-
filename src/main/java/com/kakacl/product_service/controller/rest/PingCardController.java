@@ -101,8 +101,10 @@ public class PingCardController extends BaseController {
                                  @RequestParam(value = "longitude", required = true)String longitude,
                                  @RequestParam(value = "latitude", required = true)String latitude,
                                  Map params) {
+        Map result = new HashMap();
         params.put("company_id", company_id);
         List<Map> data = pingCardService.selectCompanyLocation(params);
+        result.put("data", data);
         for (int i = Constants.CONSTANT_0; i < data.size(); i++) {
             double e_longitude = Double.valueOf(data.get(i).get("longitude").toString());
             double e_latitude = Double.valueOf(data.get(i).get("latitude").toString());
@@ -113,10 +115,11 @@ public class PingCardController extends BaseController {
             double la_2 = data_scope[Constants.CONSTANT_3];
             if(lo_1 < Double.valueOf(longitude) && lo_2 > Double.valueOf(longitude)
                     && la_1 < Double.valueOf(latitude) && la_2 > Double.valueOf(latitude)) {
-                return Resp.success();
+                return Resp.success(result);
             }
         }
-        return Resp.fail(ErrorCode.CODE_460);
+//        return Resp.fail(ErrorCode.CODE_460);
+        return Resp.success().fail(result);
     }
 
     /**

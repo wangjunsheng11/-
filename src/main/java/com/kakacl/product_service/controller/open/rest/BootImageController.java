@@ -8,8 +8,8 @@ import com.kakacl.product_service.utils.Resp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 /**
  * @author wangwei
@@ -50,4 +50,39 @@ public class BootImageController extends BaseController {
                      @RequestParam(name = "ios_version", required = true)String ios_version){
         return Resp.success(startImageService.list(null));
     }
+
+    /**
+     * showdoc
+     * @catalog v1.0.1/启动模块
+     * @title 获取最新版本
+     * @description 查询进入APP前的启动图片
+     * @method get
+     * @url /api/open/rest/v1.0.1/boot/getNowVersion
+     * @param time 必选 string 请求时间戳
+     * @param apptype 必选 string 客户机型号，例如荣耀x8，dl100等
+     * @param iso_version 必选 string 客户机系统版本
+     * @param type 必选 string 客户机机型-华为，小米等，根据不同的机型推荐不同的应用市场
+     * @param type 必选 string 客户机机型-华为，小米等，根据不同的机型推荐不同的应用市场
+     * @return
+     * @return_param version string 当前最新版本
+     * @return_param type string 客户端机型
+     * @return_param forch string 是否强制更新0否-1是
+     * @return_param update_path string 更新地址
+     * @remark 测试数据
+     * @number 99
+     */
+    @AccessLimit(limit = Constants.CONSTANT_1,sec = Constants.CONSTANT_1)
+    @GetMapping(value = "getNowVersion", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp getNowVersion(HttpServletRequest request, String time,
+                     @RequestParam(name = "apptype", required = true)String apptype,
+                     @RequestParam(name = "iso_version", required = true)String iso_version,
+                     @RequestParam(name = "type", required = true)String type){
+        Map result = new HashMap<>();
+        result.put("version", "1.0.1");
+        result.put("type", "x8");
+        result.put("forch", "0");
+        result.put("update_path", "http://www.kakacl.com/update-1.0.0.apk");
+        return Resp.success(result);
+    }
+
 }

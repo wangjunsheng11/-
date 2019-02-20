@@ -12,6 +12,7 @@ import com.kakacl.product_service.utils.IDUtils;
 import com.kakacl.product_service.utils.Resp;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.CollectionUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,9 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author wangwei
@@ -106,7 +105,7 @@ public class MyChatController extends BaseController {
         params.put("friend_id", friend_id);
         params.put("my_id", getUserid(request));
         params.put("del_flag", Constants.CONSTANT_1);
-        chatService.updateFriend(params);
+        boolean f = chatService.updateFriend(params);
 
         // 添加到某个组-添加组里必须需要最少一个好友
         params.put("id", IDUtils.genHadId());
@@ -116,6 +115,12 @@ public class MyChatController extends BaseController {
         params.put("create_time", System.currentTimeMillis() / Constants.CONSTANT_1000);
         params.put("create_by", getUserid(request));
         boolean flag = chatService.addFriend(params);
+        if(f) {
+            params.put("friend_id", friend_id);
+            params.put("status_01", Constants.CONSTANT_50201);
+            params.put("user_id", getUserid(request));
+            chatService.agreeOneFriendAndMy(params);
+        }
         if(flag) {
             return Resp.success();
         } else {
@@ -345,7 +350,7 @@ public class MyChatController extends BaseController {
      * @param token 必选 string token
      * @param content 必选 string 发送内容
      * @param scope 可选 string 查找范围-默认全局-global
-     * @return {"status":"200","message":"请求成功","data":[{"create_by":"1547006424247526","send_id":"1547006424247526","del_flag":0,"create_time":1549378177,"to_id":"1547008191643825","read_status":0,"id":"1549378177269689","title":"ttt","user":{"create_by":"1","hear_path":"","del_flag":0,"create_time":1547006424,"user_name":"test","roleid":"1","kaka_num":"128643","phone_num":"13800138000","id":"1547006424247526","account_status":52000,"introduction":"456"},"content":"ggg"}],"page":null,"ext":null}
+     * @return {"status":"200","message":"请求成功","data":[{"del_flag":0,"create_time":1547008191,"user_name":"anonymous","roleid":"2","kaka_num":"149386","id_card":"22221","account_status":52000,"message":{"create_by":"1547006424247526","send_id":"1547006424247526","del_flag":0,"create_time":1549378177,"to_id":"1547008191643825","read_status":0,"id":"1549378177269689","title":"ttt","content":"ggg"},"create_by":"1","not_read_num":"1","head_path":"http://211.149.226.29:8081\\headFiles\\1547008191643825.jpg","phone_num":"13800138001","id":"1547008191643825","introduction":"没有简介"},{"del_flag":0,"create_time":1549206597,"user_name":"anonymous","roleid":"0","kaka_num":"152417","id_card":"782750","account_status":52000,"message":{"create_by":"1547006424247526","send_id":"1547006424247526","del_flag":0,"update_time":1550475103,"create_time":1550474954,"to_id":"1549206597769683","read_status":1,"id":"1550474954023574","title":"水","update_by":"1549206597769683","content":"水水"},"create_by":"1","not_read_num":"1","head_path":"http://211.149.226.29:8081/headFiles/1549206597769683.jpg","phone_num":"18556776796","id":"1549206597769683","introduction":"没有简介"},{"del_flag":0,"create_time":1549851523,"user_name":"客服115000","roleid":"5","kaka_num":"115000","id_card":"321283199502141218","account_status":52000,"message":{"create_by":"1547006424247526","send_id":"1547006424247526","del_flag":0,"create_time":1550324286,"to_id":"1","read_status":0,"id":"1550324286250123","title":"结算","content":"申请人姓名：王子\n手机号：13800138000\n金额：补贴进度：5001.00元\n参考开始时间：1970/01/03\n参考结束时间：1970/01/03\n条件：打卡50天\n备注：666666\n"},"create_by":"1","not_read_num":"1","head_path":"http://211.149.226.29:8081/zzf/file/user/head/images/default_female_03.png","phone_num":"13800138005","id":"1","introduction":"没有简介"},{"del_flag":0,"create_time":1550537584,"user_name":"-15500155000","roleid":"0","kaka_num":"114967","id_card":"110101199003077635","account_status":52000,"message":{"create_by":"1547006424247526","send_id":"1547006424247526","del_flag":0,"create_time":1550537760,"to_id":"1550537584576238","read_status":0,"id":"1550537760719904","title":"哈哈哈","content":"都饿了"},"create_by":"1","not_read_num":"1","head_path":"http://211.149.226.29:8081/headFiles/1550537584576238.jpg","phone_num":"15500155000","id":"1550537584576238","introduction":"没有简介"},{"del_flag":0,"create_time":1549377378,"user_name":"杨勇","roleid":"0","kaka_num":"190862","id_card":"410503198005132037","account_status":52000,"message":{"create_by":"1547006424247526","send_id":"1547006424247526","del_flag":0,"update_time":1550584866,"create_time":1550455812,"to_id":"1549377378941448","read_status":1,"id":"1550455812889450","title":"123","update_by":"1549377378941448","content":"123456"},"create_by":"1","not_read_num":"1","head_path":"http://211.149.226.29:8081/headFiles/1549377378941448.jpg","phone_num":"18662578122","id":"1549377378941448","introduction":"没有简介并不难"},{"del_flag":0,"create_time":1547006424,"user_name":"大哥#程浩南","roleid":"1","kaka_num":"128643","id_card":"320102199101013790","account_status":52000,"message":{"create_by":"1547006424247526","send_id":"1547006424247526","del_flag":0,"update_time":1548660204,"create_time":1548656108,"to_id":"1547006424247526","read_status":1,"id":"1548656108857614","title":"1","update_by":"1547006424247526","content":"1"},"create_by":"1","not_read_num":"1","head_path":"http://211.149.226.29:8081/headFiles/1547006424247526.jpg","phone_num":"13800138000","id":"1547006424247526","introduction":"帅 咯JOJOt"},{"del_flag":0,"create_time":1549851523,"user_name":"审判","roleid":"0","kaka_num":"164867","id_card":"321283199502141216","account_status":52000,"message":{"create_by":"1547006424247526","send_id":"1547006424247526","del_flag":0,"update_time":1550583506,"create_time":1550222916,"to_id":"1549851523970354","read_status":1,"id":"1550222916844784","title":"龙图","update_by":"1549851523970354","content":"拉拉裤"},"create_by":"1","not_read_num":"1","head_path":"http://211.149.226.29:8081/headFiles/1549851523970354.jpg","phone_num":"15764397609","id":"1549851523970354","introduction":"审判己身"}],"page":null,"ext":null}
      * @return_param message string 消息
      * @return_param status string 状态
      * @remark 这里是备注信息
@@ -361,20 +366,162 @@ public class MyChatController extends BaseController {
                              Map params) {
         params.put("search_key", StringEscapeUtils.escapeSql(content));
         params.put("user_id", getUserid(request));
-//        Map result = new HashMap();
         List<Map> data = chatService.findMessageByKey(params);
-//        log.info("data {}", data);
-        for (int i = Constants.CONSTANT_0; i < data.size(); i++) {
-//            params.put("user_id", data.get(i).get("to_id"));
-            params.put("user_id", data.get(i).get("send_id"));
+        /*for (int i = Constants.CONSTANT_0; i < data.size(); i++) {
+            params.put("user_id", data.get(i).get("to_id"));
             Map user = accountService.selectById(params);
             if(user != null) {
                 user.remove("id_card");
                 data.get(i).put("user", user);
-//                result.put("data", data);
+            }
+        }*/
+
+        // ---------------------------------------------
+        List<Map> res = new ArrayList<>();
+        for (int i = Constants.CONSTANT_0; i < data.size(); i++) {
+            Object message = data.get(i);
+//            log.info("user data {}", message);
+            if(message != null) {
+                // 如果发送ID是自己，则传递 to_id;如果发送ID是其他，则传递send_id
+                String to_id = data.get(i).get("to_id").toString();
+                String send_id = data.get(i).get("send_id").toString();
+                if(getUserid(request).equals(send_id)) {
+                    params.put("user_id", to_id);
+                } else {
+                    params.put("user_id", send_id);
+                }
+                Map user = accountService.selectById(params);
+//                log.info("user {}", user);
+                res.add(user);
             }
         }
-        return Resp.success(data);
+
+        // 去重用户， 然后获取消息
+//        log.info(" size " + res.size() + "");
+        res = removeDuplicate(res);
+//        log.info(" size last " + res.size() + "");
+
+        // 根据好友id获取和当前用户的最后一条消息
+        for (int i = 0; i < res.size(); i++) {
+            Map obj = res.get(i);
+            if(obj != null) {
+                obj.put("not_read_num", "1");
+//                log.info(" obj {}", obj);
+                Object user_id = obj.get("id");
+                params.put("to_id", user_id);
+                params.put("send_id", getUserid(request));
+                Map message = chatService.findOneByUserid(params);
+                res.get(i).put("message", message);
+            }
+        }
+
+        for (int i = 0; i < res.size(); i++) {
+            if(res.get(i) == null) {
+                res.remove(i);
+            }
+        }
+
+        return Resp.success(res);
+//        return Resp.success(data);
+    }
+
+    /**
+     * showdoc
+     * @catalog v1.0.1/用户聊天
+     * @title 查询用户的消息列表-暂时不可用
+     * @description 查询消息列表，每一个好友仅展示一条消息
+     * @method get
+     * @url /api/rest/v1.0.1/mychat/findListMessages
+     * @param time 必选 string 请求时间戳
+     * @param token 必选 string token
+     * @param content 必选 string 发送内容
+     * @param scope 可选 string 查找范围-默认全局-global
+     * @return
+     * @return_param message string 消息
+     * @return_param status string 状态
+     * @remark 这里是备注信息
+     * @number 99
+     */
+    @AccessLimit(limit = Constants.CONSTANT_10,sec = Constants.CONSTANT_10)
+    @RequestMapping(value = "findListMessages", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Resp findListMessages(HttpServletRequest request,
+                             String time,
+                             String token,
+                             @RequestParam(value = "content", required = false)String content,
+                             @RequestParam(value = "scope", required = false, defaultValue = "global")String scope,
+                             Map params) {
+        // 先查询消息，再查询消息中的用户，根据用户查询最近的一条消息
+        params.put("search_key", StringEscapeUtils.escapeSql(content));
+        params.put("user_id", getUserid(request));
+        Map result = new HashMap();
+        // 消息对象
+        List<Map> data = chatService.findMessageByKey(params);
+
+        // ------------------------------------------------------------------------------
+
+        // 根据消息查询好友 如果已经查询就不再查询了
+        List<Map> res = new ArrayList<>();
+//        Map tm = new HashMap();
+
+//        for (int i = 0; i < data.size(); i++) {
+//            boolean f = true;
+//            // 如果res中存在了数据 就不找了
+//            for (int j = 0; j < res.size(); j++) {
+//                Map uMap = (Map)res.get(j).get("user");
+//                // 好友的主键
+//                String user_id = uMap.get("id").toString();
+//                String to_id = data.get(i).get("to_id").toString();
+//                if(user_id.equals(to_id)) {
+//                    f = false;
+//                }
+//            }
+//            if(f) {
+//                params.put("user_id", data.get(i).get("to_id"));
+//                Map user = accountService.selectById(params);
+//                tm.put("user", user);
+//                // 根据用户查询最新的一条消息
+//                params.put("send_id", data.get(i).get("to_id"));
+//                params.put("to_id", data.get(i).get("to_id"));
+//                Map messsage = chatService.findOneByUserid(params);
+//                tm.put("message", messsage);
+//                res.add(tm);
+//            }
+//        }
+
+
+        // ------------------------------------
+        // 消息
+        log.info(" data {}", data);
+        // 查询用户对象，如果发送ID是自己，则传递 to_id;如果发送ID是其他，则传递send_id
+        for (int i = Constants.CONSTANT_0; i < data.size(); i++) {
+            Object message = data.get(i);
+            log.info("user data {}", message);
+            if(message != null) {
+                // 如果发送ID是自己，则传递 to_id;如果发送ID是其他，则传递send_id
+                String to_id = data.get(i).get("to_id").toString();
+                String send_id = data.get(i).get("send_id").toString();
+                if(getUserid(request).equals(send_id)) {
+                    params.put("user_id", to_id);
+                } else {
+                    params.put("user_id", send_id);
+                }
+                Map user = accountService.selectById(params);
+                log.info("user {}", user);
+            }
+        }
+
+        // 去重用户， 然后获取消息
+        log.info(" size " + res.size() + "");
+        res = removeDuplicate(res);
+        log.info(" size last " + res.size() + "");
+        return Resp.success(res);
+    }
+
+    private static List removeDuplicate(List list) {
+        HashSet h = new HashSet(list);
+        list.clear();
+        list.addAll(h);
+        return list;
     }
 
     /**

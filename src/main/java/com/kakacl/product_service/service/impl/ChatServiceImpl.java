@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.beans.Transient;
-import java.util.List;
+import java.util.*;
 import java.util.Map;
 
 /**
@@ -75,11 +75,18 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public List<Map> findMessageByKey(Map params) {
-        return chatMapper.findMessageByKey(params);
+        List<Map> result = chatMapper.findMessageByKey(params);
+        return result;
     }
 
     @Override
     public List<Map> findGroup(Map params) {
         return chatMapper.findGroup(params);
     }
+
+    @Override
+    public Map findOneByUserid(Map params) {
+        return chatMapper.findOneByUserid(params);
+    }
+
 }
