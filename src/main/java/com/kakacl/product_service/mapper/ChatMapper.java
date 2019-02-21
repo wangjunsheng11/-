@@ -87,7 +87,7 @@ public interface ChatMapper {
     Map findOneByUserid(Map params);
 
     // 获取未读的消息条数 to_id send_id
-    @Select("SELECT count(id) FROM zzf_user_chat_history WHERE to_id = #{to_id} and send_id = #{send_id} and del_flag = 0")
+    @Select("SELECT count(id) FROM zzf_user_chat_history WHERE to_id = #{to_id} and send_id = #{send_id} AND read_status = 0 and del_flag = 0")
     int findNotReadNum(Map params);
 
 

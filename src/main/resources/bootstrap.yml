@@ -55,6 +55,10 @@ spring:
     host: 211.149.226.29
     port: 56379
     password: root
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 100MB
 
 redisson:
   address: redis://211.149.226.29:56379
@@ -81,8 +85,10 @@ sms-pwd: iFqXn8Etz
 account-paaakey: kakacl_zzfsadasdsadsads
 
 # 上传文件路径
-up-load-file-path: /usr/local/fileData/ # /usr/local/fileData/ d:/fileData
+up-load-file-path: /usr/local/fileData # /usr/local/fileData/ d:/fileData
 # 文件映射地址
 file-upload-ip-and-port: http://211.149.226.29:8081 #文件显示的地址加端口号
 # 用户默认头像
 user-default-head: zzf/file/user/head/images/default_head.png
+# 容器名称
+docker-names: provider_zzf_1.0.1

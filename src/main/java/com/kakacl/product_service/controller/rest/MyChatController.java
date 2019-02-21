@@ -408,7 +408,10 @@ public class MyChatController extends BaseController {
                 Object user_id = obj.get("id");
                 params.put("to_id", getUserid(request));
                 params.put("send_id", user_id);
+                log.info(" to_id {}", getUserid(request));
+                log.info(" user_id {}", user_id);
                 int notReadNum = chatService.findNotReadNum(params);
+                log.info(" notReadNum {}", notReadNum);
                 obj.put("not_read_num", notReadNum);
 //                log.info(" obj {}", obj);
 
