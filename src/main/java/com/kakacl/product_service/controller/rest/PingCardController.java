@@ -79,7 +79,7 @@ public class PingCardController extends BaseController {
      * showdoc
      * @catalog v1.0.1/用户打卡
      * @title 判断用户当前是否允许打卡,GCJ-02标准
-     * @description 根据当前用户坐标和公司，判断用户是否允许打卡，打卡前需要先调用此方法，否则可能打卡不成功，此方法返回成功前，打卡按钮无效。
+     * @description 根据当前用户坐标和公司，判断用户是否允许打卡，打卡前需要先调用此方法，否则可能打卡不成功，此方法返回成功前，打卡按钮无效，返回公司允许打卡位置集合，客户端可以根据公司的位置和半径在地图上画一个打卡区域。
      * @method get
      * @url /api/rest/v1.0.1/pingcard/pingCardValidate
      * @param time 必选 string 请求时间戳
@@ -118,8 +118,7 @@ public class PingCardController extends BaseController {
                 return Resp.success(result);
             }
         }
-//        return Resp.fail(ErrorCode.CODE_460);
-        return Resp.success().fail(result);
+        return Resp.fail(result);
     }
 
     /**

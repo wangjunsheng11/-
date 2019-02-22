@@ -71,7 +71,8 @@ public class BootImageController extends BaseController {
      * @return_param version string 当前最新版本
      * @return_param type string 客户端机型
      * @return_param forch string 是否强制更新0否-1是
-     * @return_param update_path string 更新地址
+     * @return_param app_size string 安装包大小，如果update_path为详情页，则当前值为0
+     * @return_param update_path string 更新地址,可能是apk包，可能是应用市场详情页。如果根据返回值进行直接下载和跳转到详情页。
      * @remark 备注
      * @number 99
      */

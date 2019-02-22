@@ -100,7 +100,9 @@ public class MyChatController extends BaseController {
                            @RequestParam(name="group_name") String group_name,
                            @RequestParam(name="time")String time,
                            Map params) {
-
+        if(Constant.GROUP_NAME_CUSTOMER_SERVICE.equals(group_name)) {
+            return Resp.success(ErrorCode.CODE_6804);
+        }
         // 查询好友是否已经存在，如果存在则先删除
         params.put("friend_id", friend_id);
         params.put("my_id", getUserid(request));
