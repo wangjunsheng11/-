@@ -11,15 +11,15 @@ springcoud_provider_service
 
 #### 安装教程
 
-1. xxxx
-2. xxxx
-3. xxxx
+1. 下载idea
+2. 配置github
+3. 按debug方式运行
 
 #### 使用说明
 
-1. xxxx
-2. xxxx
-3. xxxx
+1. 打开浏览器
+2. 录入请求地址
+3. 操作
 
 #### 参与贡献
 
