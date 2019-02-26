@@ -118,9 +118,9 @@ public class MyChatController extends BaseController {
         params.put("create_by", getUserid(request));
         boolean flag = chatService.addFriend(params);
         if(f) {
-            params.put("friend_id", friend_id);
+            params.put("friend_id", getUserid(request));
             params.put("status_01", Constants.CONSTANT_50201);
-            params.put("user_id", getUserid(request));
+            params.put("user_id", friend_id);
             chatService.agreeOneFriendAndMy(params);
         }
         if(flag) {

@@ -85,9 +85,9 @@ public class PingCardController extends BaseController {
      * @param time 必选 string 请求时间戳
      * @param token 必选 string token
      * @param company_id 必选 string 公司主键
-     * @param longitude 必选 string 经度
-     * @param latitude 必选 string 纬度
-     * @return {"status":"200","message":"请求成功","data":null,"page":null,"ext":null}
+     * @param longitude 必选 string 经度120.534119
+     * @param latitude 必选 string 纬度31.436429
+     * @return {"status":"200","message":"请求成功","data":{"data":[{"del_flag":0,"company_id":"7","effective_radius":5000,"latitude":"31.436429","id":"5","order":1,"longitude":"120.534119"}]},"page":null,"ext":null}
      * @return_param status string 状态
      * @remark 这里是备注信息
      * @number 99
@@ -108,11 +108,11 @@ public class PingCardController extends BaseController {
         for (int i = Constants.CONSTANT_0; i < data.size(); i++) {
             double e_longitude = Double.valueOf(data.get(i).get("longitude").toString());
             double e_latitude = Double.valueOf(data.get(i).get("latitude").toString());
-            double[] data_scope = LatLonUtil.GetAround(e_longitude, e_latitude, Integer.parseInt(data.get(i).get("effective_radius").toString()));
-            double lo_1 = data_scope[Constants.CONSTANT_0];
-            double la_1 = data_scope[Constants.CONSTANT_1];
-            double lo_2 = data_scope[Constants.CONSTANT_2];
-            double la_2 = data_scope[Constants.CONSTANT_3];
+            double[] data_scope = LatLonUtil.GetAround(e_latitude, e_longitude, Integer.parseInt(data.get(i).get("effective_radius").toString()));
+            double la_1 = data_scope[Constants.CONSTANT_0];
+            double lo_1 = data_scope[Constants.CONSTANT_1];
+            double la_2 = data_scope[Constants.CONSTANT_2];
+            double lo_2 = data_scope[Constants.CONSTANT_3];
             if(lo_1 < Double.valueOf(longitude) && lo_2 > Double.valueOf(longitude)
                     && la_1 < Double.valueOf(latitude) && la_2 > Double.valueOf(latitude)) {
                 return Resp.success(result);

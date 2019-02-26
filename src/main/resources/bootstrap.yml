@@ -7,7 +7,7 @@ eureka:
   client:
     serviceUrl:
       # 172.19.186.233 47.101.63.222 192.168.4.172 127.0.0.1
-      defaultZone: http://211.149.226.29:8761/eureka/
+      defaultZone: http://47.101.63.222:8764/eureka/
   instance:
     instance-id: ${spring.cloud.client.ip-address}:${server.port}
     prefer-ip-address: true
@@ -25,7 +25,7 @@ spring:
   #          profile: test
   #消息队列
   rabbitmq:
-    host: 211.149.226.29
+    host: 47.101.63.222
     port: 5672
     username: guest
     password: guest
@@ -52,7 +52,7 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
   redis:
-    host: 211.149.226.29
+    host: 47.101.63.222
     port: 56379
     password: root
   servlet:
@@ -61,7 +61,7 @@ spring:
       max-request-size: 100MB
 
 redisson:
-  address: redis://211.149.226.29:56379
+  address: redis://47.101.63.222:56379
 
 mybatis:
   config-location: classpath:sqlMapConfig.xml
