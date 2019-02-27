@@ -29,4 +29,14 @@ public class CustomerServiceImpl implements CustomerService {
     public boolean insertOne(Map params) {
         return customerServiceMapper.insertOne(params);
     }
+
+    @Override
+    public List<Map> findCustomerList(Map params) {
+        return customerServiceMapper.findCustomerList(params);
+    }
+
+    @Override
+    public boolean findMessageExist(Map params) {
+        return customerServiceMapper.findMessageExist(params);
+    }
 }

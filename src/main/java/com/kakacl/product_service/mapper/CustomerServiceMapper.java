@@ -28,4 +28,12 @@ public interface CustomerServiceMapper {
     @Insert("INSERT INTO zzf_user_friends (id, my_id, friend_id, group_name, `status`, create_time, create_by) VALUES (#{id}, #{my_id}, #{friend_id}, #{group_name}, #{status}, #{create_time}, #{create_by})")
     boolean insertOne(Map params);
 
+    // 获取所有用户的所有客服
+    @Select("select my_id, friend_id from zzf_user_friends WHERE group_name = '客服' AND del_flag = 0")
+    List<Map> findCustomerList(Map params);
+
+    // 查询消息是否存在
+    @Select("SELECT COUNT(0) > 0 FROM zzf_user_chat_history WHERE send_id = #{server_id} AND to_id = #{user_id}")
+    boolean findMessageExist(Map params);
+
 }

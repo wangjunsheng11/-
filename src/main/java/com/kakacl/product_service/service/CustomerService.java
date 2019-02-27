@@ -24,4 +24,10 @@ public interface CustomerService {
      * @return boolean
      */
     boolean insertOne(Map params);
+
+    // 获取所有用户的所有客服
+    List<Map> findCustomerList(Map params);
+
+    // 查询消息是否存在
+    boolean findMessageExist(Map params);
 }
