@@ -12,9 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class AccountServiceImpl
-        implements
-        AccountService {
+public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private AccountMapper accountMapper;
@@ -22,6 +20,11 @@ public class AccountServiceImpl
     @Override
     public Map findStoreAccountInfoByCard(Map params) {
         return accountMapper.findStoreAccountInfoByCard(params);
+    }
+
+    @Override
+    public Map findStoreAccountById(Map params) {
+        return accountMapper.findStoreAccountById(params);
     }
 
     @Override

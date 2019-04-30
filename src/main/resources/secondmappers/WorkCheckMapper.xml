@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kakacl.product_service.mappers.WorkCheckMapper">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, cid, pid, ping_card_num, title, extType, disabled, first_STime, first_ETime, second_STime,
+         second_ETime, ext_begin, ext_end, update_time
+    </sql>
+
+    <select id="findWorkCheckById" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+            *
+        FROM
+        store_workCheck where 1 = 1
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+
+    </select>
+    <insert id="insertWorkStatus"   parameterType="java.util.Map">
+        insert into store_workStatus(uid,gid,remarks,begin1_Time,expstate,hrs_normal,create_time)
+        values (#{user_id},#{gid},#{remarks},#{begin1_Time},#{expstate},#{hrs_normal},#{create_time})
+    </insert>
+    <select id="findWorkDayTime" resultType="java.util.Map" parameterType="java.util.Map">
+        select * from  store_workStatus where uid = #{user_id} and gid = #{gid} and create_time <![CDATA[ >= ]]> #{create_time}
+    </select>
+    <select id="findWorkNight" resultType="java.util.Map" parameterType="java.util.Map">
+        select * from store_workStatus where  uid = #{user_id} and gid = #{gid} and create_time <![CDATA[ > ]]> #{ping_time} and create_time <![CDATA[ <= ]]> #{check_time}
+    </select>
+    <update id="updateWorkTime" >
+        update  store_workStatus
+        <set>
+            <if test="remarks != null and remarks != ''" >
+                remarks=#{remarks},
+            </if>
+            <if test="end1_Time != null and end1_Time != ''" >
+                end1_Time=#{end1_Time},
+            </if>
+            <if test="begin2_Time != null and begin2_Time != ''" >
+                begin2_Time=#{begin2_Time},
+            </if>
+            <if test="end2_Time != null and end2_Time != ''" >
+                end2_Time=#{end2_Time},
+            </if>
+            <if test="begin3_Time != null and begin3_Time != ''" >
+                begin3_Time=#{begin3_Time},
+            </if>
+            <if test="end3_Time != null and end3_Time != ''" >
+                end3_Time=#{end3_Time},
+            </if>
+            <if test="expstate != null and expstate != ''" >
+                expstate=#{expstate},
+            </if>
+            <if test="hrs_normal != null and hrs_normal != ''" >
+                hrs_normal=#{hrs_normal},
+            </if>
+            <if test="update_time != null and update_time != ''" >
+                update_time=#{update_time},
+            </if>
+        </set>
+        where
+        id=#{id}
+    </update>
+    <update id="updateWorkNight">
+
+    </update>
+
+</mapper>

@@ -6,8 +6,8 @@ server:
 eureka:
   client:
     serviceUrl:
-      # 172.19.186.233 47.101.63.222 192.168.4.172 127.0.0.1
-      defaultZone: http://211.149.226.29:8761/eureka/
+      # 172.19.186.233  192.168.4.172 127.0.0.1
+      defaultZone: http://211.149.226.29:8761/eureka/ #http://47.101.63.222:8764/eureka/ 47.101.63.222服务器已经关闭了
   instance:
     instance-id: ${spring.cloud.client.ip-address}:${server.port}
     prefer-ip-address: true
@@ -15,7 +15,7 @@ eureka:
 #服务的名称
 spring:
   application:
-    name: provider_zzf_service
+    name: provider_zzf_service  #服务的名称
     #指定从哪个配置中心读取
   #      cloud:
   #        config:
@@ -23,13 +23,13 @@ spring:
   #            service-id: CONFIG-SERVER
   #            enabled: true
   #          profile: test
-
   #消息队列
   rabbitmq:
-    host: 211.149.226.29
+    host: 47.101.63.222
     port: 5672
     username: guest
     password: guest
+
   primary:
     datasource:
       username: root
@@ -53,12 +53,12 @@ spring:
       useGlobalDataSourceStat: true
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
-    # 第二个数据源
+# 第二个数据源
   second:
     datasource:
       username: db_kakacl
       password: kakacl2018u
-      url: jdbc:mysql://211.149.226.29:3306/db_kakacl?autoReconnect=true&useUnicode=true&characterEncoding=utf8&useSSL=false
+      url: jdbc:mysql://211.149.226.29:3306/db_kakacl?autoReconnect=true&useUnicode=true&characterEncoding=utf8
       driver-class-name: com.mysql.jdbc.Driver
       type: com.alibaba.druid.pool.DruidDataSource
       initialSize: 5
@@ -77,13 +77,12 @@ spring:
       useGlobalDataSourceStat: true
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
-  redis:
+
+  redis: #这个redis是不支持的了，任务得不到锁的
     host: 211.149.226.29
     port: 56379
     password: root
-#   host: 127.0.0.1
-#   port: 6379
-#   password: 123456
+
   servlet:
     multipart:
       max-file-size: 50MB
@@ -92,10 +91,19 @@ spring:
 redisson:
   address: redis://211.149.226.29:56379
 
+#线上地址
+#  redis:
+#    host: 211.149.226.29
+#    port: 56379
+#    password: root
+#
+#redisson:
+#   address: redis://211.149.226.29:56379
+
 mybatis:
-  config-location: classpath:sqlMapConfig.xml
-  mapper-locations: classpath:mappers/*.xml
-  type-aliases-package: com.kakacl.springboot.model
+    config-location: classpath:sqlMapConfig.xml
+    mapper-locations: classpath:mappers/*.xml
+    type-aliases-package: com.kakacl.springboot.model
 
 env: devp
 branch: dev

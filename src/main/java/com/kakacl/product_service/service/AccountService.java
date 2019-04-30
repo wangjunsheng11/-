@@ -10,6 +10,8 @@ public interface AccountService {
 
     // 根据用户的身份证号码查询门店系统中的用户信息是否存在
     Map findStoreAccountInfoByCard(Map params);
+    //根据ID查询用户的信息
+    Map findStoreAccountById(Map params);
 
     // 获取默认头像列表
     List<Map> findDetailtList(Map params);

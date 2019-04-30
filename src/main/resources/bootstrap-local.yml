@@ -28,6 +28,8 @@ spring:
     port: 5672
     username: admin
     password: admin
+
+primary:
   datasource:
     username: root
     password: kakacldb2018u
@@ -50,18 +52,41 @@ spring:
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
-  redis:
-    host: 192.168.4.189
-    port: 6379
-    password:
+second:
+  datasource:
+    username: db_kakacl
+    password: kakacl2018u
+    url: jdbc:mysql://211.149.226.29:3306/db_kakacl?autoReconnect=true&useUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 5
+    minIdle: 5
+    maxActive: 10
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password: 123456
 
 
 #redisson:
-#  address: redis://211.149.226.29:56379
+#address: redis://211.149.226.29:56379
 
 
 redisson:
-  address: redis://192.168.4.189:6379
+  address: redis://127.0.0.1:6376
 
 mybatis:
   config-location: classpath:sqlMapConfig.xml

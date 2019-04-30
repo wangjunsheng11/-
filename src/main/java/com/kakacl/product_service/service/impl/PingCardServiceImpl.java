@@ -36,6 +36,27 @@ public class PingCardServiceImpl implements PingCardService {
     }
 
     @Override
+    public Map slectLastPingType2(Map params) {
+        return pingCardMapper.slectLastPingType2(params);
+
+    }
+
+    @Override
+    public Map slectLastPingTypeOfNight(Map params) {
+        return pingCardMapper.slectLastPingTypeOfNight(params);
+    }
+
+    @Override
+    public Integer selectCountPing(Map params) {
+        return pingCardMapper.selectCountPing(params);
+    }
+
+    @Override
+    public Integer selectCountPingOfNight(Map params) {
+        return pingCardMapper.selectCountPingOfNight(params);
+    }
+
+    @Override
     public boolean insertPingCard(Map params) {
         return pingCardMapper.insertPingCard(params);
     }

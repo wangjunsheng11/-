@@ -179,6 +179,7 @@ public class Resp<T> implements Serializable {
         return new Resp<T>(ErrorCode.SYSTEM_ERROR.getCode(),ErrorCode.SYSTEM_ERROR.getMessage(),result);
     }
 
+
     public <T>Resp fail(String message, T result){
         return new Resp<T>(ErrorCode.SYSTEM_ERROR.getCode(),message,result);
     }

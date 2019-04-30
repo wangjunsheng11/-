@@ -124,7 +124,7 @@ public class LoginController extends BaseController {
         String msg_model = "";
         if(type.equals("register")) {
             msg_model = ConstantSMSMessage.CONSTANT_REGIATER;
-            java.util.Map params = new HashMap();
+            Map params = new HashMap();
             params.put("phone_num", phoneNum);
             Map result = accountService.selectByPhone(params);
             if(result != null) {
@@ -311,7 +311,7 @@ public class LoginController extends BaseController {
             @RequestParam(name="account", required=true)String account,
             @RequestParam(name="pass", required=true)String pass,
             String time){
-        java.util.Map params = new HashMap();
+        Map params = new HashMap();
         params.put("kaka_num", account);
         params.put("phone_num", account);
         // linux上无法使用 保持一致
@@ -387,7 +387,7 @@ public class LoginController extends BaseController {
                        String time
             ){
         String user_id = getUserid(request);
-        java.util.Map result = new HashMap();
+        Map result = new HashMap();
         result.put("user_id", user_id);
         return Resp.success(result);
 
@@ -418,7 +418,7 @@ public class LoginController extends BaseController {
             @RequestParam(name="phone_num", required=true)String phone_num,
             @RequestParam(name="new_pass", required=true)String new_pass,
             @RequestParam(name="phoneCode", required=true)String phoneCode){
-        java.util.Map params = new HashMap();
+        Map params = new HashMap();
         params.put("phone_num", phone_num);
         try {
             params.put("pass_word", SecurityUtil.encrypt(new_pass, account_paaakey));

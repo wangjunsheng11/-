@@ -19,7 +19,6 @@ import java.util.*;
  * @description 定时任务测试
  * @date 2019-01-25
  */
-@Component
 @Configurable
 @EnableScheduling
 public class ScheduledTest{

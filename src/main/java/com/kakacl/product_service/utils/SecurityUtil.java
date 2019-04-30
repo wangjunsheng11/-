@@ -58,6 +58,7 @@ public class SecurityUtil {
         return new String(res);
     }
 
+
     public static void main(String[] args) throws Exception {
         String message = "123456";
         String key = "key_123456";

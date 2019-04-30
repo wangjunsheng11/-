@@ -31,4 +31,6 @@ public class ClearRedisTask {
         Set s = redisTemplate.keys(key);
         redisTemplate.delete(s);
     }
+
+
 }

@@ -60,6 +60,14 @@ public class Constant {
 
     public final static String PING_TYPE_DOWN = "下班";
 
+    public final static String PING_TYPE_UP_NORM = "正常上班";
+
+    public final static String PING_TYPE_DOWN_NORM = "正常下班";
+
+    public final static String PING_TYPE_LATER= "迟到打卡";
+
+    public final static String PING_TYPE_EARLY = "早退打卡";
+
 
 
     // ------------------------------------------------- USER FRIENDS ----------------------------------------------------------------------------------------------------

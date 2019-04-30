@@ -51,7 +51,7 @@ public class InitCustomerServiceMessageTask extends BaseTask {
                 params.put("id", IDUtils.genHadId());
                 params.put("send_id", server_id);
                 params.put("to_id", user_id);
-                params.put("content", "尊敬的用户您好，欢迎使用周周发APP。为了方便您的使用，请认真阅读《<a href='http://211.149.226.29:8081/zzf/file/default/pdf/use.pdf'>周周发用户使用说明</a>》，如果您在使用过程中有任何问题，欢迎咨询客服寻求帮助。");
+                params.put("content", "尊敬的用户您好，欢迎使用周周发APP。为了方便您的使用，请认真阅读“《周周发用户使用说明》”，如果您在使用过程中有任何问题，欢迎咨询客服寻求帮助。");
                 params.put("title", "欢迎使用周周发APP");
                 params.put("create_by", server_id);
                 params.put("create_time", System.currentTimeMillis() / Constants.CONSTANT_1000);

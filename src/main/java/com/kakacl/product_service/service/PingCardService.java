@@ -41,5 +41,15 @@ public interface PingCardService {
      */
     Map slectLastPingType(Map params);
 
+    Map slectLastPingType2(Map params);
+
+    Map slectLastPingTypeOfNight(Map params);
+
+    //查询该员工当天的打卡次数(白班)
+    Integer selectCountPing(Map params);
+
+    //查询当天打卡的记录条数（夜班）
+    Integer selectCountPingOfNight(Map params);
+
     boolean insertPingCard(Map params);
 }

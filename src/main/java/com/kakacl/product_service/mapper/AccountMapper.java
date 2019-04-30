@@ -12,6 +12,11 @@ public interface AccountMapper {
     @Select("select * from store_account_id_card where card_no = #{card_no} LIMIT 0, 1")
     Map findStoreAccountInfoByCard(Map params);
 
+   //根据ID查询用户的信息
+    @Select("select * from store_account where id =#{id}")
+    Map findStoreAccountById(Map params);
+
+
     // 获取默认头像列表
     @Select("SELECT * FROM zzf_images_user_head_default WHERE del_flag = 0")
     List<Map> findDetailtList(Map params);
@@ -59,4 +64,5 @@ public interface AccountMapper {
 
     @Select("SELECT * FROM zzf_user_info WHERE del_flag = 0 ORDER BY create_time DESC")
     List<Map> selectByPageAndSelections(java.util.Map params);
+
 }
